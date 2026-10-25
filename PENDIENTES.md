@@ -3,6 +3,16 @@
 Tienda: https://importaciones-lore-opzt.vercel.app
 Panel: https://importaciones-lore-opzt.vercel.app/admin
 
+## Enlaces importantes 🔖
+| Para qué | Enlace |
+|---|---|
+| Tu tienda | https://importaciones-lore-opzt.vercel.app |
+| Tu panel (productos, pedidos, mensajes) | https://importaciones-lore-opzt.vercel.app/admin |
+| Bold (pagos y ventas) | https://panel.bold.co |
+| Vercel (publicación y llaves) | https://vercel.com/lore-importaciones/importaciones-lore-opzt |
+| Supabase (base de datos y usuario) | https://supabase.com/dashboard |
+| GitHub (el código) | https://github.com/juancamilogomezmoreno999-star/importaciones-lore |
+
 ## Ya está listo ✅
 - Tienda en línea, carrito y checkout
 - Panel de administración conectado a Supabase
