@@ -28,6 +28,15 @@ export function shippingFor(subtotal: number) {
   return shipping.cost;
 }
 
+/** Costo del pago en línea: lo que hay que sumar para recibir `base` completo después de la comisión. */
+export function onlineFeeFor(base: number) {
+  const pct = payments.onlineFeePercent;
+  if (base <= 0 || pct <= 0) return 0;
+  return Math.ceil((base / (1 - pct / 100) - base) / 100) * 100;
+}
+
+export const ONLINE_FEE_LABEL = "Costo del pago en línea";
+
 export function cashOnDeliveryAllowed(city: string) {
   const c = payments.cashOnDelivery;
   if (!c.enabled) return false;

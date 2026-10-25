@@ -6,7 +6,7 @@ import { useCart } from "@/components/CartProvider";
 import { ProductImage } from "@/components/ProductImage";
 import { IconShield } from "@/components/icons";
 import { formatCOP, variantLabel } from "@/lib/format";
-import { cashOnDeliveryAllowed, shippingFor } from "@/lib/orders";
+import { cashOnDeliveryAllowed, ONLINE_FEE_LABEL, onlineFeeFor, shippingFor } from "@/lib/orders";
 import { payments } from "@/lib/config";
 import { departamentos } from "@/lib/colombia";
 import { createOrder } from "./actions";
@@ -23,6 +23,7 @@ export default function CheckoutPage() {
 
   const codAvailable = payments.cashOnDelivery.enabled && (city === "" || cashOnDeliveryAllowed(city));
   const ship = shippingFor(subtotal) + (method === "contra_entrega" ? payments.cashOnDelivery.fee : 0);
+  const fee = method === "en_linea" ? onlineFeeFor(subtotal + ship) : 0;
 
   if (!ready) return <div className="container-x min-h-[50vh]" />;
   if (items.length === 0) {
@@ -126,7 +127,7 @@ export default function CheckoutPage() {
                 <input type="radio" name="pm" className="mt-1 accent-ink" checked={method === "en_linea"} onChange={() => setMethod("en_linea")} />
                 <span>
                   <span className="block font-semibold">Pago en línea</span>
-                  <span className="block text-sm text-muted">Tarjeta débito o crédito, PSE, Nequi, Bancolombia y más. Pagas en la ventana segura de Bold.</span>
+                  <span className="block text-sm text-muted">Tarjeta débito o crédito, PSE, Nequi, Bancolombia y más. Pagas en la ventana segura de Bold.{payments.onlineFeePercent > 0 ? ` Se suma el costo de la pasarela de pagos (comisión del ${payments.onlineFeePercent}%).` : ""}</span>
                 </span>
               </label>
             )}
@@ -165,8 +166,9 @@ export default function CheckoutPage() {
           <div className="space-y-2 border-t border-ink/10 pt-3 text-sm">
             <div className="flex justify-between"><span>Subtotal</span><span>{formatCOP(subtotal)}</span></div>
             <div className="flex justify-between"><span>Envío</span><span>{ship ? formatCOP(ship) : "¡Gratis!"}</span></div>
+            {fee > 0 && <div className="flex justify-between"><span>{ONLINE_FEE_LABEL}</span><span>{formatCOP(fee)}</span></div>}
           </div>
-          <div className="flex justify-between border-t border-ink/10 pt-3 text-lg font-bold"><span>Total</span><span>{formatCOP(subtotal + ship)}</span></div>
+          <div className="flex justify-between border-t border-ink/10 pt-3 text-lg font-bold"><span>Total</span><span>{formatCOP(subtotal + ship + fee)}</span></div>
 
           <label className="flex gap-2 pt-2 text-xs leading-relaxed text-ink/70">
             <input type="checkbox" name="data_consent" required className="mt-0.5 accent-ink" />

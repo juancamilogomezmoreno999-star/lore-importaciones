@@ -18,7 +18,7 @@ export type Product = {
 };
 
 export type OrderItem = {
-  product_id: string;
+  product_id: string | null; // null en la línea del costo del pago en línea
   name: string;
   slug: string;
   image: string | null;

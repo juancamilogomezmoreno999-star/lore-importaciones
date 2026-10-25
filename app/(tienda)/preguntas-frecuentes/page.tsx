@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import Link from "next/link";
-import { shipping, store, whatsappLink } from "@/lib/config";
+import { payments, shipping, store, whatsappLink } from "@/lib/config";
 import { formatCOP } from "@/lib/format";
 
 export const metadata: Metadata = {
@@ -28,7 +28,7 @@ const faqs: { group: string; items: { q: string; a: string }[] }[] = [
   {
     group: "Pagos",
     items: [
-      { q: "¿Qué medios de pago aceptan?", a: "Tarjetas débito y crédito, PSE, Nequi, Botón Bancolombia y otros medios a través de Bold, una pasarela de pagos colombiana. También ofrecemos pago contra entrega en algunas ciudades." },
+      { q: "¿Qué medios de pago aceptan?", a: "Tarjetas débito y crédito, PSE, Nequi, Botón Bancolombia y otros medios a través de Bold, una pasarela de pagos colombiana. También ofrecemos pago contra entrega en algunas ciudades." + (payments.onlineFeePercent > 0 ? ` Al pagar en línea se suma el costo de la pasarela (comisión del ${payments.onlineFeePercent}%); lo verás por separado antes de pagar.` : "") },
       { q: "¿Es seguro pagar en la página?", a: "Sí. El pago se hace en la ventana segura de Bold. Nosotros nunca vemos ni guardamos los datos de tu tarjeta." },
     ],
   },

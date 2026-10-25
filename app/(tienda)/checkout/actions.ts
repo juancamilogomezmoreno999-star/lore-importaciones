@@ -4,7 +4,7 @@ import type { Order, OrderItem, Product } from "@/lib/types";
 import { isSupabaseConfigured } from "@/lib/supabase/env";
 import { createServiceClient } from "@/lib/supabase/admin";
 import { sampleProducts } from "@/lib/sample-products";
-import { cashOnDeliveryAllowed, shippingFor } from "@/lib/orders";
+import { cashOnDeliveryAllowed, ONLINE_FEE_LABEL, onlineFeeFor, shippingFor } from "@/lib/orders";
 import { payments } from "@/lib/config";
 import { isBoldConfigured } from "@/lib/bold";
 import { sendOrderConfirmation } from "@/lib/email";
@@ -83,8 +83,14 @@ export async function createOrder(input: CheckoutInput): Promise<CheckoutResult>
     items.push({ product_id: p.id, name: p.name, slug: p.slug, image: p.images[0] ?? null, price: p.price, quantity: line.quantity, variant });
   }
 
-  const subtotal = items.reduce((s, i) => s + i.price * i.quantity, 0);
-  const shipping = shippingFor(subtotal) + (data.payment_method === "contra_entrega" ? payments.cashOnDelivery.fee : 0);
+  const productsTotal = items.reduce((s, i) => s + i.price * i.quantity, 0);
+  const shipping = shippingFor(productsTotal) + (data.payment_method === "contra_entrega" ? payments.cashOnDelivery.fee : 0);
+  // El costo de la pasarela se guarda como una línea más del pedido para que el cliente lo vea claramente
+  const fee = data.payment_method === "en_linea" ? onlineFeeFor(productsTotal + shipping) : 0;
+  if (fee > 0) {
+    items.push({ product_id: null, name: ONLINE_FEE_LABEL, slug: "", image: null, price: fee, quantity: 1, variant: {} });
+  }
+  const subtotal = productsTotal + fee;
   const total = subtotal + shipping;
 
   if (!db) {
