@@ -17,7 +17,7 @@ export default function TermsPage() {
       <p>El pedido queda confirmado cuando el pago es aprobado (o, en pago contra entrega, cuando lo confirmamos contigo por WhatsApp o llamada). Si un producto no está disponible en Estados Unidos después de tu pago, te avisaremos y podrás elegir otro producto o recibir la devolución total de tu dinero.</p>
 
       <h2>3. Pagos</h2>
-      <p>Los pagos en línea se procesan a través de Wompi. {store.name} no almacena ni tiene acceso a la información de tu tarjeta o cuenta bancaria. Si se aplica el pago contra entrega, el valor se paga al recibir el producto.</p>
+      <p>Los pagos en línea se procesan a través de Bold. {store.name} no almacena ni tiene acceso a la información de tu tarjeta o cuenta bancaria. Si se aplica el pago contra entrega, el valor se paga al recibir el producto.</p>
 
       <h2>4. Tiempos de entrega</h2>
       <p>Cada producto indica un tiempo estimado de entrega en días hábiles, contado desde la confirmación del pago. Son tiempos aproximados que pueden variar por causas ajenas a nosotros (aduana, transportadoras, clima, festivos en Colombia o Estados Unidos). Te mantendremos informado/a por correo y WhatsApp.</p>

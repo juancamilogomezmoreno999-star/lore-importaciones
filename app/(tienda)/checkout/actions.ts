@@ -5,8 +5,8 @@ import { isSupabaseConfigured } from "@/lib/supabase/env";
 import { createServiceClient } from "@/lib/supabase/admin";
 import { sampleProducts } from "@/lib/sample-products";
 import { cashOnDeliveryAllowed, shippingFor } from "@/lib/orders";
-import { payments, store } from "@/lib/config";
-import { buildCheckoutUrl, isWompiConfigured } from "@/lib/wompi";
+import { payments } from "@/lib/config";
+import { isBoldConfigured } from "@/lib/bold";
 import { sendOrderConfirmation } from "@/lib/email";
 
 const schema = z.object({
@@ -18,7 +18,7 @@ const schema = z.object({
   city: z.string().trim().min(2, "Escribe tu ciudad o municipio").max(80),
   address: z.string().trim().min(6, "Escribe tu dirección completa").max(250),
   notes: z.string().trim().max(500).optional().default(""),
-  payment_method: z.enum(["wompi", "contra_entrega"]),
+  payment_method: z.enum(["en_linea", "contra_entrega"]),
   data_consent: z.boolean().refine((v) => v, "Debes aceptar la política de tratamiento de datos"),
   website: z.string().max(0).optional(), // campo trampa anti-spam
   items: z
@@ -47,7 +47,7 @@ export async function createOrder(input: CheckoutInput): Promise<CheckoutResult>
   if (data.payment_method === "contra_entrega" && !cashOnDeliveryAllowed(data.city)) {
     return { ok: false, error: "El pago contra entrega no está disponible para tu ciudad." };
   }
-  if (data.payment_method === "wompi" && isSupabaseConfigured && !isWompiConfigured) {
+  if (data.payment_method === "en_linea" && isSupabaseConfigured && !isBoldConfigured) {
     return { ok: false, error: "El pago en línea aún no está activo. Elige contra entrega o escríbenos por WhatsApp." };
   }
 
@@ -126,11 +126,6 @@ export async function createOrder(input: CheckoutInput): Promise<CheckoutResult>
     return { ok: true, redirect: `/pedido/${order.id}` };
   }
 
-  const url = buildCheckoutUrl({
-    reference: order.id,
-    amountInCents: total * 100,
-    redirectUrl: `${store.siteUrl}/pedido/${order.id}`,
-    customer: { email: data.email, fullName: data.customer_name, phone: data.phone, document: data.customer_document },
-  });
-  return { ok: true, redirect: url };
+  // El cliente termina de pagar en /pagar/[id] con el botón de Bold
+  return { ok: true, redirect: `/pagar/${order.id}` };
 }

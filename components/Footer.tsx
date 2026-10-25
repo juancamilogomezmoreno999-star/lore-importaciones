@@ -36,7 +36,7 @@ export function Footer() {
       </div>
       <div className="container-x mt-12 flex flex-col gap-2 border-t border-white/10 pt-6 text-xs text-white/50 sm:flex-row sm:justify-between">
         <p>© {new Date().getFullYear()} {store.name}. Todos los derechos reservados.</p>
-        <p>Pagos seguros con Wompi · Tarjeta, PSE, Nequi</p>
+        <p>Pagos seguros con Bold · Tarjeta, PSE, Nequi</p>
       </div>
     </footer>
   );

@@ -4,8 +4,8 @@ import { notFound } from "next/navigation";
 import type { Order } from "@/lib/types";
 import { isSupabaseConfigured } from "@/lib/supabase/env";
 import { createServiceClient } from "@/lib/supabase/admin";
-import { fetchTransaction } from "@/lib/wompi";
-import { applyWompiTransaction } from "@/lib/payments";
+import { fetchPaymentStatus } from "@/lib/bold";
+import { applyPaymentResult } from "@/lib/payments";
 import { formatCOP, formatDate, orderCode, variantLabel } from "@/lib/format";
 import { statusFlow, statusLabels, statusMessages } from "@/lib/orders";
 import { whatsappLink } from "@/lib/config";
@@ -27,8 +27,8 @@ export default async function OrderPage({ params, searchParams }: Props) {
         <h1 className="mt-5 text-3xl font-semibold">¡Pedido de prueba creado!</h1>
         <p className="mt-3 text-muted">
           Estás en <b>modo demostración</b>: el pedido por {formatCOP(Number(sp.total) || 0)} no se guardó ni se cobró.
-          Cuando conectes Supabase y Wompi, aquí verás el pedido real
-          {sp.metodo === "wompi" ? " y el cliente será llevado a pagar en Wompi." : "."}
+          Cuando conectes Supabase y Bold, aquí verás el pedido real
+          {sp.metodo === "en_linea" ? " y el cliente podrá pagar con Bold." : "."}
         </p>
         <Link href="/catalogo" className="btn-primary mt-8">Volver a la tienda</Link>
       </div>
@@ -40,10 +40,19 @@ export default async function OrderPage({ params, searchParams }: Props) {
   let { data: order } = await db.from("orders").select("*").eq("id", id).maybeSingle<Order>();
   if (!order) notFound();
 
-  // Al volver de Wompi, consultamos la transacción directamente (por si el webhook aún no llega).
-  if (sp.id && order.payment_method === "wompi" && order.payment_status === "pendiente") {
-    const tx = await fetchTransaction(sp.id);
-    if (tx && tx.reference === order.id) order = (await applyWompiTransaction(tx)) ?? order;
+  // Al volver de Bold consultamos el pago directamente (por si el webhook aún no llega).
+  if (order.payment_method === "en_linea" && order.payment_status === "pendiente") {
+    const pay = await fetchPaymentStatus(order.id);
+    if (pay && (pay.status === "APPROVED" || pay.status === "REJECTED" || pay.status === "FAILED")) {
+      order =
+        (await applyPaymentResult({
+          orderId: order.id,
+          approved: pay.status === "APPROVED",
+          rejected: pay.status !== "APPROVED",
+          amount: pay.total,
+          paymentId: pay.paymentId,
+        })) ?? order;
+    }
   }
 
   const approved = order.payment_status === "aprobado" || order.payment_method === "contra_entrega";
@@ -69,6 +78,7 @@ export default async function OrderPage({ params, searchParams }: Props) {
           <>
             <h1 className="text-3xl font-semibold">Estamos confirmando tu pago</h1>
             <p className="mt-3 text-muted">Esto puede tardar unos minutos (con PSE a veces un poco más). Te avisamos por correo apenas se confirme.</p>
+            <p className="mt-2 text-sm text-muted">¿No alcanzaste a pagar? <Link href={`/pagar/${order.id}`} className="font-semibold text-ink underline">Ir a pagar</Link></p>
           </>
         )}
         <p className="mt-4 inline-block rounded-full bg-white px-4 py-2 text-sm font-semibold ring-1 ring-ink/10">Pedido {code}</p>

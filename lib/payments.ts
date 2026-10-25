@@ -1,28 +1,34 @@
 import "server-only";
 import type { Order } from "./types";
 import { createServiceClient } from "./supabase/admin";
-import type { WompiTransaction } from "./wompi";
 import { sendOrderConfirmation } from "./email";
 
 /**
- * Aplica el resultado de una transacción de Wompi a su pedido.
- * Se llama desde el webhook y desde la página de confirmación (doble seguridad).
+ * Aplica el resultado de un pago de Bold a su pedido.
+ * Se llama desde el webhook y desde la página del pedido (doble seguridad).
  * Es idempotente: si el pedido ya estaba aprobado no hace nada.
  */
-export async function applyWompiTransaction(tx: WompiTransaction) {
+export async function applyPaymentResult(r: {
+  orderId: string;
+  approved: boolean;
+  rejected: boolean;
+  amount: number | null;
+  paymentId: string | null;
+}) {
+  if (!/^[0-9a-f-]{36}$/i.test(r.orderId)) return null;
   const db = createServiceClient();
-  const { data: order } = await db.from("orders").select("*").eq("id", tx.reference).maybeSingle<Order>();
+  const { data: order } = await db.from("orders").select("*").eq("id", r.orderId).maybeSingle<Order>();
   if (!order) return null;
   if (order.payment_status === "aprobado") return order;
 
-  if (tx.status === "APPROVED") {
-    if (tx.amount_in_cents !== order.total * 100 || tx.currency !== "COP") {
-      console.error("Monto de Wompi no coincide con el pedido", tx.id, order.id);
+  if (r.approved) {
+    if (r.amount !== null && r.amount !== order.total) {
+      console.error("El monto pagado no coincide con el pedido", r.paymentId, order.id, r.amount, order.total);
       return order;
     }
     const { data: updated } = await db
       .from("orders")
-      .update({ payment_status: "aprobado", status: "pagado", wompi_transaction_id: tx.id })
+      .update({ payment_status: "aprobado", status: "pagado", payment_id: r.paymentId })
       .eq("id", order.id)
       .neq("payment_status", "aprobado")
       .select("*")
@@ -35,10 +41,10 @@ export async function applyWompiTransaction(tx: WompiTransaction) {
     return order;
   }
 
-  if (["DECLINED", "VOIDED", "ERROR"].includes(tx.status)) {
+  if (r.rejected) {
     const { data: updated } = await db
       .from("orders")
-      .update({ payment_status: "rechazado", wompi_transaction_id: tx.id })
+      .update({ payment_status: "rechazado", payment_id: r.paymentId })
       .eq("id", order.id)
       .select("*")
       .maybeSingle<Order>();

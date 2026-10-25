@@ -20,7 +20,7 @@ export default function PrivacyPage() {
       </ul>
 
       <h2>2. Datos que recolectamos</h2>
-      <p>Nombre, número de cédula, celular, correo electrónico, ciudad, departamento y dirección de entrega, así como la información de tus pedidos. No recolectamos ni almacenamos datos de tarjetas: los pagos los procesa directamente Wompi, bajo sus propias políticas de seguridad.</p>
+      <p>Nombre, número de cédula, celular, correo electrónico, ciudad, departamento y dirección de entrega, así como la información de tus pedidos. No recolectamos ni almacenamos datos de tarjetas: los pagos los procesa directamente Bold, bajo sus propias políticas de seguridad.</p>
 
       <h2>3. Finalidades</h2>
       <ul>

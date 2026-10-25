@@ -11,14 +11,14 @@ import { payments } from "@/lib/config";
 import { departamentos } from "@/lib/colombia";
 import { createOrder } from "./actions";
 
-type Method = "wompi" | "contra_entrega";
+type Method = "en_linea" | "contra_entrega";
 
 export default function CheckoutPage() {
   const { items, subtotal, ready, clear } = useCart();
   const router = useRouter();
   const [pending, start] = useTransition();
   const [error, setError] = useState<{ msg: string; field?: string } | null>(null);
-  const [method, setMethod] = useState<Method>("wompi");
+  const [method, setMethod] = useState<Method>("en_linea");
   const [city, setCity] = useState("");
 
   const codAvailable = payments.cashOnDelivery.enabled && (city === "" || cashOnDeliveryAllowed(city));
@@ -60,8 +60,7 @@ export default function CheckoutPage() {
         return;
       }
       clear();
-      if (res.redirect.startsWith("http")) window.location.href = res.redirect;
-      else router.push(res.redirect);
+      router.push(res.redirect);
     });
   };
 
@@ -122,12 +121,12 @@ export default function CheckoutPage() {
 
           <section className="card space-y-3 p-5">
             <h2 className="font-sans text-lg font-semibold">3. ¿Cómo quieres pagar?</h2>
-            {payments.wompi && (
-              <label className={`flex cursor-pointer gap-3 rounded-xl border p-4 transition ${method === "wompi" ? "border-ink ring-1 ring-ink" : "border-ink/15"}`}>
-                <input type="radio" name="pm" className="mt-1 accent-ink" checked={method === "wompi"} onChange={() => setMethod("wompi")} />
+            {payments.online && (
+              <label className={`flex cursor-pointer gap-3 rounded-xl border p-4 transition ${method === "en_linea" ? "border-ink ring-1 ring-ink" : "border-ink/15"}`}>
+                <input type="radio" name="pm" className="mt-1 accent-ink" checked={method === "en_linea"} onChange={() => setMethod("en_linea")} />
                 <span>
                   <span className="block font-semibold">Pago en línea</span>
-                  <span className="block text-sm text-muted">Tarjeta débito o crédito, PSE, Nequi, Bancolombia y más. Pagas en la página segura de Wompi.</span>
+                  <span className="block text-sm text-muted">Tarjeta débito o crédito, PSE, Nequi, Bancolombia y más. Pagas en la ventana segura de Bold.</span>
                 </span>
               </label>
             )}
@@ -177,7 +176,7 @@ export default function CheckoutPage() {
           {error && <p role="alert" className="rounded-lg bg-danger/10 p-3 text-sm font-medium text-danger">{error.msg}</p>}
 
           <button type="submit" disabled={pending} className="btn-primary w-full py-4 text-base">
-            {pending ? "Procesando…" : method === "wompi" ? `Pagar ${formatCOP(subtotal + ship)}` : "Confirmar pedido"}
+            {pending ? "Procesando…" : method === "en_linea" ? "Continuar al pago" : "Confirmar pedido"}
           </button>
           <p className="flex items-center justify-center gap-1.5 text-xs text-muted"><IconShield width={16} /> No guardamos datos de tu tarjeta</p>
         </aside>

@@ -28,7 +28,7 @@ export const shipping = {
 };
 
 export const payments = {
-  wompi: true,
+  online: true, // pago en línea con Bold
   cashOnDelivery: {
     enabled: true,
     // Ciudades donde aceptas contra entrega. Lista vacía = todo el país.

@@ -92,7 +92,7 @@ export async function sendOrderConfirmation(order: Order) {
       layout(
         `Nuevo pedido ${code}`,
         `<p>${esc(order.customer_name)} · ${esc(order.phone)} · ${esc(order.city)}</p>
-         <p>Pago: ${order.payment_method === "contra_entrega" ? "Contra entrega" : "Wompi"} (${order.payment_status})</p>
+         <p>Pago: ${order.payment_method === "contra_entrega" ? "Contra entrega" : "En línea (Bold)"} (${order.payment_status})</p>
          ${itemsTable(order)}
          <p><a href="${store.siteUrl}/admin/pedidos/${order.id}">Abrir en el panel</a></p>`,
       ),

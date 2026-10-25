@@ -60,19 +60,25 @@ create table if not exists public.orders (
   subtotal integer not null,
   shipping integer not null default 0,
   total integer not null,
-  payment_method text not null check (payment_method in ('wompi', 'contra_entrega')),
+  payment_method text not null check (payment_method in ('en_linea', 'contra_entrega')),
   payment_status text not null default 'pendiente'
     check (payment_status in ('pendiente', 'aprobado', 'rechazado', 'contra_entrega')),
   status text not null default 'pendiente'
     check (status in ('pendiente', 'pagado', 'comprando_usa', 'en_transito', 'entregado', 'cancelado')),
   tracking text,
-  wompi_transaction_id text,
+  payment_id text,
   stock_discounted boolean not null default false,
   data_consent boolean not null default false,
   created_at timestamptz not null default now(),
   updated_at timestamptz not null default now()
 );
 create index if not exists orders_created_idx on public.orders (created_at desc);
+
+-- Si ya habías ejecutado una versión anterior de este archivo, esto la actualiza:
+alter table public.orders add column if not exists payment_id text;
+alter table public.orders drop constraint if exists orders_payment_method_check;
+alter table public.orders add constraint orders_payment_method_check
+  check (payment_method in ('en_linea', 'contra_entrega'));
 
 -- ── Mensajes de contacto ─────────────────────────────────────────
 create table if not exists public.contact_messages (

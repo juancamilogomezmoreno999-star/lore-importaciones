@@ -20,7 +20,7 @@ export default async function AdminOrder({ params }: { params: Promise<{ id: str
 
   const payment =
     order.payment_method === "contra_entrega" ? "Contra entrega"
-    : order.payment_status === "aprobado" ? `Pagado en línea (Wompi ${order.wompi_transaction_id ?? ""})`
+    : order.payment_status === "aprobado" ? `Pagado en línea con Bold${order.payment_id ? ` (${order.payment_id})` : ""}`
     : order.payment_status === "rechazado" ? "Pago rechazado"
     : "Esperando pago en línea";
 

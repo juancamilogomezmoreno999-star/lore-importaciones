@@ -35,7 +35,7 @@ export type OrderStatus =
   | "entregado"
   | "cancelado";
 
-export type PaymentMethod = "wompi" | "contra_entrega";
+export type PaymentMethod = "en_linea" | "contra_entrega";
 export type PaymentStatus = "pendiente" | "aprobado" | "rechazado" | "contra_entrega";
 
 export type Order = {
@@ -57,7 +57,7 @@ export type Order = {
   payment_status: PaymentStatus;
   status: OrderStatus;
   tracking: string | null;
-  wompi_transaction_id: string | null;
+  payment_id: string | null;
   stock_discounted: boolean;
   created_at: string;
   updated_at: string;
