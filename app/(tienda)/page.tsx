@@ -1,7 +1,6 @@
 import Link from "next/link";
 import { getFeaturedProducts, getCategories } from "@/lib/data";
 import { ProductCard } from "@/components/ProductCard";
-import { ProductImage } from "@/components/ProductImage";
 import { IconBox, IconPlane, IconShield, IconStar, IconTruck, IconWhatsApp, IconChevron } from "@/components/icons";
 import { store, whatsappLink } from "@/lib/config";
 
@@ -21,9 +20,14 @@ const testimonials = [
   { name: "Carolina P.", city: "Cali", text: "Ya es mi tercera compra. Siempre cumplen con los tiempos y todo llega perfecto. Mi perfume favorito ahora lo pido acá." },
 ];
 
+const arrivals = [
+  { src: "/videos/llegada-1.mp4", poster: "/videos/llegada-1.jpg", caption: "Ropa y calzado de marca recién llegados" },
+  { src: "/videos/llegada-2.mp4", poster: "/videos/llegada-2.jpg", caption: "Abriendo una caja directo de USA" },
+  { src: "/videos/llegada-3.mp4", poster: "/videos/llegada-3.jpg", caption: "Hogar, belleza y salud" },
+];
+
 export default async function HomePage() {
   const [featured, categories] = await Promise.all([getFeaturedProducts(8), getCategories()]);
-  const hero = featured[0];
 
   return (
     <>
@@ -50,12 +54,20 @@ export default async function HomePage() {
               <span className="flex items-center gap-2"><IconTruck width={18} className="text-gold-light" /> Envíos a todo el país</span>
             </div>
           </div>
-          {hero?.images[0] && (
-            <Link href={`/producto/${hero.slug}`} className="relative mx-auto aspect-square w-full max-w-md overflow-hidden rounded-3xl ring-1 ring-gold/30">
-              <ProductImage src={hero.images[0]} alt={hero.name} fill priority sizes="(max-width: 768px) 90vw, 450px" className="object-cover" />
-              <span className="absolute bottom-4 left-4 rounded-full bg-cream/95 px-4 py-2 text-sm font-semibold text-ink">{hero.name}</span>
-            </Link>
-          )}
+          <div className="relative mx-auto w-full max-w-md overflow-hidden rounded-3xl ring-1 ring-gold/30 md:max-w-none">
+            <video
+              className="aspect-video w-full object-cover"
+              src="/videos/hero.mp4"
+              poster="/videos/hero.jpg"
+              autoPlay
+              muted
+              loop
+              playsInline
+              preload="metadata"
+              aria-label="Video de un pedido real llegando de Estados Unidos"
+            />
+            <span className="absolute bottom-3 left-3 rounded-full bg-ink/80 px-3 py-1.5 text-xs font-semibold text-gold-light backdrop-blur">📦 Así llegan nuestros pedidos</span>
+          </div>
         </div>
       </section>
 
@@ -100,6 +112,23 @@ export default async function HomePage() {
               <h3 className="mt-4 font-sans text-lg font-semibold">{title}</h3>
               <p className="mt-2 text-sm leading-relaxed text-muted">{text}</p>
             </div>
+          ))}
+        </div>
+      </section>
+
+      {/* Así llegan tus pedidos */}
+      <section className="container-x mt-20">
+        <div className="text-center">
+          <p className="eyebrow">Pedidos reales</p>
+          <h2 className="mt-2 text-3xl font-semibold">Así llegan tus pedidos 📦</h2>
+          <p className="mx-auto mt-3 max-w-lg text-muted">Todo original, con sus etiquetas y empaques. Así abrimos las cajas que llegan de Estados Unidos.</p>
+        </div>
+        <div className="-mx-4 mt-8 flex snap-x gap-4 overflow-x-auto px-4 pb-2 [scrollbar-width:none] md:mx-0 md:grid md:grid-cols-3 md:px-0">
+          {arrivals.map((v) => (
+            <figure key={v.src} className="card w-[78%] shrink-0 snap-center overflow-hidden md:w-auto">
+              <video className="aspect-[4/5] w-full bg-ink object-contain" src={v.src} poster={v.poster} controls playsInline preload="none" />
+              <figcaption className="p-4 text-sm font-medium">{v.caption}</figcaption>
+            </figure>
           ))}
         </div>
       </section>

@@ -34,8 +34,7 @@ function layout(title: string, body: string) {
   <table width="100%" cellpadding="0" cellspacing="0"><tr><td align="center" style="padding:24px 12px">
   <table width="100%" style="max-width:560px;background:#fff;border-radius:14px;overflow:hidden">
     <tr><td style="background:#0b0b0c;padding:22px;text-align:center">
-      <div style="color:#d4af5a;font-size:22px;letter-spacing:4px;font-weight:bold">LORE</div>
-      <div style="color:#d4af5a;font-size:10px;letter-spacing:5px">IMPORTACIONES</div>
+      <img src="${store.siteUrl}/logo.png" alt="Lore Importaciones" width="200" style="display:inline-block;max-width:200px;height:auto" />
     </td></tr>
     <tr><td style="padding:28px 24px">
       <h1 style="font-size:20px;margin:0 0 14px">${title}</h1>
@@ -43,7 +42,7 @@ function layout(title: string, body: string) {
     </td></tr>
     <tr><td style="padding:18px 24px;background:#faf8f3;font-size:12px;color:#6b6b6b;text-align:center">
       ¿Dudas? Escríbenos por WhatsApp al ${store.whatsappDisplay} · Instagram @${store.instagram}<br/>
-      <a href="${store.siteUrl}" style="color:#a8842f">${store.siteUrl.replace(/^https?:\/\//, "")}</a>
+      <a href="${store.siteUrl}" style="color:#8a6a35">${store.siteUrl.replace(/^https?:\/\//, "")}</a>
     </td></tr>
   </table></td></tr></table></body></html>`;
 }
@@ -62,7 +61,7 @@ function itemsTable(order: Order) {
 }
 
 function orderButton(order: Order) {
-  return `<p style="margin:22px 0 0"><a href="${store.siteUrl}/pedido/${order.id}" style="background:#0b0b0c;color:#d4af5a;padding:12px 20px;border-radius:999px;text-decoration:none;font-weight:bold">Ver mi pedido</a></p>`;
+  return `<p style="margin:22px 0 0"><a href="${store.siteUrl}/pedido/${order.id}" style="background:#0b0b0c;color:#be9b62;padding:12px 20px;border-radius:999px;text-decoration:none;font-weight:bold">Ver mi pedido</a></p>`;
 }
 
 export async function sendOrderConfirmation(order: Order) {

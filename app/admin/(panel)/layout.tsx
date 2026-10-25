@@ -1,3 +1,4 @@
+import Image from "next/image";
 import Link from "next/link";
 import { requireAdmin } from "@/lib/auth";
 import { AdminNav } from "@/components/admin/AdminNav";
@@ -12,7 +13,7 @@ export default async function PanelLayout({ children }: { children: React.ReactN
     <>
       <header className="sticky top-0 z-30 border-b border-ink/10 bg-white/95 backdrop-blur">
         <div className="mx-auto flex h-14 max-w-5xl items-center justify-between gap-4 px-4">
-          <Link href="/admin" className="font-display text-lg font-bold tracking-[.2em]">LORE <span className="font-sans text-xs font-medium tracking-normal text-gold-dark">panel</span></Link>
+          <Link href="/admin" className="flex items-center gap-2"><Image src="/logo.png" alt="Lore Importaciones" width={96} height={32} /><span className="text-xs font-medium text-gold-dark">panel</span></Link>
           <AdminNav unread={count ?? 0} />
           <div className="flex items-center gap-3">
             <Link href="/" target="_blank" className="hidden text-sm text-muted hover:underline sm:block">Ver tienda ↗</Link>

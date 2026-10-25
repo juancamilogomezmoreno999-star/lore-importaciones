@@ -8,7 +8,7 @@ export function Footer() {
     <footer className="mt-20 bg-ink pb-28 pt-14 text-white/70 md:pb-14">
       <div className="container-x grid gap-10 md:grid-cols-4">
         <div className="md:col-span-2">
-          <div className="inline-block"><Logo light /></div>
+          <Logo size="lg" />
           <p className="mt-4 max-w-sm text-sm leading-relaxed">{store.tagline}. Compramos por ti en tiendas oficiales de Estados Unidos y te acompañamos hasta que el pedido llegue a tus manos.</p>
           <div className="mt-5 flex gap-3">
             <a href={whatsappLink()} target="_blank" rel="noopener" className="rounded-full bg-white/10 p-2.5 text-gold-light hover:bg-white/20" aria-label="WhatsApp"><IconWhatsApp /></a>
