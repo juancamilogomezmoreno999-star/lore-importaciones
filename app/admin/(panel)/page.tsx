@@ -3,12 +3,17 @@ import { requireAdmin } from "@/lib/auth";
 import type { Order } from "@/lib/types";
 import { formatCOP, formatDate, orderCode } from "@/lib/format";
 import { StatusBadge } from "@/components/admin/StatusBadge";
+import { ResetSalesButton } from "@/components/admin/ResetSalesButton";
 
 export default async function Dashboard() {
-  const { supabase } = await requireAdmin();
-  const monthStart = new Date();
-  monthStart.setDate(1);
-  monthStart.setHours(0, 0, 0, 0);
+  const { supabase, user } = await requireAdmin();
+  // Inicio del mes en hora de Colombia (UTC-5)
+  const [y, m] = new Date().toLocaleDateString("en-CA", { timeZone: "America/Bogota" }).split("-");
+  const monthStart = new Date(`${y}-${m}-01T00:00:00-05:00`);
+  // Si se reinició el contador este mes, solo se cuentan las ventas desde ese momento
+  const resetAt = user.user_metadata?.sales_reset_at ? new Date(user.user_metadata.sales_reset_at) : null;
+  const resetActive = Boolean(resetAt && resetAt > monthStart);
+  const salesFrom = resetActive ? resetAt! : monthStart;
 
   const [pending, active, unread, products, recent, monthOrders] = await Promise.all([
     supabase.from("orders").select("id", { count: "exact", head: true }).eq("status", "pendiente"),
@@ -16,7 +21,7 @@ export default async function Dashboard() {
     supabase.from("contact_messages").select("id", { count: "exact", head: true }).eq("read", false),
     supabase.from("products").select("id", { count: "exact", head: true }),
     supabase.from("orders").select("*").order("created_at", { ascending: false }).limit(5),
-    supabase.from("orders").select("total, status, payment_status").gte("created_at", monthStart.toISOString()),
+    supabase.from("orders").select("total, status, payment_status").gte("created_at", salesFrom.toISOString()),
   ]);
   const sales = (monthOrders.data ?? [])
     .filter((o) => o.status !== "cancelado" && (o.payment_status === "aprobado" || o.payment_status === "contra_entrega"))
@@ -36,11 +41,19 @@ export default async function Dashboard() {
         <Link href="/admin/productos/nuevo" className="btn-gold !py-2.5 text-sm">+ Nuevo producto</Link>
       </div>
       <div className="grid grid-cols-2 gap-3 md:grid-cols-4">
-        {stats.map((s) => (
-          <Link key={s.label} href={s.href} className="card p-4">
-            <p className="text-xs text-muted">{s.label}</p>
-            <p className="mt-1 text-xl font-bold">{s.value}</p>
-          </Link>
+        {stats.map((s, i) => (
+          <div key={s.label} className="card p-4">
+            <Link href={s.href} className="block">
+              <p className="text-xs text-muted">{s.label}</p>
+              <p className="mt-1 text-xl font-bold">{s.value}</p>
+            </Link>
+            {i === 0 && (
+              <>
+                {resetActive && <p className="mt-1 text-[11px] text-muted">Desde {formatDate(salesFrom.toISOString())}</p>}
+                <ResetSalesButton active={resetActive} />
+              </>
+            )}
+          </div>
         ))}
       </div>
       <section className="card p-4">

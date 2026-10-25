@@ -21,9 +21,11 @@ export async function proxy(request: NextRequest) {
       },
     },
   });
-  const { data: { user } } = await supabase.auth.getUser();
+  // getSession lee y refresca la sesión desde la cookie sin consultar al servidor;
+  // la verificación completa (usuario + permiso de admin) la hace requireAdmin en cada página y acción.
+  const { data: { session } } = await supabase.auth.getSession();
 
-  if (!user && !isLogin) {
+  if (!session && !isLogin) {
     return NextResponse.redirect(new URL("/admin/login", request.url));
   }
   response.headers.set("X-Robots-Tag", "noindex, nofollow");
