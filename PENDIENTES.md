@@ -17,11 +17,11 @@ Panel: https://importaciones-lore-opzt.vercel.app/admin
 - Tienda en línea, carrito y checkout
 - Panel de administración conectado a Supabase
 - Pedidos contra entrega y mensajes de contacto
-- Pagos en línea con Bold (probado en modo de pruebas)
+- Pagos en línea con Bold, en producción (probado con un pago real de $1.000)
+- Costo de la pasarela (6%) sumado a los pagos en línea; envío fijo de $15.000 sin envío gratis
 
 ## Por hacer (en este orden)
-1. **Bold a producción**: cuando vayas a vender, en Vercel cambia los valores de `NEXT_BOLD_API_KEY`
-   y `BOLD_SECRET_KEY` por las llaves de **Producción** de Bold y vuelve a publicar.
+1. **Preguntar a Bold** si permiten trasladar la comisión al cliente, y confirmar si el 6% incluye retenciones.
 2. **Productos reales**: subirlos desde el panel y ocultar los 6 de ejemplo.
 3. **Textos**: cambiar los testimonios de ejemplo, revisar preguntas frecuentes y poner NIT/cédula en `lib/config.ts`.
 4. **Cambiar la llave secreta de Supabase** (quedó escrita en el chat).

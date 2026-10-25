@@ -24,7 +24,7 @@ export const shipping = {
   // Costo de envío nacional en pesos
   cost: 15000,
   // Envío gratis desde este valor de compra (0 = nunca gratis)
-  freeFrom: 400000,
+  freeFrom: 0,
 };
 
 export const payments = {
