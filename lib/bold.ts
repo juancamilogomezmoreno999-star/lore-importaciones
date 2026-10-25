@@ -6,11 +6,11 @@ import { createHash, createHmac, timingSafeEqual } from "node:crypto";
 // datos de tarjetas.
 //
 // Llaves: panel de Bold → Integraciones → Llaves de integración.
-//  - Llave de identidad (pública)  → NEXT_PUBLIC_BOLD_API_KEY
+//  - Llave de identidad (pública)  → NEXT_BOLD_API_KEY (o NEXT_PUBLIC_BOLD_API_KEY)
 //  - Llave secreta (privada)       → BOLD_SECRET_KEY
 // Con las llaves de PRUEBA los pagos son simulados; con las de PRODUCCIÓN son reales.
 
-export const boldApiKey = process.env.NEXT_PUBLIC_BOLD_API_KEY || "";
+export const boldApiKey = process.env.NEXT_BOLD_API_KEY || process.env.NEXT_PUBLIC_BOLD_API_KEY || "";
 const secretKey = process.env.BOLD_SECRET_KEY || "";
 
 export const isBoldConfigured = Boolean(boldApiKey && secretKey);

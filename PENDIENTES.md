@@ -11,7 +11,7 @@ Panel: https://importaciones-lore-opzt.vercel.app/admin
 ## Por hacer (en este orden)
 1. **Bold (pagos en línea)**: en panel.bold.co → Integraciones → Llaves de integración (ambiente de Pruebas).
    Si no aparece, pedirle a Bold que active el "Botón de pagos para integración manual".
-   En Vercel van `NEXT_PUBLIC_BOLD_API_KEY` (Config) y `BOLD_SECRET_KEY` (Secret).
+   En Vercel van `NEXT_BOLD_API_KEY` y `BOLD_SECRET_KEY` (Secret).
    Webhook en Bold: `https://importaciones-lore-opzt.vercel.app/api/bold/webhook`
 2. **Productos reales**: subirlos desde el panel y ocultar los 6 de ejemplo.
 3. **Textos**: cambiar los testimonios de ejemplo, revisar preguntas frecuentes y poner NIT/cédula en `lib/config.ts`.
