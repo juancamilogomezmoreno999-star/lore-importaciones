@@ -53,6 +53,7 @@ export const sampleProducts: Product[] = [
     delivery_time: "1 a 3 días hábiles (disponible en Colombia)",
     featured: true,
     visible: true,
+    immediate_delivery: true,
   },
   {
     id: "00000000-0000-4000-8000-000000000004",
@@ -85,6 +86,7 @@ export const sampleProducts: Product[] = [
     delivery_time: "1 a 3 días hábiles (disponible en Colombia)",
     featured: false,
     visible: true,
+    immediate_delivery: true,
   },
   {
     id: "00000000-0000-4000-8000-000000000006",

@@ -17,6 +17,7 @@ const schema = z.object({
   stock: z.coerce.number().int().min(0, "El stock no puede ser negativo"),
   delivery_time: z.string().trim().min(2, "Escribe el tiempo de entrega").max(80),
   featured: z.string().optional().transform((v) => v === "on"),
+  immediate_delivery: z.string().optional().transform((v) => v === "on"),
   visible: z.string().optional().transform((v) => v === "on"),
   images: z.string().transform((s) => z.array(z.string().max(500).regex(/^(https:\/\/|\/)/)).max(12).parse(JSON.parse(s || "[]"))),
   variants: z.string().transform((s) =>

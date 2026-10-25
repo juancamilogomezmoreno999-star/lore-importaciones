@@ -4,7 +4,7 @@ import type { Order, OrderItem, Product } from "@/lib/types";
 import { isSupabaseConfigured } from "@/lib/supabase/env";
 import { createServiceClient } from "@/lib/supabase/admin";
 import { sampleProducts } from "@/lib/sample-products";
-import { cashOnDeliveryAllowed, ONLINE_FEE_LABEL, onlineFeeFor, shippingFor } from "@/lib/orders";
+import { cashOnDeliveryAllowed, COD_ONLY_IMMEDIATE_MSG, ONLINE_FEE_LABEL, onlineFeeFor, shippingFor } from "@/lib/orders";
 import { payments } from "@/lib/config";
 import { isBoldConfigured } from "@/lib/bold";
 import { sendOrderConfirmation } from "@/lib/email";
@@ -84,6 +84,10 @@ export async function createOrder(input: CheckoutInput): Promise<CheckoutResult>
       if (chosen) variant[v.name] = chosen;
     }
     items.push({ product_id: p.id, name: p.name, slug: p.slug, image: p.images[0] ?? null, price: p.price, quantity: line.quantity, variant });
+  }
+
+  if (data.payment_method === "contra_entrega" && !products.every((p) => p.immediate_delivery)) {
+    return { ok: false, error: `Pago contra entrega: ${COD_ONLY_IMMEDIATE_MSG}` };
   }
 
   const productsTotal = items.reduce((s, i) => s + i.price * i.quantity, 0);

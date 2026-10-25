@@ -1,12 +1,12 @@
 "use client";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import { useState, useTransition } from "react";
+import { useEffect, useState, useTransition } from "react";
 import { useCart } from "@/components/CartProvider";
 import { ProductImage } from "@/components/ProductImage";
 import { IconShield } from "@/components/icons";
 import { formatCOP, variantLabel } from "@/lib/format";
-import { cashOnDeliveryAllowed, ONLINE_FEE_LABEL, onlineFeeFor, shippingFor } from "@/lib/orders";
+import { cashOnDeliveryAllowed, COD_ONLY_IMMEDIATE_MSG, ONLINE_FEE_LABEL, onlineFeeFor, shippingFor } from "@/lib/orders";
 import { payments } from "@/lib/config";
 import { departamentos } from "@/lib/colombia";
 import { createOrder } from "./actions";
@@ -18,12 +18,18 @@ export default function CheckoutPage() {
   const router = useRouter();
   const [pending, start] = useTransition();
   const [error, setError] = useState<{ msg: string; field?: string } | null>(null);
-  const [method, setMethod] = useState<Method>("en_linea");
+  const [method, setMethod] = useState<Method>(payments.nequi.enabled ? "nequi" : "en_linea");
   const [city, setCity] = useState("");
 
-  const codAvailable = payments.cashOnDelivery.enabled && (city === "" || cashOnDeliveryAllowed(city));
+  const allImmediate = items.length > 0 && items.every((i) => i.immediate);
+  const codCityOk = city === "" || cashOnDeliveryAllowed(city);
+  const codAvailable = payments.cashOnDelivery.enabled && allImmediate && codCityOk;
   const ship = shippingFor(subtotal) + (method === "contra_entrega" ? payments.cashOnDelivery.fee : 0);
   const fee = method === "en_linea" ? onlineFeeFor(subtotal + ship) : 0;
+
+  useEffect(() => {
+    if (method === "contra_entrega" && !codAvailable) setMethod(payments.nequi.enabled ? "nequi" : "en_linea");
+  }, [method, codAvailable]);
 
   if (!ready) return <div className="container-x min-h-[50vh]" />;
   if (items.length === 0) {
@@ -122,21 +128,22 @@ export default function CheckoutPage() {
 
           <section className="card space-y-3 p-5">
             <h2 className="font-sans text-lg font-semibold">3. ¿Cómo quieres pagar?</h2>
+            {payments.nequi.enabled && (
+              <label className={`relative flex cursor-pointer gap-3 rounded-xl border p-4 transition ${method === "nequi" ? "border-ink ring-1 ring-ink" : "border-ink/15"}`}>
+                <span className="absolute -top-2.5 right-3 rounded-full bg-gold px-2.5 py-0.5 text-[11px] font-bold text-ink">⭐ Recomendado</span>
+                <input type="radio" name="pm" className="mt-1 accent-ink" checked={method === "nequi"} onChange={() => setMethod("nequi")} />
+                <span>
+                  <span className="block font-semibold">Nequi o Llave</span>
+                  <span className="block text-sm text-muted">Envías el dinero a nuestro Nequi o Llave <b className="text-ink">{payments.nequi.display}</b> y nos mandas el comprobante por WhatsApp. Sin costo adicional.</span>
+                </span>
+              </label>
+            )}
             {payments.online && (
               <label className={`flex cursor-pointer gap-3 rounded-xl border p-4 transition ${method === "en_linea" ? "border-ink ring-1 ring-ink" : "border-ink/15"}`}>
                 <input type="radio" name="pm" className="mt-1 accent-ink" checked={method === "en_linea"} onChange={() => setMethod("en_linea")} />
                 <span>
-                  <span className="block font-semibold">Pago en línea</span>
-                  <span className="block text-sm text-muted">Tarjeta débito o crédito, PSE, Nequi, Bancolombia y más. Pagas en la ventana segura de Bold.{payments.onlineFeePercent > 0 ? ` Se suma el costo de la pasarela de pagos (comisión del ${payments.onlineFeePercent}%).` : ""}</span>
-                </span>
-              </label>
-            )}
-            {payments.nequi.enabled && (
-              <label className={`flex cursor-pointer gap-3 rounded-xl border p-4 transition ${method === "nequi" ? "border-ink ring-1 ring-ink" : "border-ink/15"}`}>
-                <input type="radio" name="pm" className="mt-1 accent-ink" checked={method === "nequi"} onChange={() => setMethod("nequi")} />
-                <span>
-                  <span className="block font-semibold">Transferencia Nequi</span>
-                  <span className="block text-sm text-muted">Envías el dinero a nuestro Nequi {payments.nequi.display} y nos mandas el comprobante por WhatsApp. Sin costo adicional.</span>
+                  <span className="block font-semibold">Pago en línea con Bold</span>
+                  <span className="block text-sm text-muted">Recomendado solo si vas a pagar con PSE o tarjeta de crédito. Pagas en la ventana segura de Bold.{payments.onlineFeePercent > 0 ? ` Se suma el costo de la pasarela de pagos (comisión del ${payments.onlineFeePercent}%).` : ""}</span>
                 </span>
               </label>
             )}
@@ -146,7 +153,7 @@ export default function CheckoutPage() {
                 <span>
                   <span className="block font-semibold">Pago contra entrega</span>
                   <span className="block text-sm text-muted">
-                    {codAvailable ? "Pagas en efectivo cuando recibes. Te escribimos por WhatsApp para confirmar." : "No disponible para tu ciudad."}
+                    {codAvailable ? "Pagas en efectivo cuando recibes. Te escribimos por WhatsApp para confirmar." : !allImmediate ? COD_ONLY_IMMEDIATE_MSG : "No disponible para tu ciudad."}
                     {payments.cashOnDelivery.fee > 0 && ` Recargo: ${formatCOP(payments.cashOnDelivery.fee)}.`}
                   </span>
                 </span>

@@ -14,6 +14,7 @@ export type Product = {
   delivery_time: string;
   featured: boolean;
   visible: boolean;
+  immediate_delivery?: boolean; // ya está en Colombia: se puede pagar contra entrega
   created_at?: string;
 };
 

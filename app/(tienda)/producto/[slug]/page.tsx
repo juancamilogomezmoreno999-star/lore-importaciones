@@ -77,6 +77,9 @@ export default async function ProductPage({ params }: Props) {
               </>
             )}
           </div>
+          {product.immediate_delivery && (
+            <p className="mt-3 inline-block rounded-full bg-gold px-3 py-1 text-xs font-bold text-ink">⚡ Entrega inmediata · se puede pagar contra entrega</p>
+          )}
           <p className={`mt-2 text-sm font-medium ${product.stock > 0 ? "text-success" : "text-danger"}`}>
             {product.stock > 5 ? "✓ Disponible" : product.stock > 0 ? `¡Solo quedan ${product.stock} unidades!` : "Agotado por ahora"}
           </p>

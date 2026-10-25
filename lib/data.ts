@@ -12,8 +12,7 @@ export type ProductFilters = {
   sort?: "recientes" | "precio-asc" | "precio-desc";
 };
 
-const columns =
-  "id, slug, name, description, category, price, compare_at_price, images, variants, stock, delivery_time, featured, visible, created_at";
+const columns = "*";
 
 function normalize(s: string) {
   return s.normalize("NFD").replace(/[̀-ͯ]/g, "").toLowerCase();

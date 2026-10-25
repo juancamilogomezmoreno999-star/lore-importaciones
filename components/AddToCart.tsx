@@ -30,6 +30,7 @@ export function AddToCart({ product }: { product: Product }) {
       quantity: qty,
       stock: product.stock,
       variant: selected,
+      immediate: Boolean(product.immediate_delivery),
     });
     setAdded(true);
   };

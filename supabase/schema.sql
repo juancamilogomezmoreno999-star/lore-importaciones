@@ -36,6 +36,7 @@ create table if not exists public.products (
   delivery_time text not null default '8 a 12 días hábiles',
   featured boolean not null default false,
   visible boolean not null default true,
+  immediate_delivery boolean not null default false,
   created_at timestamptz not null default now(),
   updated_at timestamptz not null default now()
 );
@@ -79,6 +80,8 @@ alter table public.orders add column if not exists payment_id text;
 alter table public.orders drop constraint if exists orders_payment_method_check;
 alter table public.orders add constraint orders_payment_method_check
   check (payment_method in ('en_linea', 'contra_entrega', 'nequi'));
+
+alter table public.products add column if not exists immediate_delivery boolean not null default false;
 
 -- ── Mensajes de contacto ─────────────────────────────────────────
 create table if not exists public.contact_messages (
@@ -190,32 +193,32 @@ create policy "admin borra fotos" on storage.objects
   for delete to authenticated using (bucket_id = 'productos' and public.is_admin());
 
 -- ── 6 productos de ejemplo (puedes editarlos o borrarlos desde el panel) ──
-insert into public.products (slug, name, description, category, price, compare_at_price, images, variants, stock, delivery_time, featured)
+insert into public.products (slug, name, description, category, price, compare_at_price, images, variants, stock, delivery_time, featured, immediate_delivery)
 values
 ('tenis-runner-pro', 'Tenis Runner Pro',
  E'Tenis livianos y cómodos para correr, entrenar o usar todo el día. Suela con amortiguación, malla transpirable y un diseño que combina con todo.\n\n• 100% originales, comprados en tiendas oficiales de USA\n• Tallas en numeración colombiana\n• Incluyen caja original',
  'Calzado', 389900, 459900, array['/demo/tenis-1.svg','/demo/tenis-2.svg'],
- '[{"name":"Talla","options":["36","37","38","39","40","41","42","43"]},{"name":"Color","options":["Blanco","Negro"]}]', 12, '8 a 12 días hábiles', true),
+ '[{"name":"Talla","options":["36","37","38","39","40","41","42","43"]},{"name":"Color","options":["Blanco","Negro"]}]', 12, '8 a 12 días hábiles', true, false),
 ('bolso-monaco', 'Bolso de mano Mónaco',
  E'Bolso elegante de tamaño mediano, perfecto para el día a día o una salida especial. Correa ajustable y desmontable, varios bolsillos internos y cierre metálico dorado.\n\n• Medidas: 28 × 20 × 11 cm\n• Incluye bolsa protectora',
  'Bolsos', 249900, null, array['/demo/bolso-1.svg','/demo/bolso-2.svg'],
- '[{"name":"Color","options":["Negro","Beige","Vino"]}]', 6, '8 a 12 días hábiles', true),
+ '[{"name":"Color","options":["Negro","Beige","Vino"]}]', 6, '8 a 12 días hábiles', true, false),
 ('perfume-gold-oud-100ml', 'Perfume Gold Oud 100 ml',
  E'Fragancia intensa con notas de oud, ámbar y vainilla. Ideal para la noche y ocasiones especiales, con una duración de 8 a 10 horas.\n\n• Presentación: 100 ml, Eau de Parfum\n• Producto sellado y original',
  'Belleza', 319900, 380000, array['/demo/perfume-1.svg','/demo/perfume-2.svg'],
- '[]', 9, '1 a 3 días hábiles (disponible en Colombia)', true),
+ '[]', 9, '1 a 3 días hábiles (disponible en Colombia)', true, true),
 ('audifonos-inalambricos-anc', 'Audífonos inalámbricos con cancelación de ruido',
  E'Sonido envolvente, cancelación activa de ruido y hasta 30 horas de batería. Plegables, con estuche rígido y carga rápida USB-C.\n\n• Bluetooth 5.3\n• Micrófono para llamadas\n• Garantía de 3 meses con nosotros',
  'Tecnología', 459900, 529900, array['/demo/audifonos-1.svg','/demo/audifonos-2.svg'],
- '[{"name":"Color","options":["Negro","Plateado"]}]', 4, '10 a 15 días hábiles', true),
+ '[{"name":"Color","options":["Negro","Plateado"]}]', 4, '10 a 15 días hábiles', true, false),
 ('set-cuidado-facial', 'Set de cuidado facial: sérum + crema hidratante',
  E'Rutina completa para una piel hidratada y luminosa. Sérum con ácido hialurónico y vitamina C, más crema hidratante de uso diario.\n\n• Apto para todo tipo de piel\n• Sérum 30 ml + crema 50 ml',
  'Belleza', 159900, null, array['/demo/facial-1.svg','/demo/facial-2.svg'],
- '[]', 15, '1 a 3 días hábiles (disponible en Colombia)', false),
+ '[]', 15, '1 a 3 días hábiles (disponible en Colombia)', false, true),
 ('reloj-clasico-dorado', 'Reloj clásico análogo',
  E'Reloj de diseño minimalista con caja de acero inoxidable y resistencia al agua 3 ATM. Un detalle que eleva cualquier look y un regalo que siempre queda bien.\n\n• Diámetro: 40 mm\n• Incluye estuche de regalo',
  'Accesorios', 289900, 340000, array['/demo/reloj-1.svg','/demo/reloj-2.svg'],
- '[{"name":"Color","options":["Dorado","Plateado"]}]', 7, '8 a 12 días hábiles', false)
+ '[{"name":"Color","options":["Dorado","Plateado"]}]', 7, '8 a 12 días hábiles', false, false)
 on conflict (slug) do nothing;
 
 -- ── ¡IMPORTANTE! Cambia este correo por el tuyo (el mismo con el que creaste tu usuario) ──

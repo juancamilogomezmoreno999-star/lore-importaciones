@@ -35,7 +35,7 @@ export default async function AdminProducts({ searchParams }: { searchParams: Pr
               <Link href={`/admin/productos/${p.id}`} className="line-clamp-1 text-sm font-semibold hover:underline">{p.name}</Link>
               <p className="text-xs text-muted">
                 {formatCOP(p.price)} · <span className={p.stock <= 0 ? "font-semibold text-danger" : p.stock <= 3 ? "font-semibold text-amber-700" : ""}>{p.stock} en stock</span>
-                {!p.visible && " · Oculto"}{p.featured && " · ⭐ Destacado"}
+                {!p.visible && " · Oculto"}{p.featured && " · ⭐ Destacado"}{p.immediate_delivery && " · ⚡ Entrega inmediata"}
               </p>
               <div className="mt-2 flex flex-wrap items-center gap-2">
                 <Link href={`/admin/productos/${p.id}`} className="rounded-full bg-ink px-3 py-1.5 text-xs font-medium text-gold-light">Editar</Link>

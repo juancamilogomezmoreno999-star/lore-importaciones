@@ -22,7 +22,7 @@ export const statusMessages: Record<OrderStatus, string> = {
 export const paymentMethodLabels = {
   en_linea: "Pago en línea (Bold)",
   contra_entrega: "Pago contra entrega",
-  nequi: "Transferencia Nequi",
+  nequi: "Nequi o Llave",
 } as const;
 
 export const statusFlow: OrderStatus[] = ["pagado", "comprando_usa", "en_transito", "entregado"];
@@ -42,6 +42,8 @@ export function onlineFeeFor(base: number) {
 }
 
 export const ONLINE_FEE_LABEL = "Costo del pago en línea";
+
+export const COD_ONLY_IMMEDIATE_MSG = "Solo disponible cuando todos los productos son de entrega inmediata.";
 
 export function cashOnDeliveryAllowed(city: string) {
   const c = payments.cashOnDelivery;

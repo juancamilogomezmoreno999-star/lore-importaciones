@@ -118,6 +118,10 @@ export function ProductForm({ product, categories }: { product?: Product; catego
           <input type="checkbox" name="visible" defaultChecked={product?.visible ?? true} className="h-6 w-6 accent-ink" />
         </label>
         <label className="flex items-center justify-between gap-4 border-t border-ink/5 pt-3">
+          <span><b className="block text-sm">⚡ Entrega inmediata</b><span className="text-xs text-muted">Ya lo tienes en Colombia. Solo estos productos permiten pago contra entrega.</span></span>
+          <input type="checkbox" name="immediate_delivery" defaultChecked={product?.immediate_delivery ?? false} className="h-6 w-6 accent-ink" />
+        </label>
+        <label className="flex items-center justify-between gap-4 border-t border-ink/5 pt-3">
           <span><b className="block text-sm">Destacado</b><span className="text-xs text-muted">Aparece en la página de inicio.</span></span>
           <input type="checkbox" name="featured" defaultChecked={product?.featured ?? false} className="h-6 w-6 accent-ink" />
         </label>

@@ -32,7 +32,7 @@ export const payments = {
   // Costo de la pasarela que se le suma al cliente cuando paga en línea (0 = no se cobra).
   // Se calcula para que, después de la comisión de Bold, recibas el valor completo del pedido.
   onlineFeePercent: 6,
-  // Transferencia a Nequi: el cliente envía el dinero y manda el comprobante por WhatsApp
+  // Transferencia a Nequi o Llave (Bre-B): el cliente envía el dinero y manda el comprobante por WhatsApp
   nequi: {
     enabled: true,
     number: "3182004203",

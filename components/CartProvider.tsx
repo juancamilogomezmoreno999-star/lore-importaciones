@@ -10,6 +10,7 @@ export type CartItem = {
   quantity: number;
   stock: number;
   variant: Record<string, string>;
+  immediate?: boolean;
 };
 
 type CartCtx = {

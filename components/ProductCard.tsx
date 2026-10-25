@@ -24,6 +24,7 @@ export function ProductCard({ product, priority = false }: { product: Product; p
         <div className="absolute left-2 top-2 flex flex-col gap-1">
           {off > 0 && <span className="rounded-full bg-ink px-2.5 py-1 text-[11px] font-bold text-gold-light">-{off}%</span>}
           {product.stock <= 0 && <span className="rounded-full bg-white px-2.5 py-1 text-[11px] font-bold">Agotado</span>}
+          {product.immediate_delivery && product.stock > 0 && <span className="rounded-full bg-gold px-2.5 py-1 text-[11px] font-bold text-ink">⚡ Entrega inmediata</span>}
         </div>
       </div>
       <div className="flex flex-1 flex-col p-3 sm:p-4">
