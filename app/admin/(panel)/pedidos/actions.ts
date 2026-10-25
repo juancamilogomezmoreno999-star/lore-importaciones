@@ -1,5 +1,6 @@
 "use server";
 import { revalidatePath } from "next/cache";
+import { redirect } from "next/navigation";
 import { z } from "zod";
 import { requireAdmin } from "@/lib/auth";
 import { allStatuses } from "@/lib/orders";
@@ -42,4 +43,18 @@ export async function updateOrder(_prev: string | null, form: FormData): Promise
   revalidatePath(`/admin/pedidos/${id}`);
   revalidatePath("/admin/pedidos");
   return changed ? (notify ? "✓ Estado actualizado y correo enviado al cliente." : "✓ Estado actualizado.") : "✓ Cambios guardados.";
+}
+
+/** Elimina un pedido para siempre (pensado para pedidos de prueba). Devuelve las unidades al inventario. */
+export async function deleteOrder(id: string) {
+  const { supabase } = await requireAdmin();
+  if (!z.string().uuid().safeParse(id).success) return;
+  const { data: order } = await supabase.from("orders").select("stock_discounted").eq("id", id).maybeSingle();
+  if (!order) return;
+  if (order.stock_discounted) await supabase.rpc("restore_order_stock", { p_order_id: id });
+  await supabase.from("orders").delete().eq("id", id);
+  revalidatePath("/admin");
+  revalidatePath("/admin/pedidos");
+  revalidatePath("/catalogo");
+  redirect("/admin/pedidos?borrado=1");
 }

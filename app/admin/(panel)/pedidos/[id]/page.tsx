@@ -5,6 +5,7 @@ import type { Order } from "@/lib/types";
 import { formatCOP, formatDate, orderCode, variantLabel } from "@/lib/format";
 import { StatusBadge } from "@/components/admin/StatusBadge";
 import { OrderStatusForm } from "@/components/admin/OrderStatusForm";
+import { DeleteOrderButton } from "@/components/admin/DeleteOrderButton";
 import { ProductImage } from "@/components/ProductImage";
 
 export const metadata = { title: "Pedido" };
@@ -72,6 +73,7 @@ export default async function AdminOrder({ params }: { params: Promise<{ id: str
           <div className="flex justify-between text-base font-bold"><span>Total</span><span>{formatCOP(order.total)}</span></div>
         </div>
       </section>
+      <DeleteOrderButton id={order.id} code={code} />
     </div>
   );
 }
