@@ -126,7 +126,7 @@ export default async function HomePage() {
         <div className="-mx-4 mt-8 flex snap-x gap-4 overflow-x-auto px-4 pb-2 [scrollbar-width:none] md:mx-0 md:grid md:grid-cols-3 md:px-0">
           {arrivals.map((v) => (
             <figure key={v.src} className="card w-[78%] shrink-0 snap-center overflow-hidden md:w-auto">
-              <video className="aspect-[4/5] w-full bg-ink object-contain" src={v.src} poster={v.poster} controls playsInline preload="none" />
+              <video className="aspect-[4/5] w-full bg-ink object-contain" src={v.src} poster={v.poster} controls muted playsInline preload="none" />
               <figcaption className="p-4 text-sm font-medium">{v.caption}</figcaption>
             </figure>
           ))}
