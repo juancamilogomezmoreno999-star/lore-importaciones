@@ -1,0 +1,10 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 800" width="800" height="800"><defs><radialGradient id="bg" cx="50%" cy="40%" r="75%"><stop offset="0" stop-color="#ffffff"/><stop offset="1" stop-color="#efe9dc"/></radialGradient>
+<linearGradient id="gold" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#f1d58a"/><stop offset=".5" stop-color="#c9a24a"/><stop offset="1" stop-color="#8f6d24"/></linearGradient>
+<linearGradient id="ink" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#2a2a2d"/><stop offset="1" stop-color="#0b0b0c"/></linearGradient></defs>
+<rect width="800" height="800" fill="url(#bg)"/><ellipse cx="400" cy="640" rx="250" ry="26" fill="#000" opacity=".08"/><g transform="translate(170 170)">
+<rect x="60" y="60" width="44" height="60" rx="8" fill="#0b0b0c"/><rect x="40" y="115" width="84" height="20" rx="6" fill="url(#gold)"/>
+<rect x="30" y="135" width="104" height="330" rx="24" fill="#f3e9d6"/><rect x="50" y="250" width="64" height="120" rx="6" fill="#fff" opacity=".85"/>
+<text x="82" y="305" text-anchor="middle" font-family="Arial" font-size="15" fill="#0b0b0c">SÉRUM</text><text x="82" y="328" text-anchor="middle" font-family="Arial" font-size="12" fill="#8f6d24">VIT C</text>
+<rect x="220" y="250" width="240" height="70" rx="18" fill="url(#gold)"/>
+<rect x="210" y="315" width="260" height="150" rx="30" fill="#ffffff"/>
+<text x="340" y="400" text-anchor="middle" font-family="Georgia,serif" font-size="24" fill="#8f6d24" letter-spacing="3">HYDRA</text></g></svg>

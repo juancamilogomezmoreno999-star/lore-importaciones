@@ -1,0 +1,40 @@
+@import "tailwindcss";
+
+@theme {
+  --color-ink: #0b0b0c;
+  --color-ink-soft: #232326;
+  --color-gold: #c9a24a;
+  --color-gold-light: #e7cd85;
+  --color-gold-dark: #8f6d24;
+  --color-cream: #faf8f3;
+  --color-sand: #efe9dc;
+  --color-muted: #6b6b6b;
+  --color-success: #1f7a4d;
+  --color-danger: #b42318;
+  --font-sans: var(--font-inter), ui-sans-serif, system-ui, sans-serif;
+  --font-display: var(--font-playfair), Georgia, serif;
+}
+
+@layer base {
+  html { -webkit-tap-highlight-color: transparent; }
+  body { @apply bg-cream text-ink antialiased; }
+  h1, h2, h3 { @apply font-display tracking-tight; }
+  :focus-visible { @apply outline-2 outline-offset-2 outline-gold; }
+}
+
+@utility container-x { @apply mx-auto w-full max-w-6xl px-4 sm:px-6; }
+@utility btn { @apply inline-flex items-center justify-center gap-2 rounded-full px-6 py-3.5 text-[15px] font-semibold transition active:scale-[.98] disabled:cursor-not-allowed disabled:opacity-50; }
+@utility btn-primary { @apply btn bg-ink text-gold-light hover:bg-ink-soft; }
+@utility btn-gold { @apply btn bg-gold text-ink hover:bg-gold-light; }
+@utility btn-outline { @apply btn border border-ink/15 bg-white text-ink hover:border-ink/40; }
+@utility btn-whatsapp { @apply btn bg-[#25D366] text-white hover:bg-[#1ebe5b]; }
+@utility input { @apply w-full rounded-xl border border-ink/15 bg-white px-4 py-3 text-[16px] outline-none transition placeholder:text-ink/35 focus:border-gold focus:ring-2 focus:ring-gold/30; }
+@utility label { @apply mb-1.5 block text-sm font-medium text-ink/80; }
+@utility card { @apply rounded-2xl border border-ink/5 bg-white shadow-[0_1px_2px_rgba(0,0,0,.04),0_8px_24px_-12px_rgba(0,0,0,.08)]; }
+@utility eyebrow { @apply text-xs font-semibold uppercase tracking-[.2em] text-gold-dark; }
+
+@layer components {
+  .prose-lore p { @apply mb-4 leading-relaxed text-ink/80; }
+  .prose-lore h2 { @apply mb-3 mt-8 text-xl font-semibold; }
+  .prose-lore ul { @apply mb-4 list-disc space-y-1 pl-5 text-ink/80; }
+}

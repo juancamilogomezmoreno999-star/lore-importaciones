@@ -1,0 +1,8 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 800" width="800" height="800"><defs><radialGradient id="bg" cx="50%" cy="40%" r="75%"><stop offset="0" stop-color="#ffffff"/><stop offset="1" stop-color="#efe9dc"/></radialGradient>
+<linearGradient id="gold" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#f1d58a"/><stop offset=".5" stop-color="#c9a24a"/><stop offset="1" stop-color="#8f6d24"/></linearGradient>
+<linearGradient id="ink" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#2a2a2d"/><stop offset="1" stop-color="#0b0b0c"/></linearGradient></defs>
+<rect width="800" height="800" fill="url(#bg)"/><ellipse cx="400" cy="640" rx="250" ry="26" fill="#000" opacity=".08"/><g transform="translate(160 170)">
+<path d="M140 170 C140 40 340 40 340 170" stroke="url(#gold)" stroke-width="14" fill="none"/>
+<path d="M40 190 L440 190 L470 460 C472 478 460 490 442 490 L38 490 C20 490 8 478 10 460Z" fill="#141416"/>
+<path d="M40 190 L440 190 L452 290 C300 330 180 330 28 290Z" fill="#000" opacity=".18"/>
+<rect x="205" y="285" width="70" height="44" rx="10" fill="url(#gold)"/><rect x="225" y="298" width="30" height="18" rx="4" fill="#141416"/></g></svg>
