@@ -35,7 +35,7 @@ export type OrderStatus =
   | "entregado"
   | "cancelado";
 
-export type PaymentMethod = "en_linea" | "contra_entrega";
+export type PaymentMethod = "en_linea" | "contra_entrega" | "nequi";
 export type PaymentStatus = "pendiente" | "aprobado" | "rechazado" | "contra_entrega";
 
 export type Order = {

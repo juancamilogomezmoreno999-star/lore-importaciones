@@ -11,7 +11,7 @@ import { payments } from "@/lib/config";
 import { departamentos } from "@/lib/colombia";
 import { createOrder } from "./actions";
 
-type Method = "en_linea" | "contra_entrega";
+type Method = "en_linea" | "contra_entrega" | "nequi";
 
 export default function CheckoutPage() {
   const { items, subtotal, ready, clear } = useCart();
@@ -128,6 +128,15 @@ export default function CheckoutPage() {
                 <span>
                   <span className="block font-semibold">Pago en línea</span>
                   <span className="block text-sm text-muted">Tarjeta débito o crédito, PSE, Nequi, Bancolombia y más. Pagas en la ventana segura de Bold.{payments.onlineFeePercent > 0 ? ` Se suma el costo de la pasarela de pagos (comisión del ${payments.onlineFeePercent}%).` : ""}</span>
+                </span>
+              </label>
+            )}
+            {payments.nequi.enabled && (
+              <label className={`flex cursor-pointer gap-3 rounded-xl border p-4 transition ${method === "nequi" ? "border-ink ring-1 ring-ink" : "border-ink/15"}`}>
+                <input type="radio" name="pm" className="mt-1 accent-ink" checked={method === "nequi"} onChange={() => setMethod("nequi")} />
+                <span>
+                  <span className="block font-semibold">Transferencia Nequi</span>
+                  <span className="block text-sm text-muted">Envías el dinero a nuestro Nequi {payments.nequi.display} y nos mandas el comprobante por WhatsApp. Sin costo adicional.</span>
                 </span>
               </label>
             )}

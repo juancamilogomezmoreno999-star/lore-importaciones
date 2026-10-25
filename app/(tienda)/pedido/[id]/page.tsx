@@ -7,8 +7,8 @@ import { createServiceClient } from "@/lib/supabase/admin";
 import { fetchPaymentStatus } from "@/lib/bold";
 import { applyPaymentResult } from "@/lib/payments";
 import { formatCOP, formatDate, orderCode, variantLabel } from "@/lib/format";
-import { statusFlow, statusLabels, statusMessages } from "@/lib/orders";
-import { whatsappLink } from "@/lib/config";
+import { paymentMethodLabels, statusFlow, statusLabels, statusMessages } from "@/lib/orders";
+import { payments, whatsappLink } from "@/lib/config";
 import { IconCheck, IconWhatsApp } from "@/components/icons";
 
 export const dynamic = "force-dynamic";
@@ -56,6 +56,7 @@ export default async function OrderPage({ params, searchParams }: Props) {
   }
 
   const approved = order.payment_status === "aprobado" || order.payment_method === "contra_entrega";
+  const nequiPending = order.payment_method === "nequi" && order.payment_status === "pendiente" && order.status !== "cancelado";
   const rejected = order.payment_status === "rechazado";
   const currentIdx = statusFlow.indexOf(order.status);
   const code = orderCode(order.order_number);
@@ -63,7 +64,28 @@ export default async function OrderPage({ params, searchParams }: Props) {
   return (
     <div className="container-x max-w-2xl py-10">
       <div className="text-center">
-        {rejected ? (
+        {nequiPending ? (
+          <>
+            <h1 className="text-3xl font-semibold">¡Pedido recibido! Falta tu pago por Nequi</h1>
+            <div className="card mx-auto mt-5 max-w-sm p-5 text-left">
+              <p className="text-sm text-muted">Envía exactamente</p>
+              <p className="text-3xl font-bold">{formatCOP(order.total)}</p>
+              <p className="mt-3 text-sm text-muted">al Nequi</p>
+              <p className="text-2xl font-bold tracking-wide">{payments.nequi.display}</p>
+              <p className="mt-4 text-sm leading-relaxed text-ink/80">
+                Luego mándanos el comprobante por WhatsApp. Apenas lo verifiquemos confirmamos tu pedido y te avisamos.
+              </p>
+              <a
+                href={whatsappLink(`¡Hola! Te envío el comprobante de pago por Nequi del pedido ${code} por ${formatCOP(order.total)} 🧾`)}
+                target="_blank"
+                rel="noopener"
+                className="btn-whatsapp mt-4 w-full"
+              >
+                <IconWhatsApp width={20} /> Enviar comprobante
+              </a>
+            </div>
+          </>
+        ) : rejected ? (
           <>
             <h1 className="text-3xl font-semibold">El pago no se pudo completar</h1>
             <p className="mt-3 text-muted">Tu pedido {code} sigue guardado. Escríbenos por WhatsApp y te ayudamos a completar el pago con otro medio.</p>
@@ -108,7 +130,7 @@ export default async function OrderPage({ params, searchParams }: Props) {
         <div className="mt-2 space-y-1 border-t border-ink/10 pt-3 text-sm">
           <div className="flex justify-between"><span>Envío</span><span>{order.shipping ? formatCOP(order.shipping) : "Gratis"}</span></div>
           <div className="flex justify-between text-base font-bold"><span>Total</span><span>{formatCOP(order.total)}</span></div>
-          <p className="pt-2 text-xs text-muted">Realizado el {formatDate(order.created_at)} · Entrega en {order.city}, {order.department} · {order.payment_method === "contra_entrega" ? "Pago contra entrega" : "Pago en línea"}</p>
+          <p className="pt-2 text-xs text-muted">Realizado el {formatDate(order.created_at)} · Entrega en {order.city}, {order.department} · {paymentMethodLabels[order.payment_method]}</p>
         </div>
       </div>
 

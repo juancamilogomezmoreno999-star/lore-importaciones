@@ -20,6 +20,7 @@ export default async function AdminOrder({ params }: { params: Promise<{ id: str
 
   const payment =
     order.payment_method === "contra_entrega" ? "Contra entrega"
+    : order.payment_method === "nequi" ? (order.payment_status === "aprobado" ? "Pagado por Nequi" : "Nequi: verifica que llegó el dinero y cambia el estado a Pagado")
     : order.payment_status === "aprobado" ? `Pagado en línea con Bold${order.payment_id ? ` (${order.payment_id})` : ""}`
     : order.payment_status === "rechazado" ? "Pago rechazado"
     : "Esperando pago en línea";

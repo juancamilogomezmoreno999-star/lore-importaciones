@@ -18,7 +18,7 @@ const schema = z.object({
   city: z.string().trim().min(2, "Escribe tu ciudad o municipio").max(80),
   address: z.string().trim().min(6, "Escribe tu dirección completa").max(250),
   notes: z.string().trim().max(500).optional().default(""),
-  payment_method: z.enum(["en_linea", "contra_entrega"]),
+  payment_method: z.enum(["en_linea", "contra_entrega", "nequi"]),
   data_consent: z.boolean().refine((v) => v, "Debes aceptar la política de tratamiento de datos"),
   website: z.string().max(0).optional(), // campo trampa anti-spam
   items: z
@@ -44,6 +44,9 @@ export async function createOrder(input: CheckoutInput): Promise<CheckoutResult>
   }
   const data = parsed.data;
 
+  if (data.payment_method === "nequi" && !payments.nequi.enabled) {
+    return { ok: false, error: "El pago por Nequi no está disponible en este momento." };
+  }
   if (data.payment_method === "contra_entrega" && !cashOnDeliveryAllowed(data.city)) {
     return { ok: false, error: "El pago contra entrega no está disponible para tu ciudad." };
   }
@@ -126,7 +129,8 @@ export async function createOrder(input: CheckoutInput): Promise<CheckoutResult>
     return { ok: false, error: "No pudimos guardar tu pedido. Intenta de nuevo o escríbenos por WhatsApp." };
   }
 
-  if (isCod) {
+  // Contra entrega y Nequi: se aparta el inventario de una vez y se confirma por WhatsApp
+  if (isCod || data.payment_method === "nequi") {
     await db.rpc("discount_order_stock", { p_order_id: order.id });
     await sendOrderConfirmation(order);
     return { ok: true, redirect: `/pedido/${order.id}` };

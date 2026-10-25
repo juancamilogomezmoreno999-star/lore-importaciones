@@ -2,7 +2,8 @@ import "server-only";
 import type { Order } from "./types";
 import { store } from "./config";
 import { formatCOP, orderCode, variantLabel } from "./format";
-import { statusLabels, statusMessages } from "./orders";
+import { paymentMethodLabels, statusLabels, statusMessages } from "./orders";
+import { payments } from "./config";
 
 // Los correos se envían con Resend (https://resend.com). Plan gratis: 3.000 correos/mes.
 
@@ -69,6 +70,8 @@ export async function sendOrderConfirmation(order: Order) {
   const intro =
     order.payment_method === "contra_entrega"
       ? "Recibimos tu pedido con <b>pago contra entrega</b>. Te escribiremos por WhatsApp para confirmar los detalles."
+      : order.payment_method === "nequi" && order.payment_status !== "aprobado"
+        ? `Recibimos tu pedido. Para confirmarlo, envía <b>${formatCOP(order.total)}</b> al Nequi <b>${payments.nequi.display}</b> y mándanos el comprobante por WhatsApp.`
       : order.payment_status === "aprobado"
         ? "¡Tu pago fue aprobado! Ya empezamos a gestionar tu pedido."
         : "Recibimos tu pedido. Apenas se confirme el pago te avisamos.";
@@ -92,7 +95,7 @@ export async function sendOrderConfirmation(order: Order) {
       layout(
         `Nuevo pedido ${code}`,
         `<p>${esc(order.customer_name)} · ${esc(order.phone)} · ${esc(order.city)}</p>
-         <p>Pago: ${order.payment_method === "contra_entrega" ? "Contra entrega" : "En línea (Bold)"} (${order.payment_status})</p>
+         <p>Pago: ${paymentMethodLabels[order.payment_method]} (${order.payment_status})</p>
          ${itemsTable(order)}
          <p><a href="${store.siteUrl}/admin/pedidos/${order.id}">Abrir en el panel</a></p>`,
       ),

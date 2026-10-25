@@ -19,10 +19,13 @@ export async function updateOrder(_prev: string | null, form: FormData): Promise
   if (!parsed.success) return "Datos inválidos";
   const { id, status, tracking, notify } = parsed.data;
 
-  const { data: before } = await supabase.from("orders").select("status, stock_discounted").eq("id", id).single();
+  const { data: before } = await supabase.from("orders").select("status, stock_discounted, payment_method, payment_status").eq("id", id).single();
+  // Nequi: al pasar el pedido a Pagado (o más adelante) queda registrado como pagado
+  const nequiPaid =
+    before?.payment_method === "nequi" && before.payment_status === "pendiente" && !["pendiente", "cancelado"].includes(status);
   const { data: order, error } = await supabase
     .from("orders")
-    .update({ status, tracking: tracking || null })
+    .update({ status, tracking: tracking || null, ...(nequiPaid ? { payment_status: "aprobado" } : {}) })
     .eq("id", id)
     .select("*")
     .single<Order>();

@@ -60,7 +60,7 @@ create table if not exists public.orders (
   subtotal integer not null,
   shipping integer not null default 0,
   total integer not null,
-  payment_method text not null check (payment_method in ('en_linea', 'contra_entrega')),
+  payment_method text not null check (payment_method in ('en_linea', 'contra_entrega', 'nequi')),
   payment_status text not null default 'pendiente'
     check (payment_status in ('pendiente', 'aprobado', 'rechazado', 'contra_entrega')),
   status text not null default 'pendiente'
@@ -78,7 +78,7 @@ create index if not exists orders_created_idx on public.orders (created_at desc)
 alter table public.orders add column if not exists payment_id text;
 alter table public.orders drop constraint if exists orders_payment_method_check;
 alter table public.orders add constraint orders_payment_method_check
-  check (payment_method in ('en_linea', 'contra_entrega'));
+  check (payment_method in ('en_linea', 'contra_entrega', 'nequi'));
 
 -- ── Mensajes de contacto ─────────────────────────────────────────
 create table if not exists public.contact_messages (

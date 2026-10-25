@@ -35,7 +35,7 @@ export default async function AdminOrders({ searchParams }: { searchParams: Prom
                 <b className="block text-sm">{orderCode(o.order_number)} · {o.customer_name}</b>
                 <span className="block text-xs text-muted">{formatDate(o.created_at)} · {o.city}</span>
                 <span className="text-xs text-muted">
-                  {o.payment_method === "contra_entrega" ? "💵 Contra entrega" : o.payment_status === "aprobado" ? "💳 Pagado en línea" : o.payment_status === "rechazado" ? "❌ Pago rechazado" : "⏳ Esperando pago"}
+                  {o.payment_method === "contra_entrega" ? "💵 Contra entrega" : o.payment_method === "nequi" ? (o.payment_status === "aprobado" ? "📱 Pagado por Nequi" : "📱 Nequi por confirmar") : o.payment_status === "aprobado" ? "💳 Pagado en línea" : o.payment_status === "rechazado" ? "❌ Pago rechazado" : "⏳ Esperando pago"}
                 </span>
               </span>
               <span className="shrink-0 text-right">

@@ -19,6 +19,12 @@ export const statusMessages: Record<OrderStatus, string> = {
   cancelado: "Tu pedido fue cancelado. Si tienes dudas, escríbenos por WhatsApp.",
 };
 
+export const paymentMethodLabels = {
+  en_linea: "Pago en línea (Bold)",
+  contra_entrega: "Pago contra entrega",
+  nequi: "Transferencia Nequi",
+} as const;
+
 export const statusFlow: OrderStatus[] = ["pagado", "comprando_usa", "en_transito", "entregado"];
 export const allStatuses = Object.keys(statusLabels) as OrderStatus[];
 
