@@ -27,7 +27,7 @@ export default async function OrderPage({ params, searchParams }: Props) {
         <h1 className="mt-5 text-3xl font-semibold">¡Pedido de prueba creado!</h1>
         <p className="mt-3 text-muted">
           Estás en <b>modo demostración</b>: el pedido por {formatCOP(Number(sp.total) || 0)} no se guardó ni se cobró.
-          Cuando conectes Supabase y Wompi (ver README) aquí verás el pedido real
+          Cuando conectes Supabase y Wompi, aquí verás el pedido real
           {sp.metodo === "wompi" ? " y el cliente será llevado a pagar en Wompi." : "."}
         </p>
         <Link href="/catalogo" className="btn-primary mt-8">Volver a la tienda</Link>

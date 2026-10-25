@@ -4,7 +4,7 @@ import { createSessionClient } from "@/lib/supabase/server";
 import { isSupabaseConfigured } from "@/lib/supabase/env";
 
 export async function login(_prev: string | null, form: FormData): Promise<string | null> {
-  if (!isSupabaseConfigured) return "Primero conecta Supabase (ver README, paso 2).";
+  if (!isSupabaseConfigured) return "Primero conecta Supabase.";
   const email = String(form.get("email") ?? "").trim().toLowerCase();
   const password = String(form.get("password") ?? "");
   if (!email || !password) return "Escribe tu correo y contraseña.";

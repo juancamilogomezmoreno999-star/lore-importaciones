@@ -20,6 +20,7 @@ export function Header() {
   useEffect(() => setOpen(false), [pathname]);
 
   return (
+    <>
     <header className="sticky top-0 z-40 border-b border-ink/5 bg-cream/90 backdrop-blur-md">
       <div className="bg-ink py-2 text-center text-[12px] font-medium text-gold-light">
         ✈️ Productos 100% originales de USA · Envíos a toda Colombia
@@ -55,6 +56,7 @@ export function Header() {
         </div>
       </div>
 
+    </header>
       {open && (
         <div className="fixed inset-0 z-50 md:hidden" role="dialog" aria-modal="true">
           <div className="absolute inset-0 bg-ink/50" onClick={() => setOpen(false)} />
@@ -79,6 +81,6 @@ export function Header() {
           </div>
         </div>
       )}
-    </header>
+    </>
   );
 }
