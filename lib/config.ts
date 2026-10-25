@@ -22,7 +22,7 @@ export const store = {
 
 export const shipping = {
   // Costo de envío nacional en pesos
-  cost: 15000,
+  cost: 0, // TEMPORAL para la compra de prueba: volver a 15000
   // Envío gratis desde este valor de compra (0 = nunca gratis)
   freeFrom: 400000,
 };
