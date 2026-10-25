@@ -19,6 +19,8 @@ Panel: https://importaciones-lore-opzt.vercel.app/admin
 - Pedidos contra entrega y mensajes de contacto
 - Pagos en línea con Bold, en producción (probado con un pago real de $1.000)
 - Costo de la pasarela (6%) sumado a los pagos en línea; envío fijo de $15.000 sin envío gratis
+- Pago por Nequi o Llave (318 200 4203) como opción recomendada; se confirma en el panel cambiando el pedido a Pagado
+- Productos de entrega inmediata (⚡); contra entrega solo para esos productos
 
 ## Por hacer (en este orden)
 1. **Preguntar a Bold** si permiten trasladar la comisión al cliente, y confirmar si el 6% incluye retenciones.
