@@ -13,12 +13,16 @@ export const store = {
   whatsappDisplay: "318 200 4203",
   whatsappMessage: "¡Hola Lore Importaciones! 👋 Vengo de la página web y quiero más información.",
   instagram: "lore_importaciones",
-  email: "contacto@loreimportaciones.com",
-  city: "Colombia",
-  // Datos del responsable del tratamiento de datos (Ley 1581). Complétalos.
-  legalName: "Lore Importaciones",
-  legalId: "NIT / C.C. por completar",
+  // ⚠️ Pon aquí un correo real que revises (se muestra en la web y en las políticas)
+  email: "",
+  // Datos del negocio (Ley 1480 y Ley 1581). Complétalos: se muestran en el pie de página.
+  legalName: "Lorena Moreno Preciado",
+  legalId: "", // NIT o cédula, ej: "C.C. 12.345.678" o "NIT 900.123.456-7"
+  city: "", // ciudad y departamento, ej: "Cali, Valle del Cauca"
 };
+
+// Testimonios: SOLO opiniones reales de clientes, con su permiso. Si la lista está vacía, la sección no se muestra.
+export const testimonials: { name: string; city: string; text: string }[] = [];
 
 export const shipping = {
   // Costo de envío nacional en pesos
@@ -52,3 +56,11 @@ export function whatsappLink(message: string = store.whatsappMessage) {
 }
 
 export const instagramLink = `https://instagram.com/${store.instagram}`;
+
+/** Cómo contactar al negocio para temas legales (correo si existe, si no WhatsApp). */
+export const legalContact = store.email
+  ? `al correo ${store.email} o por WhatsApp al ${store.whatsappDisplay}`
+  : `por WhatsApp al ${store.whatsappDisplay} o en el formulario de contacto de esta página`;
+
+/** "Lorena Moreno Preciado (C.C. …)" o solo el nombre si aún no se ha puesto la identificación. */
+export const legalIdentity = store.legalId ? `${store.legalName} (${store.legalId})` : store.legalName;

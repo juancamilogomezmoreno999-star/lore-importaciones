@@ -78,7 +78,7 @@ export function ImageUploader({ value, onChange }: { value: string[]; onChange: 
         )}
       </div>
       <input ref={input} type="file" accept="image/*" multiple hidden onChange={(e) => upload(e.target.files)} />
-      <p className="mt-2 text-xs text-muted">Puedes tomar la foto o elegirla de la galería. La primera es la foto principal. Usa las flechas para cambiar el orden.</p>
+      <p className="mt-2 text-xs text-muted">Puedes tomar la foto o elegirla de la galería. La primera es la foto principal. Usa las flechas para cambiar el orden. Usa solo fotos tuyas o con permiso: copiar fotos de otras páginas o marcas puede traerte problemas de derechos de autor.</p>
       {error && <p className="mt-2 text-sm text-danger">{error}</p>}
     </div>
   );

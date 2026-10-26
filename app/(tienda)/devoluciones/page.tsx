@@ -1,0 +1,51 @@
+import type { Metadata } from "next";
+import Link from "next/link";
+import { LegalPage } from "@/components/LegalPage";
+import { legalContact, store, whatsappLink } from "@/lib/config";
+
+export const metadata: Metadata = {
+  title: "Cambios, devoluciones y reembolsos",
+  description: `Cómo funcionan los cambios, devoluciones, garantías y reembolsos en ${store.name}.`,
+  alternates: { canonical: "/devoluciones" },
+};
+
+// Basado en la Ley 1480 de 2011 (Estatuto del Consumidor). Conviene que un abogado lo revise.
+export default function ReturnsPage() {
+  return (
+    <LegalPage title="Cambios, devoluciones y reembolsos" updated="octubre de 2026">
+      <p>Queremos que quedes feliz con tu compra. Si algo no salió bien, aquí te explicamos tus opciones, según el Estatuto del Consumidor (Ley 1480 de 2011).</p>
+
+      <h2>1. Derecho de retracto (te arrepentiste)</h2>
+      <ul>
+        <li>Tienes <b>5 días hábiles</b> desde que recibes el producto para devolverlo, sin dar explicaciones.</li>
+        <li>Debe estar sin usar, con etiquetas y en su empaque original.</li>
+        <li>El costo del envío de la devolución corre por tu cuenta.</li>
+        <li>No aplica a productos de uso personal que por higiene no pueden devolverse una vez abiertos (perfumes, cosméticos, ropa interior o similares).</li>
+      </ul>
+
+      <h2>2. Cambios de talla o color</h2>
+      <p>Escríbenos apenas recibas el producto. Si está sin usar y con etiquetas, te ayudamos con el cambio según disponibilidad. Si el producto debe pedirse de nuevo a Estados Unidos, el nuevo envío tiene el mismo tiempo de entrega del producto.</p>
+
+      <h2>3. Garantía (el producto llegó con un defecto)</h2>
+      <ul>
+        <li>Todos los productos tienen la garantía legal por calidad, idoneidad y seguridad.</li>
+        <li>Escríbenos con fotos o video del defecto. Según el caso, haremos la reparación, el cambio por otro igual o la devolución del dinero.</li>
+        <li>La garantía no cubre daños por mal uso, golpes, humedad o desgaste normal.</li>
+      </ul>
+
+      <h2>4. Reversión del pago</h2>
+      <p>Si pagaste por un medio electrónico (tarjeta, PSE, Nequi o Llave) y fuiste víctima de fraude, la operación no fue solicitada, el producto no fue recibido o no corresponde a lo pedido o está defectuoso, puedes solicitar la reversión del pago dentro de los 5 días hábiles siguientes a cuando lo supiste (artículo 51 de la Ley 1480).</p>
+
+      <h2>5. ¿Cuándo y cómo te devolvemos el dinero?</h2>
+      <ul>
+        <li>Una vez recibamos y revisemos el producto, te devolvemos el dinero en máximo <b>30 días calendario</b>.</li>
+        <li>Lo devolvemos por el mismo medio con el que pagaste (tarjeta, PSE, Nequi o Llave), o por transferencia si pagaste contra entrega.</li>
+        <li>Si un producto que pagaste no está disponible en Estados Unidos, te avisamos y puedes elegir otro producto o la devolución total de tu dinero.</li>
+      </ul>
+
+      <h2>6. ¿Cómo hago la solicitud?</h2>
+      <p>Escríbenos {legalContact}, con tu número de pedido (por ejemplo LORE-1010), el motivo y fotos si aplica. Te respondemos en máximo 15 días hábiles.</p>
+      <p><a href={whatsappLink("¡Hola! Quiero hacer una solicitud de cambio o devolución de mi pedido")} target="_blank" rel="noopener" className="font-semibold underline">Escribir por WhatsApp</a> · <Link href="/terminos" className="underline">Términos y condiciones</Link></p>
+    </LegalPage>
+  );
+}

@@ -3,7 +3,7 @@ import { getFeaturedProducts, getCategories } from "@/lib/data";
 import { ProductCard } from "@/components/ProductCard";
 import { HeroVideo } from "@/components/HeroVideo";
 import { IconBox, IconPlane, IconShield, IconStar, IconTruck, IconWhatsApp, IconChevron } from "@/components/icons";
-import { store, whatsappLink } from "@/lib/config";
+import { store, testimonials, whatsappLink } from "@/lib/config";
 
 export const revalidate = 60;
 
@@ -13,13 +13,6 @@ const steps = [
   { icon: IconTruck, title: "3. Te lo entregamos", text: "Lo recibes en la puerta de tu casa, en cualquier ciudad del país, con número de guía para hacerle seguimiento." },
 ];
 
-// ⚠️ TESTIMONIOS DE EJEMPLO: reemplázalos por opiniones reales de tus clientes (con su permiso)
-// antes de publicar. Publicar reseñas inventadas es publicidad engañosa.
-const testimonials = [
-  { name: "Valentina R.", city: "Medellín", text: "Me llegaron los tenis en 10 días, originales y en su caja. Lore me estuvo contando todo por WhatsApp. ¡Súper recomendados!" },
-  { name: "Andrés M.", city: "Bogotá", text: "Pedí unos audífonos que acá estaban carísimos. Ahorré bastante y la atención fue excelente de principio a fin." },
-  { name: "Carolina P.", city: "Cali", text: "Ya es mi tercera compra. Siempre cumplen con los tiempos y todo llega perfecto. Mi perfume favorito ahora lo pido acá." },
-];
 
 const arrivals = [
   { src: "/videos/llegada-1.mp4", poster: "/videos/llegada-1.jpg", caption: "Ropa y calzado de marca recién llegados" },
@@ -77,7 +70,7 @@ export default async function HomePage() {
       <section className="container-x mt-12">
         <div className="mb-6 flex items-end justify-between gap-4">
           <div>
-            <p className="eyebrow">Lo más pedido</p>
+            <p className="eyebrow">Nuestra selección</p>
             <h2 className="mt-2 text-3xl font-semibold">Productos destacados</h2>
           </div>
           <Link href="/catalogo" className="shrink-0 text-sm font-semibold text-gold-dark hover:underline">Ver todo →</Link>
@@ -122,7 +115,8 @@ export default async function HomePage() {
         </div>
       </section>
 
-      {/* Testimonios */}
+      {/* Testimonios (solo si hay reales) */}
+      {testimonials.length > 0 && (
       <section className="mt-20 bg-sand/60 py-16">
         <div className="container-x">
           <div className="text-center">
@@ -140,6 +134,7 @@ export default async function HomePage() {
           </div>
         </div>
       </section>
+      )}
 
       {/* Llamado a WhatsApp */}
       <section className="container-x mt-16">

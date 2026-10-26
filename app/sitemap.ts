@@ -6,7 +6,7 @@ export const revalidate = 3600;
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const base = store.siteUrl;
-  const pages = ["", "/catalogo", "/sobre-nosotros", "/preguntas-frecuentes", "/contacto", "/terminos", "/privacidad"];
+  const pages = ["", "/catalogo", "/sobre-nosotros", "/preguntas-frecuentes", "/contacto", "/devoluciones", "/terminos", "/privacidad", "/cookies"];
   const products = await getProducts();
   return [
     ...pages.map((p) => ({ url: `${base}${p}`, changeFrequency: "weekly" as const, priority: p === "" ? 1 : 0.6 })),
