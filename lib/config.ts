@@ -64,3 +64,7 @@ export const legalContact = store.email
 
 /** "Lorena Moreno Preciado (C.C. …)" o solo el nombre si aún no se ha puesto la identificación. */
 export const legalIdentity = store.legalId ? `${store.legalName} (${store.legalId})` : store.legalName;
+
+/** Versión vigente de los documentos legales. Cámbiala cuando modifiques términos o privacidad. */
+export const LEGAL_VERSION = "2026-10";
+export const LEGAL_UPDATED = "octubre de 2026";

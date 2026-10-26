@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import { LegalPage } from "@/components/LegalPage";
 import Link from "next/link";
-import { legalContact, legalIdentity, payments, shipping, store } from "@/lib/config";
+import { legalContact, legalIdentity, payments, shipping, store, LEGAL_UPDATED } from "@/lib/config";
 import { formatCOP } from "@/lib/format";
 
 export const metadata: Metadata = { title: "Términos y condiciones", alternates: { canonical: "/terminos" } };
@@ -9,7 +9,7 @@ export const metadata: Metadata = { title: "Términos y condiciones", alternates
 // Texto base. Te recomendamos que un abogado lo revise y lo ajuste a tu negocio.
 export default function TermsPage() {
   return (
-    <LegalPage title="Términos y condiciones" updated="octubre de 2026">
+    <LegalPage title="Términos y condiciones" updated={LEGAL_UPDATED}>
       <p>Estos términos regulan las compras realizadas en el sitio web de {legalIdentity}, en adelante “{store.name}”. Al hacer un pedido aceptas estas condiciones, que se rigen por las leyes de la República de Colombia, en especial la Ley 1480 de 2011 (Estatuto del Consumidor).</p>
 
       <h2>1. Productos y precios</h2>

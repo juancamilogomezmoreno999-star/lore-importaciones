@@ -14,7 +14,10 @@ export default async function AdminOrder({ params }: { params: Promise<{ id: str
   const { id } = await params;
   const { supabase } = await requireAdmin();
   if (!/^[0-9a-f-]{36}$/i.test(id)) notFound();
-  const { data: order } = await supabase.from("orders").select("*").eq("id", id).maybeSingle<Order>();
+  const [{ data: order }, { data: consents }] = await Promise.all([
+    supabase.from("orders").select("*").eq("id", id).maybeSingle<Order>(),
+    supabase.from("consent_log").select("created_at, accepted_terms, accepted_privacy, terms_version, ip").eq("order_id", id).order("created_at"),
+  ]);
   if (!order) notFound();
   const code = orderCode(order.order_number);
   const wa = `https://wa.me/57${order.phone}?text=${encodeURIComponent(`¡Hola ${order.customer_name.split(" ")[0]}! Te escribimos de Lore Importaciones sobre tu pedido ${code} 😊`)}`;
@@ -72,6 +75,19 @@ export default async function AdminOrder({ params }: { params: Promise<{ id: str
           <div className="flex justify-between"><span>Envío</span><span>{formatCOP(order.shipping)}</span></div>
           <div className="flex justify-between text-base font-bold"><span>Total</span><span>{formatCOP(order.total)}</span></div>
         </div>
+      </section>
+      <section className="card p-4 text-xs text-muted">
+        <h2 className="mb-1 font-sans text-sm font-semibold text-ink">Registro de aceptación</h2>
+        {consents?.length ? (
+          consents.map((c, k) => (
+            <p key={k}>
+              {c.accepted_terms && "✓ Términos y condiciones · "}{c.accepted_privacy && "✓ Tratamiento de datos · "}
+              {formatDate(c.created_at)} · versión {c.terms_version ?? "—"} · IP {c.ip ?? "—"}
+            </p>
+          ))
+        ) : (
+          <p>{order.data_consent ? "El cliente aceptó al comprar (pedido anterior al registro detallado)." : "Sin registro."}</p>
+        )}
       </section>
       <DeleteOrderButton id={order.id} code={code} />
     </div>

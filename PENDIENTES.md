@@ -24,6 +24,7 @@ Panel: https://importaciones-lore-opzt.vercel.app/admin
 - Logo, colores de marca y videos reales (presentación de Lorena y pedidos llegando)
 - Cuentas de clientes (carrito guardado, datos de envío, Mis pedidos) — probado y funcionando
 - Seguridad: límite de intentos (activo) en pedidos, contacto e ingreso al panel (requiere correr `supabase/limite-de-intentos.sql`); botón de copia de seguridad de pedidos en el panel
+- Consentimiento: casillas separadas (términos / datos) y registro de cada aceptación con fecha, IP y versión (requiere correr `supabase/registro-consentimientos.sql`)
 - Revisión legal: políticas de privacidad, cookies, devoluciones y términos; datos del negocio (NIT 31.573.414-7, Cali); sin testimonios de ejemplo
 
 ## Por hacer (en este orden)

@@ -5,6 +5,7 @@ import { isSupabaseConfigured } from "@/lib/supabase/env";
 import { createServiceClient } from "@/lib/supabase/admin";
 import { createSessionClient } from "@/lib/supabase/server";
 import { rateLimit, TOO_MANY } from "@/lib/rate-limit";
+import { recordConsent } from "@/lib/consent";
 import { sampleProducts } from "@/lib/sample-products";
 import { cashOnDeliveryAllowed, COD_ONLY_IMMEDIATE_MSG, ONLINE_FEE_LABEL, onlineFeeFor, shippingFor } from "@/lib/orders";
 import { payments } from "@/lib/config";
@@ -21,7 +22,8 @@ const schema = z.object({
   address: z.string().trim().min(6, "Escribe tu dirección completa").max(250),
   notes: z.string().trim().max(500).optional().default(""),
   payment_method: z.enum(["en_linea", "contra_entrega", "nequi"]),
-  data_consent: z.boolean().refine((v) => v, "Debes aceptar la política de tratamiento de datos"),
+  accept_terms: z.boolean().refine((v) => v, "Debes aceptar los términos y condiciones"),
+  accept_privacy: z.boolean().refine((v) => v, "Debes autorizar el tratamiento de tus datos personales"),
   website: z.string().max(0).optional(), // campo trampa anti-spam
   save_profile: z.boolean().optional(),
   items: z
@@ -156,6 +158,8 @@ export async function createOrder(input: CheckoutInput): Promise<CheckoutResult>
     console.error("createOrder", error?.message);
     return { ok: false, error: "No pudimos guardar tu pedido. Intenta de nuevo o escríbenos por WhatsApp." };
   }
+
+  await recordConsent({ context: "pedido", email: data.email, terms: true, privacy: true, userId: user?.id, orderId: order.id });
 
   // Contra entrega y Nequi: se aparta el inventario de una vez y se confirma por WhatsApp
   if (isCod || data.payment_method === "nequi") {

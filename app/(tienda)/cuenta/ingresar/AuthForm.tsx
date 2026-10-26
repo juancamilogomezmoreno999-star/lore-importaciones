@@ -4,6 +4,8 @@ import { useRouter, useSearchParams } from "next/navigation";
 import { useState } from "react";
 import { createBrowserSupabase } from "@/lib/supabase/browser";
 import { isSupabaseConfigured } from "@/lib/supabase/env";
+import { LEGAL_VERSION } from "@/lib/config";
+import { recordSignupConsent } from "../actions";
 
 const errors: Record<string, string> = {
   "Invalid login credentials": "Correo o contraseña incorrectos.",
@@ -45,10 +47,19 @@ export function AuthForm() {
       const { data, error } = await supabase.auth.signUp({
         email,
         password,
-        options: { data: { full_name: String(f.get("name") ?? "").trim() }, emailRedirectTo: `${location.origin}/auth/callback?next=/cuenta` },
+        options: {
+          data: {
+            full_name: String(f.get("name") ?? "").trim(),
+            // Prueba de la aceptación guardada también en la cuenta
+            terms_accepted_at: new Date().toISOString(),
+            privacy_accepted_at: new Date().toISOString(),
+            legal_version: LEGAL_VERSION,
+          },
+          emailRedirectTo: `${location.origin}/auth/callback?next=/cuenta` },
       });
       setPending(false);
       if (error) return setError(translate(error.message));
+      await recordSignupConsent();
       if (!data.session) return setInfo("¡Listo! Te enviamos un correo para confirmar tu cuenta. Ábrelo y vuelve a ingresar.");
     }
     router.replace(next);
@@ -86,10 +97,16 @@ export function AuthForm() {
           {mode === "registro" && <p className="mt-1 text-xs text-muted">Mínimo 8 caracteres.</p>}
         </div>
         {mode === "registro" && (
-          <label className="flex gap-2 text-xs leading-relaxed text-ink/70">
-            <input type="checkbox" required className="mt-0.5 accent-ink" />
-            <span>Acepto los <Link href="/terminos" target="_blank" className="underline">términos y condiciones</Link> y autorizo el tratamiento de mis datos según la <Link href="/privacidad" target="_blank" className="underline">política de privacidad</Link> (Ley 1581 de 2012).</span>
-          </label>
+          <div className="space-y-2 text-xs leading-relaxed text-ink/70">
+            <label className="flex gap-2">
+              <input type="checkbox" name="accept_terms" required className="mt-0.5 accent-ink" />
+              <span>He leído y acepto los <Link href="/terminos" target="_blank" className="underline">términos y condiciones</Link>.</span>
+            </label>
+            <label className="flex gap-2">
+              <input type="checkbox" name="accept_privacy" required className="mt-0.5 accent-ink" />
+              <span>Autorizo el tratamiento de mis datos personales según la <Link href="/privacidad" target="_blank" className="underline">política de tratamiento de datos personales</Link> (Ley 1581 de 2012).</span>
+            </label>
+          </div>
         )}
         {error && <p role="alert" className="rounded-lg bg-danger/10 p-3 text-sm text-danger">{error}</p>}
         {info && <p role="status" className="rounded-lg bg-success/10 p-3 text-sm text-success">{info}</p>}

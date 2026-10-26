@@ -4,6 +4,7 @@ import { isSupabaseConfigured } from "@/lib/supabase/env";
 import { createServiceClient } from "@/lib/supabase/admin";
 import { sendContactNotification } from "@/lib/email";
 import { rateLimit, TOO_MANY } from "@/lib/rate-limit";
+import { recordConsent } from "@/lib/consent";
 
 const schema = z.object({
   name: z.string().trim().min(2, "Escribe tu nombre").max(100),
@@ -26,6 +27,7 @@ export async function sendContact(_prev: ContactState, form: FormData): Promise<
   if (isSupabaseConfigured) {
     const { error } = await createServiceClient().from("contact_messages").insert({ ...msg, phone: msg.phone || null });
     if (error) return { ok: false, message: "No pudimos enviar tu mensaje. Intenta de nuevo o escríbenos por WhatsApp." };
+    await recordConsent({ context: "contacto", email: msg.email, terms: false, privacy: true });
     await sendContactNotification(msg);
   }
   return { ok: true, message: "¡Mensaje enviado! Te responderemos muy pronto. 💛" };

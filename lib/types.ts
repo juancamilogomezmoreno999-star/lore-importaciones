@@ -60,6 +60,7 @@ export type Order = {
   tracking: string | null;
   payment_id: string | null;
   stock_discounted: boolean;
+  data_consent?: boolean;
   created_at: string;
   updated_at: string;
 };

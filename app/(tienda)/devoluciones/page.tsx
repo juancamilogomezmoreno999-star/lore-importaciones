@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { LegalPage } from "@/components/LegalPage";
-import { legalContact, store, whatsappLink } from "@/lib/config";
+import { legalContact, store, whatsappLink, LEGAL_UPDATED } from "@/lib/config";
 
 export const metadata: Metadata = {
   title: "Cambios, devoluciones y reembolsos",
@@ -12,7 +12,7 @@ export const metadata: Metadata = {
 // Basado en la Ley 1480 de 2011 (Estatuto del Consumidor). Conviene que un abogado lo revise.
 export default function ReturnsPage() {
   return (
-    <LegalPage title="Cambios, devoluciones y reembolsos" updated="octubre de 2026">
+    <LegalPage title="Cambios, devoluciones y reembolsos" updated={LEGAL_UPDATED}>
       <p>Queremos que quedes feliz con tu compra. Si algo no salió bien, aquí te explicamos tus opciones, según el Estatuto del Consumidor (Ley 1480 de 2011).</p>
 
       <h2>1. Derecho de retracto (te arrepentiste)</h2>

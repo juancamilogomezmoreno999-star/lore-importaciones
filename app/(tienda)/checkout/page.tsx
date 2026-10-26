@@ -81,7 +81,8 @@ export default function CheckoutPage() {
         address: get("address"),
         notes: get("notes"),
         payment_method: method,
-        data_consent: f.get("data_consent") === "on",
+        accept_terms: f.get("accept_terms") === "on",
+        accept_privacy: f.get("accept_privacy") === "on",
         website: get("website"),
         save_profile: f.get("save_profile") === "on",
         items: items.map((i) => ({ productId: i.productId, quantity: i.quantity, variant: i.variant })),
@@ -222,10 +223,16 @@ export default function CheckoutPage() {
           </div>
           <div className="flex justify-between border-t border-ink/10 pt-3 text-lg font-bold"><span>Total</span><span>{formatCOP(subtotal + ship + fee)}</span></div>
 
-          <label className="flex gap-2 pt-2 text-xs leading-relaxed text-ink/70">
-            <input type="checkbox" name="data_consent" required className="mt-0.5 accent-ink" />
-            <span>Acepto los <Link href="/terminos" target="_blank" className="underline">términos y condiciones</Link> y autorizo el tratamiento de mis datos según la <Link href="/privacidad" target="_blank" className="underline">política de privacidad</Link> (Ley 1581 de 2012).</span>
-          </label>
+          <div className="space-y-2 pt-2 text-xs leading-relaxed text-ink/70">
+            <label className="flex gap-2">
+              <input type="checkbox" name="accept_terms" required className="mt-0.5 accent-ink" />
+              <span>He leído y acepto los <Link href="/terminos" target="_blank" className="underline">términos y condiciones</Link> y la <Link href="/devoluciones" target="_blank" className="underline">política de cambios y devoluciones</Link>.</span>
+            </label>
+            <label className="flex gap-2">
+              <input type="checkbox" name="accept_privacy" required className="mt-0.5 accent-ink" />
+              <span>Autorizo el tratamiento de mis datos personales según la <Link href="/privacidad" target="_blank" className="underline">política de tratamiento de datos personales</Link> (Ley 1581 de 2012).</span>
+            </label>
+          </div>
 
           {error && <p role="alert" className="rounded-lg bg-danger/10 p-3 text-sm font-medium text-danger">{error.msg}</p>}
 

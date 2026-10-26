@@ -4,6 +4,8 @@ import { redirect } from "next/navigation";
 import { z } from "zod";
 import { createSessionClient } from "@/lib/supabase/server";
 import { createServiceClient } from "@/lib/supabase/admin";
+import { recordConsent } from "@/lib/consent";
+import { rateLimit } from "@/lib/rate-limit";
 
 const profileSchema = z.object({
   full_name: z.string().trim().max(120),
@@ -37,4 +39,13 @@ export async function deleteAccount(): Promise<boolean> {
   if (error) return false;
   await supabase.auth.signOut({ scope: "local" });
   return true;
+}
+
+/** Guarda la prueba de que el cliente aceptó términos y privacidad al crear su cuenta. */
+export async function recordSignupConsent() {
+  if (!(await rateLimit("consentimiento", 10, 600))) return;
+  const supabase = await createSessionClient();
+  const { data: { user } } = await supabase.auth.getUser();
+  if (!user?.email) return;
+  await recordConsent({ context: "registro", email: user.email, terms: true, privacy: true, userId: user.id });
 }

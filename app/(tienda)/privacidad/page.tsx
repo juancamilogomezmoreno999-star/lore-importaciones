@@ -1,14 +1,14 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { LegalPage } from "@/components/LegalPage";
-import { legalContact, legalIdentity, store } from "@/lib/config";
+import { legalContact, legalIdentity, store, LEGAL_UPDATED, LEGAL_VERSION } from "@/lib/config";
 
 export const metadata: Metadata = { title: "Política de privacidad y tratamiento de datos", alternates: { canonical: "/privacidad" } };
 
 // Texto base conforme a la Ley 1581 de 2012 y el Decreto 1074 de 2015. Conviene que un abogado lo revise.
 export default function PrivacyPage() {
   return (
-    <LegalPage title="Política de privacidad y tratamiento de datos personales" updated="octubre de 2026">
+    <LegalPage title="Política de privacidad y tratamiento de datos personales" updated={LEGAL_UPDATED}>
       <p>En cumplimiento de la Ley Estatutaria 1581 de 2012, el Decreto 1377 de 2013 (compilado en el Decreto 1074 de 2015) y demás normas aplicables, {legalIdentity}, propietaria de {store.name}, informa cómo recolecta, usa y protege tus datos personales.</p>
 
       <h2>1. Responsable del tratamiento</h2>
@@ -58,10 +58,13 @@ export default function PrivacyPage() {
       <h2>7. Cómo ejercer tus derechos</h2>
       <p>Si tienes cuenta, puedes ver y actualizar tus datos, o eliminar tu cuenta, desde <Link href="/cuenta">Mi cuenta</Link>. Para cualquier otra solicitud, escríbenos {legalContact}, indicando tu nombre, cédula y tu solicitud. Las consultas se responden en máximo diez (10) días hábiles y los reclamos en máximo quince (15) días hábiles, según los artículos 14 y 15 de la Ley 1581 de 2012.</p>
 
-      <h2>8. Seguridad y conservación</h2>
+      <h2>8. Prueba de tu autorización</h2>
+      <p>Como lo exige el Decreto 1377 de 2013, guardamos una constancia de cada vez que aceptas nuestros documentos: qué aceptaste, la fecha y hora, la dirección IP y el navegador desde el que lo hiciste, y la versión del documento vigente ({LEGAL_VERSION}). Solo la usamos para demostrar que diste tu autorización.</p>
+
+      <h2>9. Seguridad y conservación</h2>
       <p>Tu información viaja cifrada (HTTPS) y solo la administradora del negocio tiene acceso al panel, protegido con usuario y contraseña. Conservamos los datos mientras sean necesarios para las finalidades descritas y para cumplir obligaciones legales.</p>
 
-      <h2>9. Vigencia</h2>
+      <h2>10. Vigencia</h2>
       <p>Esta política rige desde su publicación. Cualquier cambio importante será publicado en esta página.</p>
     </LegalPage>
   );

@@ -1,13 +1,13 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { LegalPage } from "@/components/LegalPage";
-import { store } from "@/lib/config";
+import { store, LEGAL_UPDATED } from "@/lib/config";
 
 export const metadata: Metadata = { title: "Política de cookies", alternates: { canonical: "/cookies" } };
 
 export default function CookiesPage() {
   return (
-    <LegalPage title="Política de cookies" updated="octubre de 2026">
+    <LegalPage title="Política de cookies" updated={LEGAL_UPDATED}>
       <p>Las cookies y el almacenamiento local son pequeños archivos que una página guarda en tu navegador. En {store.name} usamos <b>solo los estrictamente necesarios</b> para que la tienda funcione.</p>
 
       <h2>Lo que usamos</h2>
