@@ -24,6 +24,7 @@ export default function PrivacyPage() {
       <ul>
         <li><b>Para tu pedido:</b> nombre, cédula (la exigen las transportadoras y la facturación), celular, correo, departamento, ciudad y dirección de entrega.</li>
         <li><b>Para el formulario de contacto:</b> nombre, correo, celular (opcional) y tu mensaje.</li>
+        <li><b>Si creas una cuenta (opcional):</b> nombre, correo y contraseña (se guarda cifrada; nadie puede verla), tus datos de envío si decides guardarlos y los productos de tu carrito.</li>
       </ul>
       <p>No recolectamos ni guardamos datos de tarjetas ni cuentas bancarias: los pagos en línea los procesa directamente Bold, y las transferencias por Nequi o Llave se hacen desde tu propia aplicación.</p>
 
@@ -55,7 +56,7 @@ export default function PrivacyPage() {
       <p>Como titular de los datos tienes derecho a: conocer, actualizar y rectificar tus datos; solicitar prueba de la autorización otorgada; ser informado/a sobre el uso que les damos; presentar quejas ante la Superintendencia de Industria y Comercio (SIC); revocar la autorización o solicitar la supresión de tus datos cuando no exista un deber legal de conservarlos; y acceder gratuitamente a ellos.</p>
 
       <h2>7. Cómo ejercer tus derechos</h2>
-      <p>Escríbenos {legalContact}, indicando tu nombre, cédula y tu solicitud. Las consultas se responden en máximo diez (10) días hábiles y los reclamos en máximo quince (15) días hábiles, según los artículos 14 y 15 de la Ley 1581 de 2012.</p>
+      <p>Si tienes cuenta, puedes ver y actualizar tus datos, o eliminar tu cuenta, desde <Link href="/cuenta">Mi cuenta</Link>. Para cualquier otra solicitud, escríbenos {legalContact}, indicando tu nombre, cédula y tu solicitud. Las consultas se responden en máximo diez (10) días hábiles y los reclamos en máximo quince (15) días hábiles, según los artículos 14 y 15 de la Ley 1581 de 2012.</p>
 
       <h2>8. Seguridad y conservación</h2>
       <p>Tu información viaja cifrada (HTTPS) y solo la administradora del negocio tiene acceso al panel, protegido con usuario y contraseña. Conservamos los datos mientras sean necesarios para las finalidades descritas y para cumplir obligaciones legales.</p>

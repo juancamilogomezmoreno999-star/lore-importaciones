@@ -3,7 +3,7 @@ import { store } from "@/lib/config";
 
 export default function robots(): MetadataRoute.Robots {
   return {
-    rules: { userAgent: "*", allow: "/", disallow: ["/admin", "/api", "/checkout", "/carrito", "/pedido"] },
+    rules: { userAgent: "*", allow: "/", disallow: ["/admin", "/api", "/checkout", "/carrito", "/pedido", "/cuenta", "/auth"] },
     sitemap: `${store.siteUrl}/sitemap.xml`,
   };
 }

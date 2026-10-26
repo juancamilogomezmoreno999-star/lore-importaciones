@@ -14,7 +14,7 @@ export default function CookiesPage() {
       <ul>
         <li><b>Carrito de compras</b> (almacenamiento local de tu navegador): recuerda los productos que agregaste, aunque cierres la página.</li>
         <li><b>Aviso de cookies</b> (almacenamiento local): recuerda que ya viste este aviso para no mostrártelo otra vez.</li>
-        <li><b>Sesión del panel de administración</b> (cookies): solo para la administradora de la tienda; los clientes no la usan.</li>
+        <li><b>Sesión de tu cuenta</b> (cookies): solo si inicias sesión, para mantenerte conectado/a y guardar tu carrito en tu cuenta. También la usa la administradora en el panel.</li>
       </ul>
 
       <h2>Lo que NO usamos</h2>

@@ -4,7 +4,7 @@ import { usePathname } from "next/navigation";
 import { useEffect, useState } from "react";
 import { Logo } from "./Logo";
 import { useCart } from "./CartProvider";
-import { IconBag, IconClose, IconMenu, IconSearch } from "./icons";
+import { IconBag, IconClose, IconMenu, IconSearch, IconUser } from "./icons";
 
 const nav = [
   { href: "/catalogo", label: "Catálogo" },
@@ -14,7 +14,8 @@ const nav = [
 ];
 
 export function Header() {
-  const { count, ready } = useCart();
+  const { count, ready, user } = useCart();
+  const accountHref = user ? "/cuenta" : "/cuenta/ingresar";
   const [open, setOpen] = useState(false);
   const pathname = usePathname();
   useEffect(() => setOpen(false), [pathname]);
@@ -44,6 +45,10 @@ export function Header() {
         <div className="flex items-center gap-1">
           <Link href="/catalogo" className="hidden p-2 sm:block" aria-label="Buscar productos">
             <IconSearch />
+          </Link>
+          <Link href={accountHref} className="relative p-2" aria-label={user ? "Mi cuenta" : "Ingresar"}>
+            <IconUser />
+            {user && <span className="absolute right-1.5 top-1.5 h-2.5 w-2.5 rounded-full bg-success ring-2 ring-cream" />}
           </Link>
           <Link href="/carrito" className="relative -mr-2 p-2" aria-label={`Carrito, ${count} productos`}>
             <IconBag />
@@ -75,7 +80,10 @@ export function Header() {
                 </Link>
               ))}
             </nav>
-            <Link href="/carrito" className="btn-primary mt-auto">
+            <Link href={accountHref} className="btn-outline mt-auto">
+              <IconUser /> {user ? "Mi cuenta" : "Ingresar o crear cuenta"}
+            </Link>
+            <Link href="/carrito" className="btn-primary mt-3">
               <IconBag /> Ver carrito {ready && count > 0 ? `(${count})` : ""}
             </Link>
           </div>

@@ -10,16 +10,40 @@ import { cashOnDeliveryAllowed, COD_ONLY_IMMEDIATE_MSG, ONLINE_FEE_LABEL, online
 import { payments } from "@/lib/config";
 import { departamentos } from "@/lib/colombia";
 import { createOrder } from "./actions";
+import { createBrowserSupabase } from "@/lib/supabase/browser";
 
 type Method = "en_linea" | "contra_entrega" | "nequi";
 
 export default function CheckoutPage() {
-  const { items, subtotal, ready, clear } = useCart();
+  const { items, subtotal, ready, clear, user } = useCart();
+  const [saved, setSaved] = useState<Record<string, string> | null>(null);
   const router = useRouter();
   const [pending, start] = useTransition();
   const [error, setError] = useState<{ msg: string; field?: string } | null>(null);
   const [method, setMethod] = useState<Method>(payments.nequi.enabled ? "nequi" : "en_linea");
   const [city, setCity] = useState("");
+
+  // Si el cliente tiene cuenta, llenamos el formulario con sus datos guardados
+  useEffect(() => {
+    if (!user) return;
+    createBrowserSupabase()
+      .from("customer_profiles")
+      .select("full_name, document, phone, department, city, address")
+      .eq("user_id", user.id)
+      .maybeSingle()
+      .then(({ data }) => {
+        const d = {
+          customer_name: data?.full_name || user.user_metadata?.full_name || "",
+          customer_document: data?.document || "",
+          phone: data?.phone || "",
+          email: user.email || "",
+          department: data?.department || "",
+          address: data?.address || "",
+        };
+        setSaved(d);
+        if (data?.city) setCity(data.city);
+      });
+  }, [user]);
 
   const allImmediate = items.length > 0 && items.every((i) => i.immediate);
   const codCityOk = city === "" || cashOnDeliveryAllowed(city);
@@ -59,6 +83,7 @@ export default function CheckoutPage() {
         payment_method: method,
         data_consent: f.get("data_consent") === "on",
         website: get("website"),
+        save_profile: f.get("save_profile") === "on",
         items: items.map((i) => ({ productId: i.productId, quantity: i.quantity, variant: i.variant })),
       });
       if (!res.ok) {
@@ -76,27 +101,32 @@ export default function CheckoutPage() {
   return (
     <div className="container-x py-8">
       <h1 className="text-3xl font-semibold">Finalizar compra</h1>
-      <form onSubmit={onSubmit} className="mt-6 grid gap-6 lg:grid-cols-[1fr_380px]">
+      <form key={saved ? "con-datos" : "sin-datos"} onSubmit={onSubmit} className="mt-6 grid gap-6 lg:grid-cols-[1fr_380px]">
         <div className="space-y-6">
           <section className="card space-y-4 p-5">
             <h2 className="font-sans text-lg font-semibold">1. Tus datos</h2>
+            {!user && (
+              <p className="rounded-xl bg-sand/70 p-3 text-sm">
+                ¿Tienes cuenta? <Link href="/cuenta/ingresar?next=/checkout" className="font-semibold underline">Ingresa</Link> y llenamos estos datos por ti. También puedes comprar sin cuenta.
+              </p>
+            )}
             <div>
               <label className="label" htmlFor="customer_name">Nombre completo</label>
-              <input id="customer_name" name="customer_name" required autoComplete="name" className={`input ${fieldErr("customer_name")}`} />
+              <input id="customer_name" name="customer_name" defaultValue={saved?.customer_name} required autoComplete="name" className={`input ${fieldErr("customer_name")}`} />
             </div>
             <div className="grid gap-4 sm:grid-cols-2">
               <div>
                 <label className="label" htmlFor="customer_document">Cédula</label>
-                <input id="customer_document" name="customer_document" required inputMode="numeric" pattern="\d{5,12}" title="Solo números" className={`input ${fieldErr("customer_document")}`} />
+                <input id="customer_document" name="customer_document" defaultValue={saved?.customer_document} required inputMode="numeric" pattern="\d{5,12}" title="Solo números" className={`input ${fieldErr("customer_document")}`} />
               </div>
               <div>
                 <label className="label" htmlFor="phone">Celular (WhatsApp)</label>
-                <input id="phone" name="phone" required type="tel" inputMode="tel" autoComplete="tel-national" placeholder="300 123 4567" className={`input ${fieldErr("phone")}`} />
+                <input id="phone" name="phone" defaultValue={saved?.phone} required type="tel" inputMode="tel" autoComplete="tel-national" placeholder="300 123 4567" className={`input ${fieldErr("phone")}`} />
               </div>
             </div>
             <div>
               <label className="label" htmlFor="email">Correo electrónico</label>
-              <input id="email" name="email" type="email" required autoComplete="email" placeholder="para enviarte el estado de tu pedido" className={`input ${fieldErr("email")}`} />
+              <input id="email" name="email" type="email" defaultValue={saved?.email} required autoComplete="email" placeholder="para enviarte el estado de tu pedido" className={`input ${fieldErr("email")}`} />
             </div>
           </section>
 
@@ -105,7 +135,7 @@ export default function CheckoutPage() {
             <div className="grid gap-4 sm:grid-cols-2">
               <div>
                 <label className="label" htmlFor="department">Departamento</label>
-                <select id="department" name="department" required defaultValue="" className={`input ${fieldErr("department")}`}>
+                <select id="department" name="department" required defaultValue={saved?.department ?? ""} className={`input ${fieldErr("department")}`}>
                   <option value="" disabled>Elige…</option>
                   {departamentos.map((d) => <option key={d}>{d}</option>)}
                 </select>
@@ -117,13 +147,19 @@ export default function CheckoutPage() {
             </div>
             <div>
               <label className="label" htmlFor="address">Dirección completa</label>
-              <input id="address" name="address" required autoComplete="street-address" placeholder="Calle, número, barrio, apto/casa" className={`input ${fieldErr("address")}`} />
+              <input id="address" name="address" defaultValue={saved?.address} required autoComplete="street-address" placeholder="Calle, número, barrio, apto/casa" className={`input ${fieldErr("address")}`} />
             </div>
             <div>
               <label className="label" htmlFor="notes">Notas para la entrega (opcional)</label>
               <textarea id="notes" name="notes" rows={2} maxLength={500} placeholder="Ej: dejar en portería, llamar antes de llegar" className="input" />
             </div>
             <input type="text" name="website" tabIndex={-1} autoComplete="off" className="hidden" aria-hidden />
+            {user && (
+              <label className="flex items-center gap-2 text-sm">
+                <input type="checkbox" name="save_profile" defaultChecked className="h-5 w-5 accent-ink" />
+                Guardar estos datos en mi cuenta para próximas compras
+              </label>
+            )}
           </section>
 
           <section className="card space-y-3 p-5">

@@ -3,6 +3,7 @@ import { z } from "zod";
 import type { Order, OrderItem, Product } from "@/lib/types";
 import { isSupabaseConfigured } from "@/lib/supabase/env";
 import { createServiceClient } from "@/lib/supabase/admin";
+import { createSessionClient } from "@/lib/supabase/server";
 import { sampleProducts } from "@/lib/sample-products";
 import { cashOnDeliveryAllowed, COD_ONLY_IMMEDIATE_MSG, ONLINE_FEE_LABEL, onlineFeeFor, shippingFor } from "@/lib/orders";
 import { payments } from "@/lib/config";
@@ -21,6 +22,7 @@ const schema = z.object({
   payment_method: z.enum(["en_linea", "contra_entrega", "nequi"]),
   data_consent: z.boolean().refine((v) => v, "Debes aceptar la política de tratamiento de datos"),
   website: z.string().max(0).optional(), // campo trampa anti-spam
+  save_profile: z.boolean().optional(),
   items: z
     .array(
       z.object({
@@ -106,9 +108,10 @@ export async function createOrder(input: CheckoutInput): Promise<CheckoutResult>
   }
 
   const isCod = data.payment_method === "contra_entrega";
-  const { data: order, error } = await db
-    .from("orders")
-    .insert({
+
+  // Si el cliente inició sesión, el pedido queda ligado a su cuenta ("Mis pedidos")
+  const { data: { user } } = await (await createSessionClient()).auth.getUser();
+  const orderRow: Record<string, unknown> = {
       customer_name: data.customer_name,
       customer_document: data.customer_document,
       phone: data.phone,
@@ -125,9 +128,28 @@ export async function createOrder(input: CheckoutInput): Promise<CheckoutResult>
       payment_status: isCod ? "contra_entrega" : "pendiente",
       status: "pendiente",
       data_consent: true,
-    })
+    };
+  let { data: order, error } = await db
+    .from("orders")
+    .insert(user ? { ...orderRow, user_id: user.id } : orderRow)
     .select("*")
     .single<Order>();
+  if (error && user) {
+    // Por si la columna user_id aún no existe en la base de datos
+    ({ data: order, error } = await db.from("orders").insert(orderRow).select("*").single<Order>());
+  }
+  if (user && data.save_profile) {
+    await db.from("customer_profiles").upsert({
+      user_id: user.id,
+      full_name: data.customer_name,
+      document: data.customer_document,
+      phone: data.phone,
+      department: data.department,
+      city: data.city,
+      address: data.address,
+      updated_at: new Date().toISOString(),
+    });
+  }
   if (error || !order) {
     console.error("createOrder", error?.message);
     return { ok: false, error: "No pudimos guardar tu pedido. Intenta de nuevo o escríbenos por WhatsApp." };
