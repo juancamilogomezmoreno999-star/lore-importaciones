@@ -21,11 +21,13 @@ Panel: https://importaciones-lore-opzt.vercel.app/admin
 - Costo de la pasarela (6%) sumado a los pagos en línea; envío fijo de $15.000 sin envío gratis
 - Pago por Nequi o Llave (318 200 4203) como opción recomendada; se confirma en el panel cambiando el pedido a Pagado
 - Productos de entrega inmediata (⚡); contra entrega solo para esos productos
+- Logo, colores de marca y videos reales (presentación de Lorena y pedidos llegando)
+- Revisión legal: políticas de privacidad, cookies, devoluciones y términos; datos del negocio (NIT 31.573.414-7, Cali); sin testimonios de ejemplo
 
 ## Por hacer (en este orden)
 1. **Preguntar a Bold** si permiten trasladar la comisión al cliente, y confirmar si el 6% incluye retenciones.
 2. **Productos reales**: subirlos desde el panel y ocultar los 6 de ejemplo.
-3. **Textos**: cambiar los testimonios de ejemplo, revisar preguntas frecuentes y poner NIT/cédula en `lib/config.ts`.
+3. **Testimonios reales** de clientes (con su permiso) y que un abogado revise los textos legales.
 4. **Cambiar la llave secreta de Supabase** (quedó escrita en el chat).
 5. **Correos automáticos** con Resend.
 6. **Dominio propio** (.com o .co).
