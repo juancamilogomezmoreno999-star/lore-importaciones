@@ -36,9 +36,9 @@ const faqs: { group: string; items: { q: string; a: string }[] }[] = [
     group: "Garantías y devoluciones",
     items: [
       { q: "¿Los productos son originales?", a: "Sí, 100%. Los compramos en tiendas oficiales y distribuidores autorizados de Estados Unidos. Si quieres, te compartimos el soporte de compra." },
-      { q: "¿Tienen garantía?", a: "Sí. Todos los productos tienen la garantía legal que establece el Estatuto del Consumidor (Ley 1480 de 2011). Si tu producto llega con un defecto de fábrica, escríbenos dentro de los primeros días con fotos o video y te damos solución: reparación, cambio o devolución del dinero." },
+      { q: "¿Tienen garantía?", a: "Sí. La garantía es la que establece cada marca o fabricante para su producto. Si tu producto llega con un defecto de fábrica, escríbenos con fotos o video y tu número de pedido, y te ayudamos a gestionarla. No cubre daños por mal uso, golpes o humedad." },
       { q: "¿Puedo devolver un producto?", a: "Sí. Por ser una compra a distancia tienes derecho de retracto: puedes devolver el producto dentro de los 5 días hábiles siguientes a la entrega, sin usar, con sus etiquetas y empaque original. Te devolvemos el dinero en máximo 30 días calendario. Los costos de transporte de la devolución corren por tu cuenta. Todos los detalles están en la página Cambios y devoluciones." },
-      { q: "¿Y si me equivoqué de talla?", a: "¡Tranquilo/a! Escríbenos apenas lo recibas. Si el producto está sin usar, te ayudamos con el cambio de talla según disponibilidad." },
+      { q: "¿Y si me equivoqué de talla?", a: "Escríbenos dentro de los 5 días hábiles siguientes a la entrega. Si el producto está sin usar y con etiquetas, te ayudamos con el cambio según disponibilidad. Los envíos del cambio (ida y vuelta) los paga el cliente." },
     ],
   },
 ];

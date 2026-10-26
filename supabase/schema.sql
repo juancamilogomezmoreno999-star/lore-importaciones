@@ -208,7 +208,7 @@ values
  'Belleza', 319900, 380000, array['/demo/perfume-1.svg','/demo/perfume-2.svg'],
  '[]', 9, '1 a 3 días hábiles (disponible en Colombia)', true, true),
 ('audifonos-inalambricos-anc', 'Audífonos inalámbricos con cancelación de ruido',
- E'Sonido envolvente, cancelación activa de ruido y hasta 30 horas de batería. Plegables, con estuche rígido y carga rápida USB-C.\n\n• Bluetooth 5.3\n• Micrófono para llamadas\n• Garantía de 3 meses con nosotros',
+ E'Sonido envolvente, cancelación activa de ruido y hasta 30 horas de batería. Plegables, con estuche rígido y carga rápida USB-C.\n\n• Bluetooth 5.3\n• Micrófono para llamadas\n• Garantía según la marca',
  'Tecnología', 459900, 529900, array['/demo/audifonos-1.svg','/demo/audifonos-2.svg'],
  '[{"name":"Color","options":["Negro","Plateado"]}]', 4, '10 a 15 días hábiles', true, false),
 ('set-cuidado-facial', 'Set de cuidado facial: sérum + crema hidratante',

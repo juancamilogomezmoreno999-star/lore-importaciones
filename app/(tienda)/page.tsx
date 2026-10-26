@@ -34,10 +34,7 @@ export default async function HomePage() {
             <h1 className="mt-4 text-[2.1rem] font-semibold leading-[1.12] sm:text-5xl md:text-[3.4rem]">
               Te traemos lo mejor de USA, <span className="text-gold-light italic">directo a la puerta de tu casa</span>
             </h1>
-            <p className="mt-5 flex flex-wrap items-center gap-2 text-base text-white/80 sm:text-lg">
-              <span className="rounded-full bg-gold/15 px-3 py-1 font-semibold text-gold-light ring-1 ring-gold/40">Al mejor precio</span>
-              <span>en todas las ciudades de Colombia 🇨🇴</span>
-            </p>
+            <p className="mt-5 text-base text-white/80 sm:text-lg">En todas las ciudades de Colombia 🇨🇴</p>
             <div className="mt-8 flex flex-col gap-3 sm:flex-row">
               <Link href="/catalogo" className="btn-gold">Ver catálogo <IconChevron width={18} /></Link>
               <a href={whatsappLink("¡Hola! Quiero una asesoría personalizada 🙌")} target="_blank" rel="noopener" className="btn border border-white/25 text-white hover:bg-white/10">

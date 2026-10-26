@@ -60,7 +60,7 @@ export const sampleProducts: Product[] = [
     slug: "audifonos-inalambricos-anc",
     name: "Audífonos inalámbricos con cancelación de ruido",
     description:
-      "Sonido envolvente, cancelación activa de ruido y hasta 30 horas de batería. Plegables, con estuche rígido y carga rápida USB-C.\n\n• Bluetooth 5.3\n• Micrófono para llamadas\n• Garantía de 3 meses con nosotros",
+      "Sonido envolvente, cancelación activa de ruido y hasta 30 horas de batería. Plegables, con estuche rígido y carga rápida USB-C.\n\n• Bluetooth 5.3\n• Micrófono para llamadas\n• Garantía según la marca",
     category: "Tecnología",
     price: 459900,
     compare_at_price: 529900,

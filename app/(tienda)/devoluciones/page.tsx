@@ -24,13 +24,20 @@ export default function ReturnsPage() {
       </ul>
 
       <h2>2. Cambios de talla o color</h2>
-      <p>Escríbenos apenas recibas el producto. Si está sin usar y con etiquetas, te ayudamos con el cambio según disponibilidad. Si el producto debe pedirse de nuevo a Estados Unidos, el nuevo envío tiene el mismo tiempo de entrega del producto.</p>
+      <p>Los cambios de talla o color son una cortesía, no una obligación legal, y funcionan así:</p>
+      <ul>
+        <li>Debes solicitarlo dentro de los 5 días hábiles siguientes a la entrega.</li>
+        <li>El producto debe estar sin usar, con etiquetas y en su empaque original.</li>
+        <li>Están <b>sujetos a disponibilidad</b>. Si la talla o el color no están disponibles, te ofrecemos otro producto o aplicas al derecho de retracto.</li>
+        <li><b>Los costos de envío del cambio (ida y vuelta) los paga el cliente.</b></li>
+        <li>Si el producto debe pedirse de nuevo a Estados Unidos, tendrá el mismo tiempo de entrega del producto original y puede tener una diferencia de precio.</li>
+      </ul>
 
       <h2>3. Garantía (el producto llegó con un defecto)</h2>
       <ul>
-        <li>Todos los productos tienen la garantía legal por calidad, idoneidad y seguridad.</li>
-        <li>Escríbenos con fotos o video del defecto. Según el caso, haremos la reparación, el cambio por otro igual o la devolución del dinero.</li>
-        <li>La garantía no cubre daños por mal uso, golpes, humedad o desgaste normal.</li>
+        <li>El término y las condiciones de la garantía son <b>los que establece cada marca o fabricante</b> para el producto. Si la marca no indica un término, aplica el término legal del artículo 8 de la Ley 1480 de 2011.</li>
+        <li>Escríbenos con fotos o video del defecto y el número de pedido. Revisamos el caso y, según corresponda, gestionamos la reparación, el cambio por otro igual o la devolución del dinero.</li>
+        <li>La garantía no cubre daños por mal uso, golpes, caídas, humedad, instalación incorrecta, modificaciones ni desgaste normal.</li>
       </ul>
 
       <h2>4. Reversión del pago</h2>

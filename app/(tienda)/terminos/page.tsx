@@ -30,7 +30,7 @@ export default function TermsPage() {
       <p>Cada producto indica un tiempo estimado de entrega en días hábiles, contado desde la confirmación del pago. Son tiempos aproximados que pueden variar por causas ajenas a nosotros (aduana, transportadoras, clima, festivos en Colombia o Estados Unidos). Te mantendremos informado/a por correo y WhatsApp.</p>
 
       <h2>5. Retracto, garantías y reembolsos</h2>
-      <p>Tienes derecho de retracto dentro de los 5 días hábiles siguientes a la entrega (artículo 47 de la Ley 1480), garantía legal por calidad e idoneidad, y derecho a solicitar la reversión del pago en los casos del artículo 51 de la Ley 1480. Todos los detalles están en nuestra <Link href="/devoluciones">política de cambios, devoluciones y reembolsos</Link>.</p>
+      <p>Tienes derecho de retracto dentro de los 5 días hábiles siguientes a la entrega (artículo 47 de la Ley 1480), garantía según los términos de cada marca o fabricante (artículo 8 de la Ley 1480), y derecho a solicitar la reversión del pago en los casos del artículo 51 de la Ley 1480. Todos los detalles están en nuestra <Link href="/devoluciones">política de cambios, devoluciones y reembolsos</Link>.</p>
 
       <h2>6. Imágenes y marcas</h2>
       <p>Las fotos de esta página son propias o se usan con autorización. Las marcas de los productos pertenecen a sus respectivos dueños; {store.name} es un importador independiente y no es distribuidor oficial ni representante de esas marcas.</p>

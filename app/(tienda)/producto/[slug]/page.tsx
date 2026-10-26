@@ -89,7 +89,7 @@ export default async function ProductPage({ params }: Props) {
           <ul className="mt-6 space-y-3 rounded-2xl bg-white p-5 text-sm">
             <li className="flex gap-3"><IconClock width={20} className="shrink-0 text-gold-dark" /><span><b>Tiempo de entrega:</b> {product.delivery_time}</span></li>
             <li className="flex gap-3"><IconTruck width={20} className="shrink-0 text-gold-dark" /><span><b>Envío a toda Colombia</b>{shipping.freeFrom > 0 ? ` · gratis en compras desde ${formatCOP(shipping.freeFrom)}` : ""}</span></li>
-            <li className="flex gap-3"><IconShield width={20} className="shrink-0 text-gold-dark" /><span><b>Original y garantizado.</b> Pago seguro con tarjeta, PSE o Nequi.</span></li>
+            <li className="flex gap-3"><IconShield width={20} className="shrink-0 text-gold-dark" /><span><b>Producto original.</b> Garantía según la marca. Paga con Nequi o Llave, PSE o tarjeta.</span></li>
           </ul>
 
           <div className="mt-8">
