@@ -10,6 +10,7 @@ import { cashOnDeliveryAllowed, COD_ONLY_IMMEDIATE_MSG, ONLINE_FEE_LABEL, online
 import { payments } from "@/lib/config";
 import { departamentos } from "@/lib/colombia";
 import { createOrder } from "./actions";
+import { FieldError } from "@/components/FieldError";
 import { createBrowserSupabase } from "@/lib/supabase/browser";
 
 type Method = "en_linea" | "contra_entrega" | "nequi";
@@ -20,6 +21,7 @@ export default function CheckoutPage() {
   const router = useRouter();
   const [pending, start] = useTransition();
   const [error, setError] = useState<{ msg: string; field?: string } | null>(null);
+  const [errors, setErrors] = useState<Record<string, string>>({});
   const [method, setMethod] = useState<Method>(payments.nequi.enabled ? "nequi" : "en_linea");
   const [city, setCity] = useState("");
 
@@ -65,11 +67,36 @@ export default function CheckoutPage() {
     );
   }
 
+  const validate = (f: FormData) => {
+    const get = (k: string) => String(f.get(k) ?? "").trim();
+    const e: Record<string, string> = {};
+    if (get("customer_name").length < 3) e.customer_name = "Escribe tu nombre completo.";
+    if (!/^\d{5,12}$/.test(get("customer_document"))) e.customer_document = "Escribe tu cédula, solo números (5 a 12 dígitos).";
+    const phone = get("phone").replace(/\D/g, "").replace(/^57/, "");
+    if (!/^3\d{9}$/.test(phone)) e.phone = "Escribe un celular colombiano de 10 dígitos (ej: 300 123 4567).";
+    if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(get("email"))) e.email = "Escribe un correo válido (ej: nombre@gmail.com).";
+    if (!get("department")) e.department = "Elige tu departamento.";
+    if (get("city").length < 2) e.city = "Escribe tu ciudad o municipio.";
+    if (get("address").length < 6) e.address = "Escribe tu dirección completa.";
+    if (f.get("accept_terms") !== "on") e.accept_terms = "Debes aceptar los términos y condiciones para continuar.";
+    if (f.get("accept_privacy") !== "on") e.accept_privacy = "Debes autorizar el tratamiento de tus datos para continuar.";
+    return e;
+  };
+
   const onSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     const f = new FormData(e.currentTarget);
     const get = (k: string) => String(f.get(k) ?? "");
     setError(null);
+    const found = validate(f);
+    setErrors(found);
+    const first = Object.keys(found)[0];
+    if (first) {
+      const el = document.getElementsByName(first)[0] as HTMLElement | undefined;
+      el?.scrollIntoView({ behavior: "smooth", block: "center" });
+      el?.focus({ preventScroll: true });
+      return;
+    }
     start(async () => {
       const res = await createOrder({
         customer_name: get("customer_name"),
@@ -88,7 +115,11 @@ export default function CheckoutPage() {
         items: items.map((i) => ({ productId: i.productId, quantity: i.quantity, variant: i.variant })),
       });
       if (!res.ok) {
-        setError({ msg: res.error, field: res.field });
+        if (res.field && res.field in { customer_name: 1, customer_document: 1, phone: 1, email: 1, department: 1, city: 1, address: 1, accept_terms: 1, accept_privacy: 1 }) {
+          setErrors({ [res.field]: res.error });
+        } else {
+          setError({ msg: res.error, field: res.field });
+        }
         if (res.field) document.getElementsByName(res.field)[0]?.focus();
         return;
       }
@@ -97,12 +128,20 @@ export default function CheckoutPage() {
     });
   };
 
-  const fieldErr = (name: string) => (error?.field === name ? "!border-danger" : "");
+  const fieldErr = (name: string) => (errors[name] || error?.field === name ? "!border-danger focus:!ring-danger/20" : "");
+  const aria = (name: string) => (errors[name] ? { "aria-invalid": true, "aria-describedby": `${name}-error` } : {});
 
   return (
     <div className="container-x py-8">
       <h1 className="text-3xl font-semibold">Finalizar compra</h1>
-      <form key={saved ? "con-datos" : "sin-datos"} onSubmit={onSubmit} className="mt-6 grid gap-6 lg:grid-cols-[1fr_380px]">
+      <form
+        key={saved ? "con-datos" : "sin-datos"}
+        noValidate
+        onSubmit={onSubmit}
+        onChange={(e) => {
+          const n = (e.target as unknown as HTMLInputElement).name;
+          if (errors[n]) setErrors(({ [n]: _, ...rest }) => rest);
+        }} className="mt-6 grid gap-6 lg:grid-cols-[1fr_380px]">
         <div className="space-y-6">
           <section className="card space-y-4 p-5">
             <h2 className="font-sans text-lg font-semibold">1. Tus datos</h2>
@@ -113,21 +152,25 @@ export default function CheckoutPage() {
             )}
             <div>
               <label className="label" htmlFor="customer_name">Nombre completo</label>
-              <input id="customer_name" name="customer_name" defaultValue={saved?.customer_name} required autoComplete="name" className={`input ${fieldErr("customer_name")}`} />
+              <input id="customer_name" {...aria("customer_name")} name="customer_name" defaultValue={saved?.customer_name} required autoComplete="name" className={`input ${fieldErr("customer_name")}`} />
+              <FieldError id="customer_name" msg={errors.customer_name} />
             </div>
             <div className="grid gap-4 sm:grid-cols-2">
               <div>
                 <label className="label" htmlFor="customer_document">Cédula</label>
-                <input id="customer_document" name="customer_document" defaultValue={saved?.customer_document} required inputMode="numeric" pattern="\d{5,12}" title="Solo números" className={`input ${fieldErr("customer_document")}`} />
+                <input id="customer_document" {...aria("customer_document")} name="customer_document" defaultValue={saved?.customer_document} required inputMode="numeric" pattern="\d{5,12}" title="Solo números" className={`input ${fieldErr("customer_document")}`} />
+              <FieldError id="customer_document" msg={errors.customer_document} />
               </div>
               <div>
                 <label className="label" htmlFor="phone">Celular (WhatsApp)</label>
-                <input id="phone" name="phone" defaultValue={saved?.phone} required type="tel" inputMode="tel" autoComplete="tel-national" placeholder="300 123 4567" className={`input ${fieldErr("phone")}`} />
+                <input id="phone" {...aria("phone")} name="phone" defaultValue={saved?.phone} required type="tel" inputMode="tel" autoComplete="tel-national" placeholder="300 123 4567" className={`input ${fieldErr("phone")}`} />
+              <FieldError id="phone" msg={errors.phone} />
               </div>
             </div>
             <div>
               <label className="label" htmlFor="email">Correo electrónico</label>
-              <input id="email" name="email" type="email" defaultValue={saved?.email} required autoComplete="email" placeholder="para enviarte el estado de tu pedido" className={`input ${fieldErr("email")}`} />
+              <input id="email" {...aria("email")} name="email" type="email" defaultValue={saved?.email} required autoComplete="email" placeholder="para enviarte el estado de tu pedido" className={`input ${fieldErr("email")}`} />
+              <FieldError id="email" msg={errors.email} />
             </div>
           </section>
 
@@ -136,19 +179,22 @@ export default function CheckoutPage() {
             <div className="grid gap-4 sm:grid-cols-2">
               <div>
                 <label className="label" htmlFor="department">Departamento</label>
-                <select id="department" name="department" required defaultValue={saved?.department ?? ""} className={`input ${fieldErr("department")}`}>
+                <select id="department" {...aria("department")} name="department" required defaultValue={saved?.department ?? ""} className={`input ${fieldErr("department")}`}>
                   <option value="" disabled>Elige…</option>
                   {departamentos.map((d) => <option key={d}>{d}</option>)}
                 </select>
+                <FieldError id="department" msg={errors.department} />
               </div>
               <div>
                 <label className="label" htmlFor="city">Ciudad o municipio</label>
-                <input id="city" name="city" required autoComplete="address-level2" value={city} onChange={(e) => setCity(e.target.value)} className={`input ${fieldErr("city")}`} />
+                <input id="city" {...aria("city")} name="city" required autoComplete="address-level2" value={city} onChange={(e) => setCity(e.target.value)} className={`input ${fieldErr("city")}`} />
+              <FieldError id="city" msg={errors.city} />
               </div>
             </div>
             <div>
               <label className="label" htmlFor="address">Dirección completa</label>
-              <input id="address" name="address" defaultValue={saved?.address} required autoComplete="street-address" placeholder="Calle, número, barrio, apto/casa" className={`input ${fieldErr("address")}`} />
+              <input id="address" {...aria("address")} name="address" defaultValue={saved?.address} required autoComplete="street-address" placeholder="Calle, número, barrio, apto/casa" className={`input ${fieldErr("address")}`} />
+              <FieldError id="address" msg={errors.address} />
             </div>
             <div>
               <label className="label" htmlFor="notes">Notas para la entrega (opcional)</label>
@@ -225,13 +271,15 @@ export default function CheckoutPage() {
 
           <div className="space-y-2 pt-2 text-xs leading-relaxed text-ink/70">
             <label className="flex gap-2">
-              <input type="checkbox" name="accept_terms" required className="mt-0.5 accent-ink" />
+              <input type="checkbox" name="accept_terms" {...aria("accept_terms")} className={`mt-0.5 h-4 w-4 shrink-0 accent-ink ${errors.accept_terms ? "outline outline-2 outline-offset-1 outline-danger" : ""}`} />
               <span>He leído y acepto los <Link href="/terminos" target="_blank" className="underline">términos y condiciones</Link> y la <Link href="/devoluciones" target="_blank" className="underline">política de cambios y devoluciones</Link>.</span>
             </label>
+            <FieldError id="accept_terms" msg={errors.accept_terms} />
             <label className="flex gap-2">
-              <input type="checkbox" name="accept_privacy" required className="mt-0.5 accent-ink" />
+              <input type="checkbox" name="accept_privacy" {...aria("accept_privacy")} className={`mt-0.5 h-4 w-4 shrink-0 accent-ink ${errors.accept_privacy ? "outline outline-2 outline-offset-1 outline-danger" : ""}`} />
               <span>Autorizo el tratamiento de mis datos personales según la <Link href="/privacidad" target="_blank" className="underline">política de tratamiento de datos personales</Link> (Ley 1581 de 2012).</span>
             </label>
+            <FieldError id="accept_privacy" msg={errors.accept_privacy} />
           </div>
 
           {error && <p role="alert" className="rounded-lg bg-danger/10 p-3 text-sm font-medium text-danger">{error.msg}</p>}

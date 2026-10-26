@@ -6,6 +6,7 @@ import { createBrowserSupabase } from "@/lib/supabase/browser";
 import { isSupabaseConfigured } from "@/lib/supabase/env";
 import { LEGAL_VERSION } from "@/lib/config";
 import { recordSignupConsent } from "../actions";
+import { FieldError } from "@/components/FieldError";
 
 const errors: Record<string, string> = {
   "Invalid login credentials": "Correo o contraseña incorrectos.",
@@ -24,13 +25,34 @@ export function AuthForm() {
   const [error, setError] = useState("");
   const [info, setInfo] = useState("");
   const [pending, setPending] = useState(false);
+  const [errors, setErrors] = useState<Record<string, string>>({});
+  const aria = (name: string) => (errors[name] ? { "aria-invalid": true, "aria-describedby": `${name}-error` } : {});
+  const clearOnChange = (e: React.FormEvent<HTMLFormElement>) => {
+    const n = (e.target as unknown as HTMLInputElement).name;
+    if (errors[n]) setErrors(({ [n]: _, ...rest }) => rest);
+  };
+  const focusFirst = (found: Record<string, string>) => {
+    const first = Object.keys(found)[0];
+    const el = first ? (document.getElementsByName(first)[0] as HTMLElement | undefined) : undefined;
+    el?.scrollIntoView({ behavior: "smooth", block: "center" });
+    el?.focus({ preventScroll: true });
+  };
 
   const submit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    if (!isSupabaseConfigured) return setError("Las cuentas no están disponibles en modo demostración.");
     const f = new FormData(e.currentTarget);
     const email = String(f.get("email") ?? "").trim().toLowerCase();
     const password = String(f.get("password") ?? "");
+    const found: Record<string, string> = {};
+    if (mode === "registro" && String(f.get("name") ?? "").trim().length < 3) found.name = "Escribe tu nombre completo.";
+    if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) found.email = "Escribe un correo válido (ej: nombre@gmail.com).";
+    if (!password) found.password = "Escribe tu contraseña.";
+    else if (mode === "registro" && password.length < 8) found.password = "La contraseña debe tener mínimo 8 caracteres.";
+    if (mode === "registro" && f.get("accept_terms") !== "on") found.accept_terms = "Debes aceptar los términos y condiciones para crear tu cuenta.";
+    if (mode === "registro" && f.get("accept_privacy") !== "on") found.accept_privacy = "Debes autorizar el tratamiento de tus datos para crear tu cuenta.";
+    setErrors(found);
+    if (Object.keys(found).length) return focusFirst(found);
+    if (!isSupabaseConfigured) return setError("Las cuentas no están disponibles en modo demostración.");
     setError("");
     setInfo("");
     setPending(true);
@@ -73,39 +95,44 @@ export function AuthForm() {
           <button
             key={m}
             type="button"
-            onClick={() => { setMode(m); setError(""); setInfo(""); }}
+            onClick={() => { setMode(m); setError(""); setInfo(""); setErrors({}); }}
             className={`rounded-full py-2.5 transition ${mode === m ? "bg-ink text-gold-light" : "text-ink/70"}`}
           >
             {m === "ingresar" ? "Ingresar" : "Crear cuenta"}
           </button>
         ))}
       </div>
-      <form onSubmit={submit} className="space-y-4">
+      <form onSubmit={submit} onChange={clearOnChange} noValidate className="space-y-4">
         {mode === "registro" && (
           <div>
             <label className="label" htmlFor="name">Nombre completo</label>
-            <input id="name" name="name" required autoComplete="name" className="input" />
+            <input id="name" {...aria("name")} name="name" autoComplete="name" className={`input ${errors.name ? "!border-danger focus:!ring-danger/20" : ""}`} />
+        <FieldError id="name" msg={errors.name} />
           </div>
         )}
         <div>
           <label className="label" htmlFor="email">Correo</label>
-          <input id="email" name="email" type="email" required autoComplete="email" className="input" />
+          <input id="email" {...aria("email")} name="email" type="email" autoComplete="email" className={`input ${errors.email ? "!border-danger focus:!ring-danger/20" : ""}`} />
+        <FieldError id="email" msg={errors.email} />
         </div>
         <div>
           <label className="label" htmlFor="password">Contraseña</label>
-          <input id="password" name="password" type="password" required minLength={mode === "registro" ? 8 : undefined} autoComplete={mode === "registro" ? "new-password" : "current-password"} className="input" />
+          <input id="password" {...aria("password")} name="password" type="password" minLength={mode === "registro" ? 8 : undefined} autoComplete={mode === "registro" ? "new-password" : "current-password"} className={`input ${errors.password ? "!border-danger focus:!ring-danger/20" : ""}`} />
+        <FieldError id="password" msg={errors.password} />
           {mode === "registro" && <p className="mt-1 text-xs text-muted">Mínimo 8 caracteres.</p>}
         </div>
         {mode === "registro" && (
           <div className="space-y-2 text-xs leading-relaxed text-ink/70">
             <label className="flex gap-2">
-              <input type="checkbox" name="accept_terms" required className="mt-0.5 accent-ink" />
+              <input type="checkbox" name="accept_terms" {...aria("accept_terms")} className={`mt-0.5 h-4 w-4 shrink-0 accent-ink ${errors.accept_terms ? "outline outline-2 outline-offset-1 outline-danger" : ""}`} />
               <span>He leído y acepto los <Link href="/terminos" target="_blank" className="underline">términos y condiciones</Link>.</span>
             </label>
+            <FieldError id="accept_terms" msg={errors.accept_terms} />
             <label className="flex gap-2">
-              <input type="checkbox" name="accept_privacy" required className="mt-0.5 accent-ink" />
+              <input type="checkbox" name="accept_privacy" {...aria("accept_privacy")} className={`mt-0.5 h-4 w-4 shrink-0 accent-ink ${errors.accept_privacy ? "outline outline-2 outline-offset-1 outline-danger" : ""}`} />
               <span>Autorizo el tratamiento de mis datos personales según la <Link href="/privacidad" target="_blank" className="underline">política de tratamiento de datos personales</Link> (Ley 1581 de 2012).</span>
             </label>
+            <FieldError id="accept_privacy" msg={errors.accept_privacy} />
           </div>
         )}
         {error && <p role="alert" className="rounded-lg bg-danger/10 p-3 text-sm text-danger">{error}</p>}
