@@ -18,14 +18,14 @@ Panel: https://importaciones-lore-opzt.vercel.app/admin
 - Panel de administración conectado a Supabase
 - Pedidos contra entrega y mensajes de contacto
 - Pagos en línea con Bold, en producción (probado con un pago real de $1.000)
-- Costo de la pasarela (6%) sumado a los pagos en línea; envío fijo de $15.000 sin envío gratis
+- Costo de la pasarela (6%) sumado a los pagos en línea (Bold confirmó que se puede cobrar al cliente); envío fijo de $15.000 sin envío gratis
 - Pago por Nequi o Llave (318 200 4203) como opción recomendada; se confirma en el panel cambiando el pedido a Pagado
 - Productos de entrega inmediata (⚡); contra entrega solo para esos productos
 - Logo, colores de marca y videos reales (presentación de Lorena y pedidos llegando)
 - Revisión legal: políticas de privacidad, cookies, devoluciones y términos; datos del negocio (NIT 31.573.414-7, Cali); sin testimonios de ejemplo
 
 ## Por hacer (en este orden)
-1. **Preguntar a Bold** si permiten trasladar la comisión al cliente, y confirmar si el 6% incluye retenciones.
+1. **Confirmar con Bold o con tu contador** si el 6% incluye retenciones (si la comisión real es menor, bajar el porcentaje en `lib/config.ts`).
 2. **Productos reales**: subirlos desde el panel y ocultar los 6 de ejemplo.
 3. **Testimonios reales** de clientes (con su permiso) y que un abogado revise los textos legales.
 4. **Cambiar la llave secreta de Supabase** (quedó escrita en el chat).
