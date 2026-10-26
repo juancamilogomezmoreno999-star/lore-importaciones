@@ -36,22 +36,23 @@ export default async function HomePage() {
         <div className="absolute inset-0 bg-[radial-gradient(circle_at_80%_20%,rgba(201,162,74,.28),transparent_55%)]" />
         <div className="container-x relative grid items-center gap-8 py-12 md:grid-cols-2 md:py-20">
           <div>
-            <p className="eyebrow !text-gold-light">Importados de Estados Unidos 🇺🇸</p>
-            <h1 className="mt-4 text-4xl font-semibold leading-[1.1] sm:text-5xl md:text-6xl">
-              Lo mejor de USA, <span className="text-gold-light italic">directo a tu puerta</span>
+            <p className="eyebrow !text-gold-light">Importamos de Estados Unidos 🇺🇸</p>
+            <h1 className="mt-4 text-[2.1rem] font-semibold leading-[1.12] sm:text-5xl md:text-[3.4rem]">
+              Te traemos lo mejor de USA, <span className="text-gold-light italic">directo a la puerta de tu casa</span>
             </h1>
-            <p className="mt-5 max-w-md text-base leading-relaxed text-white/75 sm:text-lg">
-              Productos 100% originales a mejor precio, con pago seguro y acompañamiento real de principio a fin.
+            <p className="mt-5 flex flex-wrap items-center gap-2 text-base text-white/80 sm:text-lg">
+              <span className="rounded-full bg-gold/15 px-3 py-1 font-semibold text-gold-light ring-1 ring-gold/40">Al mejor precio</span>
+              <span>en cualquier ciudad de Colombia 🇨🇴</span>
             </p>
             <div className="mt-8 flex flex-col gap-3 sm:flex-row">
-              <Link href="/catalogo" className="btn-gold">Ver productos <IconChevron width={18} /></Link>
-              <a href={whatsappLink("¡Hola! Quiero pedir un producto que no veo en la página 🙌")} target="_blank" rel="noopener" className="btn border border-white/25 text-white hover:bg-white/10">
-                <IconWhatsApp width={20} /> Pide lo que buscas
+              <Link href="/catalogo" className="btn-gold">Ver catálogo <IconChevron width={18} /></Link>
+              <a href={whatsappLink("¡Hola! Quiero una asesoría personalizada 🙌")} target="_blank" rel="noopener" className="btn border border-white/25 text-white hover:bg-white/10">
+                <IconWhatsApp width={20} /> Asesoría personalizada
               </a>
             </div>
             <div className="mt-8 flex flex-wrap gap-x-6 gap-y-2 text-sm text-white/70">
-              <span className="flex items-center gap-2"><IconShield width={18} className="text-gold-light" /> Pago 100% seguro</span>
-              <span className="flex items-center gap-2"><IconTruck width={18} className="text-gold-light" /> Envíos a todo el país</span>
+              <span className="flex items-center gap-2"><IconShield width={18} className="text-gold-light" /> Productos 100% originales</span>
+              <span className="flex items-center gap-2"><IconTruck width={18} className="text-gold-light" /> Envíos a toda Colombia</span>
             </div>
           </div>
           <div className="relative mx-auto w-full max-w-md overflow-hidden rounded-3xl ring-1 ring-gold/30 md:max-w-none">
