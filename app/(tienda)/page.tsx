@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { getFeaturedProducts, getCategories } from "@/lib/data";
 import { ProductCard } from "@/components/ProductCard";
+import { HeroVideo } from "@/components/HeroVideo";
 import { IconBox, IconPlane, IconShield, IconStar, IconTruck, IconWhatsApp, IconChevron } from "@/components/icons";
 import { store, whatsappLink } from "@/lib/config";
 
@@ -67,20 +68,7 @@ export default async function HomePage() {
               </div>
             )}
           </div>
-          <div className="relative mx-auto w-full max-w-md overflow-hidden rounded-3xl ring-1 ring-gold/30 md:max-w-none">
-            <video
-              className="aspect-video w-full object-cover"
-              src="/videos/hero.mp4"
-              poster="/videos/hero.jpg"
-              autoPlay
-              muted
-              loop
-              playsInline
-              preload="metadata"
-              aria-label="Video de un pedido real llegando de Estados Unidos"
-            />
-            <span className="absolute bottom-3 left-3 rounded-full bg-ink/80 px-3 py-1.5 text-xs font-semibold text-gold-light backdrop-blur">📦 Así llegan nuestros pedidos</span>
-          </div>
+          <HeroVideo src="/videos/presentacion.mp4" poster="/videos/presentacion.jpg" />
         </div>
       </section>
 
