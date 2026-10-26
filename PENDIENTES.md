@@ -29,7 +29,7 @@ Panel: https://importaciones-lore-opzt.vercel.app/admin
 ## Por hacer (en este orden)
 1. **Cambiar la llave secreta de Supabase** (quedó escrita en el chat).
 2. **Verificación en dos pasos (2FA)** en Vercel, Supabase, GitHub y Bold.
-3. **Revisar el Security Advisor** de Supabase (Advisors → Security Advisor).
+3. **Security Advisor de Supabase**: correr `supabase/ajustes-seguridad.sql`; la protección contra contraseñas filtradas se activa al pasar a plan Pro.
 4. **Productos reales**: subirlos desde el panel y ocultar los de ejemplo.
 5. **Vercel Pro** con límite de gasto (Spend Management) de US$20–25, y dominio gratis.
 6. **Correos automáticos** con Resend (y volver a encender "Confirm email" en Supabase).
