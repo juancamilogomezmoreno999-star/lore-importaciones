@@ -13,12 +13,12 @@ export const store = {
   whatsappDisplay: "318 200 4203",
   whatsappMessage: "¡Hola Lore Importaciones! 👋 Vengo de la página web y quiero más información.",
   instagram: "lore_importaciones",
-  // ⚠️ Pon aquí un correo real que revises (se muestra en la web y en las políticas)
-  email: "",
+  // Correo de contacto (se muestra en la web y en las políticas)
+  email: "loreimportacioneslore@gmail.com",
   // Datos del negocio (Ley 1480 y Ley 1581). Complétalos: se muestran en el pie de página.
   legalName: "Lorena Moreno Preciado",
-  legalId: "", // NIT o cédula, ej: "C.C. 12.345.678" o "NIT 900.123.456-7"
-  city: "", // ciudad y departamento, ej: "Cali, Valle del Cauca"
+  legalId: "NIT 31.573.414-7",
+  city: "Cali, Valle del Cauca",
 };
 
 // Testimonios: SOLO opiniones reales de clientes, con su permiso. Si la lista está vacía, la sección no se muestra.
