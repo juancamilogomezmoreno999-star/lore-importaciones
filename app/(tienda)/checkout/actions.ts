@@ -4,6 +4,7 @@ import type { Order, OrderItem, Product } from "@/lib/types";
 import { isSupabaseConfigured } from "@/lib/supabase/env";
 import { createServiceClient } from "@/lib/supabase/admin";
 import { createSessionClient } from "@/lib/supabase/server";
+import { rateLimit, TOO_MANY } from "@/lib/rate-limit";
 import { sampleProducts } from "@/lib/sample-products";
 import { cashOnDeliveryAllowed, COD_ONLY_IMMEDIATE_MSG, ONLINE_FEE_LABEL, onlineFeeFor, shippingFor } from "@/lib/orders";
 import { payments } from "@/lib/config";
@@ -39,6 +40,7 @@ export type CheckoutInput = z.input<typeof schema>;
 export type CheckoutResult = { ok: true; redirect: string } | { ok: false; error: string; field?: string };
 
 export async function createOrder(input: CheckoutInput): Promise<CheckoutResult> {
+  if (!(await rateLimit("pedido", 8, 600))) return { ok: false, error: TOO_MANY };
   const parsed = schema.safeParse(input);
   if (!parsed.success) {
     const issue = parsed.error.issues[0];

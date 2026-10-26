@@ -2,9 +2,11 @@
 import { redirect } from "next/navigation";
 import { createSessionClient } from "@/lib/supabase/server";
 import { isSupabaseConfigured } from "@/lib/supabase/env";
+import { rateLimit, TOO_MANY } from "@/lib/rate-limit";
 
 export async function login(_prev: string | null, form: FormData): Promise<string | null> {
   if (!isSupabaseConfigured) return "Primero conecta Supabase.";
+  if (!(await rateLimit("login-admin", 10, 600))) return TOO_MANY;
   const email = String(form.get("email") ?? "").trim().toLowerCase();
   const password = String(form.get("password") ?? "");
   if (!email || !password) return "Escribe tu correo y contraseña.";

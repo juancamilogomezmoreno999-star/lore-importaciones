@@ -22,6 +22,7 @@ Panel: https://importaciones-lore-opzt.vercel.app/admin
 - Pago por Nequi o Llave (318 200 4203) como opción recomendada; se confirma en el panel cambiando el pedido a Pagado
 - Productos de entrega inmediata (⚡); contra entrega solo para esos productos
 - Logo, colores de marca y videos reales (presentación de Lorena y pedidos llegando)
+- Seguridad: límite de intentos en pedidos, contacto e ingreso al panel (requiere correr `supabase/limite-de-intentos.sql`); botón de copia de seguridad de pedidos en el panel
 - Revisión legal: políticas de privacidad, cookies, devoluciones y términos; datos del negocio (NIT 31.573.414-7, Cali); sin testimonios de ejemplo
 
 ## Por hacer (en este orden)

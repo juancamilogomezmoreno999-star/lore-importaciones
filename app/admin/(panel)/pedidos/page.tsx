@@ -21,7 +21,10 @@ export default async function AdminOrders({ searchParams }: { searchParams: Prom
   return (
     <div className="space-y-4">
       {sp.borrado && <p className="rounded-xl bg-success/10 p-3 text-sm font-medium text-success">✓ Pedido eliminado.</p>}
-      <h1 className="text-2xl font-semibold">Pedidos</h1>
+      <div className="flex items-center justify-between gap-3">
+        <h1 className="text-2xl font-semibold">Pedidos</h1>
+        <a href="/admin/pedidos/exportar" className="rounded-full border border-ink/15 bg-white px-4 py-2 text-xs font-semibold hover:border-ink/40" title="Descarga todos los pedidos como copia de seguridad (abre en Excel)">⬇️ Copia de seguridad</a>
+      </div>
       <div className="-mx-4 flex gap-2 overflow-x-auto px-4 pb-1 [scrollbar-width:none]">
         <Link href="/admin/pedidos" className={`shrink-0 rounded-full px-4 py-2 text-sm font-medium ${!estado ? "bg-ink text-gold-light" : "bg-white"}`}>Todos</Link>
         {allStatuses.map((s) => (

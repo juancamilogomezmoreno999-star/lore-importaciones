@@ -3,6 +3,7 @@ import { z } from "zod";
 import { isSupabaseConfigured } from "@/lib/supabase/env";
 import { createServiceClient } from "@/lib/supabase/admin";
 import { sendContactNotification } from "@/lib/email";
+import { rateLimit, TOO_MANY } from "@/lib/rate-limit";
 
 const schema = z.object({
   name: z.string().trim().min(2, "Escribe tu nombre").max(100),
@@ -16,6 +17,7 @@ const schema = z.object({
 export type ContactState = { ok: boolean; message: string } | null;
 
 export async function sendContact(_prev: ContactState, form: FormData): Promise<ContactState> {
+  if (!(await rateLimit("contacto", 5, 600))) return { ok: false, message: TOO_MANY };
   const parsed = schema.safeParse(Object.fromEntries(form));
   if (!parsed.success) return { ok: false, message: parsed.error.issues[0].message };
   const { website, consent, ...msg } = parsed.data;
