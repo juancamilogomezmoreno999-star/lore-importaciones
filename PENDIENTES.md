@@ -24,16 +24,12 @@ Panel: https://importaciones-lore-opzt.vercel.app/admin
 - Logo, colores de marca y videos reales (presentación de Lorena y pedidos llegando)
 - Cuentas de clientes (carrito guardado, datos de envío, Mis pedidos) — probado y funcionando
 - Seguridad: límite de intentos (activo) en pedidos, contacto e ingreso al panel (requiere correr `supabase/limite-de-intentos.sql`); botón de copia de seguridad de pedidos en el panel
-- Consentimiento: casillas separadas (términos / datos) y registro de cada aceptación con fecha, IP y versión (requiere correr `supabase/registro-consentimientos.sql`)
+- Consentimiento: casillas separadas (términos / datos) y registro de cada aceptación con fecha, IP y versión (activo y probado)
 - Revisión legal: políticas de privacidad, cookies, devoluciones y términos; datos del negocio (NIT 31.573.414-7, Cali); sin testimonios de ejemplo
 
 ## Por hacer (en este orden)
-1. **Cambiar la llave secreta de Supabase** (quedó escrita en el chat).
-2. **Verificación en dos pasos (2FA)** en Vercel, Supabase, GitHub y Bold.
-3. **Security Advisor de Supabase**: correr `supabase/ajustes-seguridad.sql`; la protección contra contraseñas filtradas se activa al pasar a plan Pro.
-4. **Productos reales**: subirlos desde el panel y ocultar los de ejemplo.
-5. **Vercel Pro** con límite de gasto (Spend Management) de US$20–25, y dominio gratis.
-6. **Correos automáticos** con Resend (y volver a encender "Confirm email" en Supabase).
-7. **UptimeRobot** (aviso si la tienda se cae) y copia de seguridad semanal de pedidos (botón en Pedidos).
-8. **Confirmar con Bold o con tu contador** si el 6% incluye retenciones.
-9. **Testimonios reales** de clientes (con su permiso) y que un abogado revise los textos legales.
+1. **Vercel Pro** con límite de gasto (Spend Management) de US$20–25, y reclamar el dominio gratis.
+2. **Correos automáticos** con Resend (necesitan el dominio) y volver a encender "Confirm email" en Supabase.
+3. **UptimeRobot** (aviso si la tienda se cae) y copia de seguridad semanal de pedidos (botón en Pedidos).
+4. **Confirmar con Bold o con tu contador** si el 6% incluye retenciones.
+5. **Testimonios reales** de clientes (con su permiso) y que un abogado revise los textos legales.
