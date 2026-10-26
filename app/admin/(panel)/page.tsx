@@ -24,7 +24,9 @@ export default async function Dashboard() {
     supabase.from("orders").select("total, status, payment_status").gte("created_at", salesFrom.toISOString()),
   ]);
   const sales = (monthOrders.data ?? [])
-    .filter((o) => o.status !== "cancelado" && (o.payment_status === "aprobado" || o.payment_status === "contra_entrega"))
+    // Una venta cuenta cuando el pedido pasa a "Pagado / confirmado" o a un estado posterior
+    // (contra entrega y Nequi incluidos). Pendientes y cancelados no suman.
+    .filter((o) => ["pagado", "comprando_usa", "en_transito", "entregado"].includes(o.status) && ["aprobado", "contra_entrega"].includes(o.payment_status))
     .reduce((s, o) => s + o.total, 0);
 
   const stats = [
