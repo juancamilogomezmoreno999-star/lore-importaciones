@@ -14,12 +14,6 @@ const steps = [
 ];
 
 
-const arrivals = [
-  { src: "/videos/llegada-1.mp4", poster: "/videos/llegada-1.jpg", caption: "Ropa y calzado de marca recién llegados" },
-  { src: "/videos/llegada-2.mp4", poster: "/videos/llegada-2.jpg", caption: "Abriendo una caja directo de USA" },
-  { src: "/videos/llegada-3.mp4", poster: "/videos/llegada-3.jpg", caption: "Hogar, belleza y salud" },
-];
-
 export default async function HomePage() {
   const [featured, categories] = await Promise.all([getFeaturedProducts(8), getCategories()]);
 
@@ -91,23 +85,6 @@ export default async function HomePage() {
               <h3 className="mt-4 font-sans text-lg font-semibold">{title}</h3>
               <p className="mt-2 text-sm leading-relaxed text-muted">{text}</p>
             </div>
-          ))}
-        </div>
-      </section>
-
-      {/* Así llegan tus pedidos */}
-      <section className="container-x mt-20">
-        <div className="text-center">
-          <p className="eyebrow">Pedidos reales</p>
-          <h2 className="mt-2 text-3xl font-semibold">Así llegan tus pedidos 📦</h2>
-          <p className="mx-auto mt-3 max-w-lg text-muted">Todo original, con sus etiquetas y empaques. Así abrimos las cajas que llegan de Estados Unidos.</p>
-        </div>
-        <div className="-mx-4 mt-8 flex snap-x gap-4 overflow-x-auto px-4 pb-2 [scrollbar-width:none] md:mx-0 md:grid md:grid-cols-3 md:px-0">
-          {arrivals.map((v) => (
-            <figure key={v.src} className="card w-[78%] shrink-0 snap-center overflow-hidden md:w-auto">
-              <video className="aspect-[4/5] w-full bg-ink object-contain" src={v.src} poster={v.poster} controls muted playsInline preload="none" />
-              <figcaption className="p-4 text-sm font-medium">{v.caption}</figcaption>
-            </figure>
           ))}
         </div>
       </section>

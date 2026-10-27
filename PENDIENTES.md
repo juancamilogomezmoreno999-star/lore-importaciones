@@ -21,7 +21,7 @@ Panel: https://importaciones-lore-opzt.vercel.app/admin
 - Costo de la pasarela (6%) sumado a los pagos en línea (Bold confirmó que se puede cobrar al cliente); envío fijo de $15.000 sin envío gratis
 - Pago por Nequi o Llave (318 200 4203) como opción recomendada; se confirma en el panel cambiando el pedido a Pagado
 - Productos de entrega inmediata (⚡); contra entrega solo para esos productos
-- Logo, colores de marca y videos reales (presentación de Lorena y pedidos llegando)
+- Logo, colores de marca y video de presentación de Lorena en el banner
 - Cuentas de clientes (carrito guardado, datos de envío, Mis pedidos) — probado y funcionando
 - Seguridad: límite de intentos (activo) en pedidos, contacto e ingreso al panel (requiere correr `supabase/limite-de-intentos.sql`); botón de copia de seguridad de pedidos en el panel
 - Consentimiento: casillas separadas (términos / datos) y registro de cada aceptación con fecha, IP y versión (activo y probado)
