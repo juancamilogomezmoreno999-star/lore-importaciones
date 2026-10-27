@@ -30,6 +30,6 @@ Panel: https://importaciones-lore-opzt.vercel.app/admin
 ## Por hacer (en este orden)
 1. **Vercel Pro** con límite de gasto (Spend Management) de US$20–25, y reclamar el dominio gratis.
 2. **Correos automáticos** con Resend (necesitan el dominio) y volver a encender "Confirm email" en Supabase.
-3. **UptimeRobot** (aviso si la tienda se cae) y copia de seguridad semanal de pedidos (botón en Pedidos).
+3. **Aviso si la tienda se cae**: UptimeRobot gratis es solo uso personal; ver alternativas o plan pago. Hoy una tarea automática visita la base de datos cada 2 días para que Supabase gratis no se pause. Copia de seguridad semanal de pedidos (botón en Pedidos).
 4. **Confirmar con Bold o con tu contador** si el 6% incluye retenciones.
 5. **Testimonios reales** de clientes (con su permiso) y que un abogado revise los textos legales.
