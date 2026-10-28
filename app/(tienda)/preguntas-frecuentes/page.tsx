@@ -13,10 +13,10 @@ const faqs: { group: string; items: { q: string; a: string }[] }[] = [
   {
     group: "Tiempos y envíos",
     items: [
-      { q: "¿Cuánto se demora mi pedido?", a: "Manejamos 2 opciones. 1) Productos de entrega inmediata: tardan en llegar a tus manos de 1 a 3 días hábiles. 2) Productos por encargo: tardan en llegar a tus manos de 15 a 20 días hábiles a partir del momento en que se confirma el pago." },
-      { q: "¿Hacen envíos a toda Colombia?", a: `Sí, realizamos envíos a cualquier ciudad o municipio de Colombia por medio de transportadoras reconocidas a nivel nacional. El envío tiene un costo de ${formatCOP(shipping.cost)}, que es asumido por el cliente.` },
-      { q: "¿Puedo pedir un producto que no esté en la página?", a: "Sí, puedes escribirnos por WhatsApp y contarnos qué producto, marca, referencia, talla o color estás buscando. Revisamos y te informamos si es posible conseguirlo." },
-      { q: "¿Cómo puedo saber el estado de mi pedido?", a: "Te estaremos informando por correo cada paso, o también nos puedes escribir al WhatsApp y preguntarnos en el momento que sea necesario. Siempre estaremos atentos para atenderte." },
+      { q: "¿Cuánto se demora mi pedido?", a: "Manejamos 2 modalidades de compra:\n\n⚡ Productos de entrega inmediata\nLos productos disponibles en Colombia tienen un tiempo estimado de entrega de 1 a 3 días hábiles.\n\n✈️ Productos por encargo desde USA\nEl tiempo estimado de entrega es de 15 a 20 días hábiles, contados a partir de la confirmación del pago.\n\nLos tiempos son estimados y pueden variar por circunstancias relacionadas con el transporte o la entrega." },
+      { q: "¿Hacen envíos a toda Colombia?", a: `¡Sí! Realizamos envíos a ciudades y municipios de Colombia a través de empresas transportadoras reconocidas.\n\nEl costo de envío es de ${formatCOP(shipping.cost)} y está a cargo del cliente. Te confirmaremos las condiciones de entrega antes de confirmar tu compra.` },
+      { q: "¿Cómo puedo conocer el estado de mi pedido?", a: "Te mantendremos informado sobre el avance de tu pedido por correo electrónico. También puedes escribirnos por WhatsApp si deseas consultar su estado.\n\nNuestro compromiso es brindarte información clara y acompañarte durante el proceso, desde la compra hasta la entrega." },
+      { q: "¿Puedo solicitar un producto que no aparece en la página?", a: "¡Claro que sí! En Lore Importaciones te ayudamos a encontrar lo que estás buscando.\n\nSi viste un producto que te gustaría comprar, envíanos una foto o imagen de referencia por WhatsApp. También puedes compartirnos el enlace del producto o indicarnos la marca, referencia, talla o color que deseas.\n\n¿No sabes dónde encontrarlo? ¡No te preocupes! Cuéntanos qué marca estás buscando y, si deseas, te compartimos el enlace de su página oficial en Estados Unidos para que puedas explorar sus productos y elegir tus favoritos.\n\nRevisaremos si es posible conseguir el producto que deseas y te informaremos sobre su disponibilidad, precio y condiciones de compra antes de confirmar tu pedido." },
     ],
   },
   {
@@ -29,7 +29,7 @@ const faqs: { group: string; items: { q: string; a: string }[] }[] = [
   {
     group: "Pagos",
     items: [
-      { q: "¿Cómo es la forma de pago?", a: `Aceptamos tarjetas débito y crédito, PSE, Nequi, Llave o transferencia bancaria.${payments.onlineFeePercent > 0 ? ` Al pagar con tarjeta o PSE (a través de Bold) se suma el costo de la pasarela (comisión del ${payments.onlineFeePercent}%); lo verás por separado antes de pagar. Nequi, Llave y transferencia no tienen costo adicional.` : ""} En productos de entrega inmediata también puedes pagar contra entrega.` },
+      { q: "¿Cuáles son los medios de pago disponibles?", a: `Para tu comodidad, contamos con diferentes alternativas de pago:\n\n• Tarjetas débito y crédito\n• PSE\n• Nequi\n• Llaves de pago\n• Transferencia bancaria\n• Zelle (para pagos desde Estados Unidos)\n\nEn la página puedes pagar con Nequi o Llave (${payments.nequi.display}) sin costo adicional, o con tarjeta o PSE a través de Bold${payments.onlineFeePercent > 0 ? `, donde se suma el costo de la pasarela (comisión del ${payments.onlineFeePercent}%), que verás por separado antes de pagar` : ""}. Para transferencia bancaria o Zelle, escríbenos por WhatsApp. En productos de entrega inmediata también puedes pagar contra entrega.` },
       { q: "¿Puedo cancelar o cambiar mi pedido?", a: "Las condiciones de cancelación o cambio de un pedido dependen de la modalidad de compra (entrega inmediata o por encargo) y del estado en que se encuentre el pedido. Escríbenos por WhatsApp y te contamos tus opciones. También puedes revisar nuestra política de cambios y devoluciones." },
       { q: "¿Es seguro pagar en la página?", a: "Sí. El pago se hace en la ventana segura de Bold. Nosotros nunca vemos ni guardamos los datos de tu tarjeta." },
     ],
@@ -56,6 +56,7 @@ export default function FaqPage() {
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd).replace(/</g, "\\u003c") }} />
       <p className="eyebrow">Resolvemos tus dudas</p>
       <h1 className="mt-2 text-4xl font-semibold">Preguntas frecuentes</h1>
+      <p className="mt-3 text-lg leading-relaxed text-ink/75">Queremos que compres con tranquilidad. Aquí encontrarás las respuestas a las dudas más comunes sobre nuestros productos, pedidos, pagos y envíos.</p>
       {faqs.map((g) => (
         <section key={g.group} className="mt-10">
           <h2 className="mb-3 text-xl font-semibold">{g.group}</h2>
@@ -66,7 +67,7 @@ export default function FaqPage() {
                   {f.q}
                   <span className="text-xl text-gold-dark transition group-open:rotate-45">+</span>
                 </summary>
-                <p className="px-5 pb-5 text-[15px] leading-relaxed text-ink/75">{f.a}</p>
+                <p className="whitespace-pre-line px-5 pb-5 text-[15px] leading-relaxed text-ink/75">{f.a}</p>
               </details>
             ))}
           </div>
