@@ -9,7 +9,7 @@ export function Footer() {
       <div className="container-x grid gap-10 md:grid-cols-4">
         <div className="md:col-span-2">
           <Logo size="lg" />
-          <p className="mt-4 max-w-sm text-sm leading-relaxed">{store.tagline}. Compramos por ti en tiendas oficiales de Estados Unidos y te acompañamos hasta que el pedido llegue a tus manos.</p>
+          <p className="mt-4 max-w-sm text-sm leading-relaxed">{store.tagline}. Compramos por ti en Estados Unidos a través de canales de venta confiables y te acompañamos hasta que el pedido llegue a tus manos.</p>
           <div className="mt-5 flex gap-3">
             <a href={whatsappLink()} target="_blank" rel="noopener" className="rounded-full bg-white/10 p-2.5 text-gold-light hover:bg-white/20" aria-label="WhatsApp"><IconWhatsApp /></a>
             <a href={instagramLink} target="_blank" rel="noopener" className="rounded-full bg-white/10 p-2.5 text-gold-light hover:bg-white/20" aria-label="Instagram"><IconInstagram /></a>

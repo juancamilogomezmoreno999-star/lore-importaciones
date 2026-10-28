@@ -9,7 +9,7 @@ export const revalidate = 60;
 
 const steps = [
   { icon: IconBox, title: "1. Eliges y pagas", text: "Escoge tu producto en la web o escríbenos por WhatsApp si buscas algo especial. Pagas seguro con tarjeta, PSE o Nequi." },
-  { icon: IconPlane, title: "2. Lo compramos en USA", text: "Lo pedimos en tiendas oficiales de Estados Unidos y lo traemos a Colombia. Te contamos cada paso por correo." },
+  { icon: IconPlane, title: "2. Lo compramos en USA", text: "Lo compramos en Estados Unidos a través de canales de venta confiables y lo traemos a Colombia. Te contamos cada paso por correo." },
   { icon: IconTruck, title: "3. Te lo entregamos", text: "Lo recibes en la puerta de tu casa, en cualquier ciudad del país, con número de guía para hacerle seguimiento." },
 ];
 

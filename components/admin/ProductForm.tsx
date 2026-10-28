@@ -77,11 +77,10 @@ export function ProductForm({ product, categories }: { product?: Product; catego
           </div>
           <div>
             <label className="label" htmlFor="delivery_time">Tiempo de entrega</label>
-            <input id="delivery_time" name="delivery_time" required list="times" defaultValue={product?.delivery_time ?? "8 a 12 días hábiles"} className="input" />
+            <input id="delivery_time" name="delivery_time" required list="times" defaultValue={product?.delivery_time ?? "1 a 3 días hábiles (entrega inmediata)"} className="input" />
             <datalist id="times">
-              <option value="1 a 3 días hábiles (disponible en Colombia)" />
-              <option value="8 a 12 días hábiles" />
-              <option value="10 a 15 días hábiles" />
+              <option value="1 a 3 días hábiles (entrega inmediata)" />
+              <option value="15 a 20 días hábiles (por encargo)" />
             </datalist>
           </div>
         </div>

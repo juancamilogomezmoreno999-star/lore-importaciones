@@ -13,9 +13,10 @@ const faqs: { group: string; items: { q: string; a: string }[] }[] = [
   {
     group: "Tiempos y envíos",
     items: [
-      { q: "¿Cuánto se demora mi pedido?", a: "Depende del producto: en cada uno verás el tiempo estimado. Los productos que ya tenemos en Colombia llegan en 1 a 3 días hábiles. Los que pedimos a Estados Unidos tardan normalmente entre 8 y 15 días hábiles desde que se confirma el pago." },
-      { q: "¿Hacen envíos a toda Colombia?", a: `Sí, enviamos a cualquier ciudad o municipio del país con transportadoras reconocidas. El envío cuesta ${formatCOP(shipping.cost)}${shipping.freeFrom > 0 ? ` y es gratis en compras desde ${formatCOP(shipping.freeFrom)}` : ""}.` },
-      { q: "¿Cómo sé en qué va mi pedido?", a: "Te enviamos un correo cada vez que tu pedido cambia de estado (pagado, comprando en USA, en tránsito y entregado), con el número de guía cuando sale a entrega. También puedes preguntarnos por WhatsApp cuando quieras." },
+      { q: "¿Cuánto se demora mi pedido?", a: "Manejamos 2 opciones. 1) Productos de entrega inmediata: tardan en llegar a tus manos de 1 a 3 días hábiles. 2) Productos por encargo: tardan en llegar a tus manos de 15 a 20 días hábiles a partir del momento en que se confirma el pago." },
+      { q: "¿Hacen envíos a toda Colombia?", a: `Sí, realizamos envíos a cualquier ciudad o municipio de Colombia por medio de transportadoras reconocidas a nivel nacional. El envío tiene un costo de ${formatCOP(shipping.cost)}, que es asumido por el cliente.` },
+      { q: "¿Puedo pedir un producto que no esté en la página?", a: "Sí, puedes escribirnos por WhatsApp y contarnos qué producto, marca, referencia, talla o color estás buscando. Revisamos y te informamos si es posible conseguirlo." },
+      { q: "¿Cómo puedo saber el estado de mi pedido?", a: "Te estaremos informando por correo cada paso, o también nos puedes escribir al WhatsApp y preguntarnos en el momento que sea necesario. Siempre estaremos atentos para atenderte." },
     ],
   },
   {
@@ -28,14 +29,15 @@ const faqs: { group: string; items: { q: string; a: string }[] }[] = [
   {
     group: "Pagos",
     items: [
-      { q: "¿Qué medios de pago aceptan?", a: `Puedes pagar por Nequi o Llave al ${payments.nequi.display} (sin costo adicional, nos envías el comprobante por WhatsApp), con PSE o tarjeta de crédito a través de Bold, o contra entrega en productos de entrega inmediata.` + (payments.onlineFeePercent > 0 ? ` Al pagar en línea se suma el costo de la pasarela (comisión del ${payments.onlineFeePercent}%); lo verás por separado antes de pagar.` : "") },
+      { q: "¿Cómo es la forma de pago?", a: `Aceptamos tarjetas débito y crédito, PSE, Nequi, Llave o transferencia bancaria.${payments.onlineFeePercent > 0 ? ` Al pagar con tarjeta o PSE (a través de Bold) se suma el costo de la pasarela (comisión del ${payments.onlineFeePercent}%); lo verás por separado antes de pagar. Nequi, Llave y transferencia no tienen costo adicional.` : ""} En productos de entrega inmediata también puedes pagar contra entrega.` },
+      { q: "¿Puedo cancelar o cambiar mi pedido?", a: "Las condiciones de cancelación o cambio de un pedido dependen de la modalidad de compra (entrega inmediata o por encargo) y del estado en que se encuentre el pedido. Escríbenos por WhatsApp y te contamos tus opciones. También puedes revisar nuestra política de cambios y devoluciones." },
       { q: "¿Es seguro pagar en la página?", a: "Sí. El pago se hace en la ventana segura de Bold. Nosotros nunca vemos ni guardamos los datos de tu tarjeta." },
     ],
   },
   {
     group: "Garantías y devoluciones",
     items: [
-      { q: "¿Los productos son originales?", a: "Sí, 100%. Los compramos en tiendas oficiales y distribuidores autorizados de Estados Unidos. Si quieres, te compartimos el soporte de compra." },
+      { q: "¿Los productos son originales?", a: "Sí. Trabajamos con productos originales de marcas reconocidas, comprados a través de canales de venta confiables de Estados Unidos. Si quieres, te compartimos el soporte de compra." },
       { q: "¿Tienen garantía?", a: "Sí. La garantía es la que establece cada marca o fabricante para su producto. Si tu producto llega con un defecto de fábrica, escríbenos con fotos o video y tu número de pedido, y te ayudamos a gestionarla. No cubre daños por mal uso, golpes o humedad." },
       { q: "¿Puedo devolver un producto?", a: "Sí. Por ser una compra a distancia tienes derecho de retracto: puedes devolver el producto dentro de los 5 días hábiles siguientes a la entrega, sin usar, con sus etiquetas y empaque original. Te devolvemos el dinero en máximo 30 días calendario. Los costos de transporte de la devolución corren por tu cuenta. Todos los detalles están en la página Cambios y devoluciones." },
       { q: "¿Y si me equivoqué de talla?", a: "Escríbenos dentro de los 5 días hábiles siguientes a la entrega. Si el producto está sin usar y con etiquetas, te ayudamos con el cambio según disponibilidad. Los envíos del cambio (ida y vuelta) los paga el cliente." },

@@ -7,8 +7,8 @@ import { useCart } from "./CartProvider";
 import { IconBag, IconClose, IconMenu, IconSearch, IconUser } from "./icons";
 
 const nav = [
-  { href: "/catalogo", label: "Catálogo" },
   { href: "/sobre-nosotros", label: "Nosotros" },
+  { href: "/catalogo", label: "Catálogo (Entrega inmediata)" },
   { href: "/preguntas-frecuentes", label: "Preguntas frecuentes" },
   { href: "/contacto", label: "Contacto" },
 ];

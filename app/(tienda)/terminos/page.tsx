@@ -13,7 +13,7 @@ export default function TermsPage() {
       <p>Estos términos regulan las compras realizadas en el sitio web de {legalIdentity}, en adelante “{store.name}”. Al hacer un pedido aceptas estas condiciones, que se rigen por las leyes de la República de Colombia, en especial la Ley 1480 de 2011 (Estatuto del Consumidor).</p>
 
       <h2>1. Productos y precios</h2>
-      <p>Los productos que ofrecemos son originales, adquiridos en tiendas oficiales o distribuidores autorizados de Estados Unidos. Las fotos son de referencia; los colores pueden variar levemente según la pantalla. Los precios están en pesos colombianos (COP) e incluyen IVA, envío internacional y costos de importación. El envío nacional se muestra por separado antes de pagar.</p>
+      <p>Los productos que ofrecemos son originales, de marcas reconocidas, adquiridos a través de canales de venta confiables de Estados Unidos. Las fotos son de referencia; los colores pueden variar levemente según la pantalla. Los precios están en pesos colombianos (COP) e incluyen IVA, envío internacional y costos de importación. El envío nacional se muestra por separado antes de pagar.</p>
 
       <h2>2. Pedidos y disponibilidad</h2>
       <p>El pedido queda confirmado cuando el pago es aprobado (o, en pago contra entrega, cuando lo confirmamos contigo por WhatsApp o llamada). Si un producto no está disponible en Estados Unidos después de tu pago, te avisaremos y podrás elegir otro producto o recibir la devolución total de tu dinero.</p>

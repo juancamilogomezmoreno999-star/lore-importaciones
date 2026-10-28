@@ -6,8 +6,8 @@ import { CatalogFilters } from "@/components/CatalogFilters";
 import { whatsappLink } from "@/lib/config";
 
 export const metadata: Metadata = {
-  title: "Catálogo de productos importados de USA",
-  description: "Tenis, bolsos, perfumes, tecnología y accesorios originales traídos de Estados Unidos. Precios en pesos colombianos y envío a toda Colombia.",
+  title: "Catálogo · Entrega inmediata",
+  description: "Productos originales de USA, disponibles en Colombia y listos para entrega. Precios en pesos colombianos y envío a toda Colombia.",
   alternates: { canonical: "/catalogo" },
 };
 
@@ -24,8 +24,10 @@ export default async function CatalogPage({ searchParams }: { searchParams: Prom
 
   return (
     <div className="container-x py-8">
-      <h1 className="text-3xl font-semibold sm:text-4xl">Catálogo</h1>
-      <p className="mt-2 text-muted">Productos originales de Estados Unidos, con precios en pesos colombianos.</p>
+      <h1 className="text-3xl font-semibold sm:text-4xl">
+        Catálogo <span className="block text-xl font-medium text-gold-dark sm:inline sm:text-2xl">(Entrega inmediata)</span>
+      </h1>
+      <p className="mt-2 text-muted">Productos originales de USA, disponibles en Colombia y listos para entrega.</p>
       <div className="mt-6">
         <Suspense>
           <CatalogFilters categories={categories} />

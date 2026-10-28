@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { store, whatsappLink } from "@/lib/config";
-import { IconShield, IconPlane, IconWhatsApp } from "@/components/icons";
+import { IconCheck, IconPlane, IconShield, IconWhatsApp } from "@/components/icons";
 
 export const metadata: Metadata = {
   title: "Sobre nosotros",
@@ -10,9 +10,10 @@ export const metadata: Metadata = {
 };
 
 const values = [
-  { icon: IconShield, title: "Originales, siempre", text: "Compramos únicamente en tiendas oficiales y distribuidores autorizados de Estados Unidos." },
-  { icon: IconPlane, title: "Transparencia", text: "Te contamos en qué va tu pedido: cuando lo compramos, cuando viaja y cuando sale a entrega." },
-  { icon: IconWhatsApp, title: "Atención de verdad", text: "Detrás de cada mensaje hay una persona. Te asesoramos antes, durante y después de tu compra." },
+  { icon: IconShield, title: "Originales siempre", text: "Trabajamos para ofrecerte productos originales de marcas reconocidas, gestionando las compras a través de canales de venta confiables." },
+  { icon: IconPlane, title: "Transparencia", text: "Te informamos sobre todo el proceso de tu pedido: confirmación de precios, disponibilidad y condiciones de compra antes de confirmar tu pedido." },
+  { icon: IconWhatsApp, title: "Atención personalizada", text: "Estamos disponibles para resolver tus dudas, asesorarte, orientarte y acompañarte durante todo el proceso." },
+  { icon: IconCheck, title: "Compromiso", text: "Trabajamos con respaldo, confianza, dedicación y cumplimiento, manteniéndote informado de todo el proceso y del estado de tu pedido." },
 ];
 
 export default function AboutPage() {
@@ -24,17 +25,14 @@ export default function AboutPage() {
           Tus marcas favoritas de USA, <span className="italic text-gold-dark">más cerca de ti.</span>
         </h1>
         <p className="mt-5 text-lg leading-relaxed text-ink/75">
-          Descubre moda, belleza, accesorios y mucho más. Encuentra tus favoritos disponibles para entrega inmediata o solicítalos por encargo desde Estados Unidos.
+          Descubre una selección de productos de moda, belleza, accesorios y mucho más. En {store.name} acercamos a Colombia los productos que te encantan de Estados Unidos,
+          con una experiencia de compra cómoda, atención personalizada y la confianza de saber quién te acompaña en cada paso.
         </p>
         <p className="mx-auto mt-6 inline-block rounded-full bg-gold/15 px-5 py-2.5 text-sm font-semibold text-gold-dark ring-1 ring-gold/40">
-          Calidad, confianza y una experiencia de compra pensada para ti.
-        </p>
-        <p className="mt-8 leading-relaxed text-ink/75">
-          Nosotros nos encargamos de todo: buscamos el producto, lo compramos, lo traemos al país y te lo llevamos hasta la puerta de tu casa.
-          Tú solo eliges lo que te gusta.
+          Encuentra tus productos favoritos disponibles para entrega inmediata o solicítalos por encargo.
         </p>
       </div>
-      <div className="mt-12 grid gap-4 md:grid-cols-3">
+      <div className="mt-12 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
         {values.map(({ icon: Icon, title, text }) => (
           <div key={title} className="card p-6">
             <Icon width={28} height={28} className="text-gold-dark" />
