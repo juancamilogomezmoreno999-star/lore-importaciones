@@ -5,7 +5,7 @@ import { IconShield, IconPlane, IconWhatsApp } from "@/components/icons";
 
 export const metadata: Metadata = {
   title: "Sobre nosotros",
-  description: `Conoce a ${store.name}: traemos productos originales de Estados Unidos a Colombia con precios justos y atención personalizada.`,
+  description: `${store.name}: tus marcas favoritas de USA, más cerca de ti. Moda, belleza y accesorios con entrega inmediata o por encargo desde Estados Unidos.`,
   alternates: { canonical: "/sobre-nosotros" },
 };
 
@@ -19,13 +19,17 @@ export default function AboutPage() {
   return (
     <div className="container-x py-10">
       <div className="mx-auto max-w-3xl text-center">
-        <p className="eyebrow">Nuestra historia</p>
-        <h1 className="mt-2 text-4xl font-semibold sm:text-5xl">Acercamos lo mejor de USA a Colombia</h1>
+        <p className="eyebrow">{store.name}</p>
+        <h1 className="mt-2 text-4xl font-semibold leading-tight sm:text-5xl">
+          Tus marcas favoritas de USA, <span className="italic text-gold-dark">más cerca de ti.</span>
+        </h1>
         <p className="mt-5 text-lg leading-relaxed text-ink/75">
-          {store.name} nació de una idea sencilla: que comprar productos originales de Estados Unidos sea fácil, seguro y a buen precio
-          para cualquier persona en Colombia, sin tarjetas internacionales, sin casilleros y sin enredos con la aduana.
+          Descubre moda, belleza, accesorios y mucho más. Encuentra tus favoritos disponibles para entrega inmediata o solicítalos por encargo desde Estados Unidos.
         </p>
-        <p className="mt-4 leading-relaxed text-ink/75">
+        <p className="mx-auto mt-6 inline-block rounded-full bg-gold/15 px-5 py-2.5 text-sm font-semibold text-gold-dark ring-1 ring-gold/40">
+          Calidad, confianza y una experiencia de compra pensada para ti.
+        </p>
+        <p className="mt-8 leading-relaxed text-ink/75">
           Nosotros nos encargamos de todo: buscamos el producto, lo compramos, lo traemos al país y te lo llevamos hasta la puerta de tu casa.
           Tú solo eliges lo que te gusta.
         </p>
