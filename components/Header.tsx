@@ -8,7 +8,7 @@ import { IconBag, IconClose, IconMenu, IconSearch, IconUser } from "./icons";
 
 const nav = [
   { href: "/sobre-nosotros", label: "Nosotros" },
-  { href: "/catalogo", label: "Catálogo (Entrega inmediata)" },
+  { href: "/catalogo", label: "Catálogo" },
   { href: "/preguntas-frecuentes", label: "Preguntas frecuentes" },
   { href: "/contacto", label: "Contacto" },
 ];

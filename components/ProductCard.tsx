@@ -25,6 +25,7 @@ export function ProductCard({ product, priority = false }: { product: Product; p
           {off > 0 && <span className="rounded-full bg-ink px-2.5 py-1 text-[11px] font-bold text-gold-light">-{off}%</span>}
           {product.stock <= 0 && <span className="rounded-full bg-white px-2.5 py-1 text-[11px] font-bold">Agotado</span>}
           {product.immediate_delivery && product.stock > 0 && <span className="rounded-full bg-gold px-2.5 py-1 text-[11px] font-bold text-ink">⚡ Entrega inmediata</span>}
+          {!product.immediate_delivery && product.stock > 0 && <span className="rounded-full bg-white/95 px-2.5 py-1 text-[11px] font-bold text-ink">✈️ Por encargo</span>}
         </div>
       </div>
       <div className="flex flex-1 flex-col p-3 sm:p-4">

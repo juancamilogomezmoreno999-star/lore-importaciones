@@ -10,6 +10,8 @@ export type ProductFilters = {
   min?: number;
   max?: number;
   sort?: "recientes" | "precio-asc" | "precio-desc";
+  /** true = entrega inmediata (ya en Colombia), false = por encargo */
+  immediate?: boolean;
 };
 
 const columns = "*";
@@ -23,6 +25,7 @@ export async function getProducts(filters: ProductFilters = {}): Promise<Product
     let list = sampleProducts.filter((p) => p.visible);
     if (filters.q) list = list.filter((p) => normalize(p.name).includes(normalize(filters.q!)));
     if (filters.category) list = list.filter((p) => p.category === filters.category);
+    if (filters.immediate !== undefined) list = list.filter((p) => Boolean(p.immediate_delivery) === filters.immediate);
     if (filters.min) list = list.filter((p) => p.price >= filters.min!);
     if (filters.max) list = list.filter((p) => p.price <= filters.max!);
     if (filters.sort === "precio-asc") list = [...list].sort((a, b) => a.price - b.price);
@@ -34,6 +37,7 @@ export async function getProducts(filters: ProductFilters = {}): Promise<Product
   let query = supabase.from("products").select(columns).eq("visible", true);
   if (filters.q) query = query.ilike("name", `%${filters.q.replace(/[%_,()]/g, " ")}%`);
   if (filters.category) query = query.eq("category", filters.category);
+  if (filters.immediate !== undefined) query = query.eq("immediate_delivery", filters.immediate);
   if (filters.min) query = query.gte("price", filters.min);
   if (filters.max) query = query.lte("price", filters.max);
   if (filters.sort === "precio-asc") query = query.order("price", { ascending: true });
