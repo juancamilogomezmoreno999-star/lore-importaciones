@@ -43,10 +43,10 @@ export default async function CatalogPage({ searchParams }: { searchParams: Prom
 
   return (
     <div className="container-x py-8">
-      <h1 className="text-3xl font-semibold sm:text-4xl">Catálogo</h1>
+      <h1 className="text-4xl sm:text-5xl">Catálogo</h1>
 
       {/* Las dos opciones */}
-      <div className="mt-5 grid grid-cols-2 gap-2 rounded-2xl bg-sand/70 p-1.5" role="tablist" aria-label="Tipo de entrega">
+      <div className="mt-6 grid grid-cols-2 border-b border-line" role="tablist" aria-label="Tipo de entrega">
         {(Object.keys(tabs) as Tab[]).map((t) => (
           <Link
             key={t}
@@ -54,17 +54,17 @@ export default async function CatalogPage({ searchParams }: { searchParams: Prom
             role="tab"
             aria-selected={tab === t}
             scroll={false}
-            className={`rounded-xl px-3 py-3 text-center transition ${tab === t ? "bg-ink text-gold-light shadow" : "text-ink/70 hover:bg-white/60"}`}
+            className={`-mb-px border-b-2 px-1 pb-3 pt-1 text-left transition-colors sm:px-2 ${tab === t ? "border-ink text-ink" : "border-transparent text-ink/55 hover:text-ink"}`}
           >
-            <span className="block text-sm font-semibold sm:text-base">{tabs[t].label}</span>
-            <span className={`block text-[11px] sm:text-xs ${tab === t ? "text-gold-light/70" : "text-muted"}`}>{tabs[t].hint}</span>
+            <span className="block text-[15px] font-semibold [font-stretch:108%] sm:text-base">{tabs[t].label}</span>
+            <span className="block text-xs text-muted">{tabs[t].hint}</span>
           </Link>
         ))}
       </div>
-      <p className="mt-4 text-muted">{tabs[tab].text}</p>
+      <p className="mt-4 max-w-2xl text-ink/75">{tabs[tab].text}</p>
 
       {tab === "encargo" && (
-        <div className="card mt-5 flex flex-col items-start gap-3 p-5 sm:flex-row sm:items-center sm:justify-between">
+        <div className="mt-5 flex flex-col items-start gap-3 rounded-md bg-sand p-5 sm:flex-row sm:items-center sm:justify-between">
           <div>
             <p className="font-semibold">¿No ves lo que buscas? Pídelo por encargo</p>
             <p className="mt-1 text-sm text-muted">Escríbenos qué producto, marca, referencia, talla o color quieres. Revisamos y te confirmamos precio y disponibilidad antes de pedirlo.</p>
@@ -82,7 +82,7 @@ export default async function CatalogPage({ searchParams }: { searchParams: Prom
       </div>
       <p className="mt-6 text-sm text-muted">{products.length} {products.length === 1 ? "producto" : "productos"}</p>
       {products.length > 0 ? (
-        <div className="mt-3 grid grid-cols-2 gap-3 sm:gap-5 md:grid-cols-3 lg:grid-cols-4">
+        <div className="mt-3 grid grid-cols-2 gap-x-3 gap-y-8 sm:gap-x-5 md:grid-cols-3 lg:grid-cols-4">
           {products.map((p, i) => <ProductCard key={p.id} product={p} priority={i < 4} />)}
         </div>
       ) : tab === "inmediata" ? (

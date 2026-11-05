@@ -5,6 +5,7 @@ import { useEffect, useState } from "react";
 import { Logo } from "./Logo";
 import { useCart } from "./CartProvider";
 import { IconBag, IconClose, IconMenu, IconSearch, IconUser } from "./icons";
+import { RouteSeparator } from "./FlightRoute";
 
 const nav = [
   { href: "/sobre-nosotros", label: "Nosotros" },
@@ -22,9 +23,11 @@ export function Header() {
 
   return (
     <>
-    <header className="sticky top-0 z-40 border-b border-ink/5 bg-cream/90 backdrop-blur-md">
-      <div className="bg-ink py-2 text-center text-[12px] font-medium text-gold-light">
-        ✈️ Productos 100% originales de USA · Envíos a toda Colombia
+    <header className="sticky top-0 z-40 border-b border-line bg-white/95 backdrop-blur-md">
+      <div className="flex items-center justify-center gap-2 whitespace-nowrap bg-ink px-3 py-2 text-center text-[11px] font-medium text-gold-light [font-stretch:88%] sm:gap-3 sm:text-[12px] sm:[font-stretch:100%]">
+        <span>Productos 100% originales de USA</span>
+        <RouteSeparator className="w-8 shrink-0 text-gold sm:w-12" />
+        <span>Envíos a toda Colombia</span>
       </div>
       <div className="container-x flex h-16 items-center justify-between gap-3">
         <button className="-ml-2 p-2 md:hidden" onClick={() => setOpen(true)} aria-label="Abrir menú">
@@ -36,7 +39,8 @@ export function Header() {
             <Link
               key={n.href}
               href={n.href}
-              className={`text-sm font-medium transition hover:text-gold-dark ${pathname.startsWith(n.href) ? "text-gold-dark" : "text-ink/80"}`}
+              aria-current={pathname.startsWith(n.href) ? "page" : undefined}
+              className={`border-b-2 py-1 text-sm font-medium transition-colors [font-stretch:108%] ${pathname.startsWith(n.href) ? "route-dots text-ink" : "border-transparent text-ink/70 hover:text-ink"}`}
             >
               {n.label}
             </Link>
@@ -53,7 +57,7 @@ export function Header() {
           <Link href="/carrito" className="relative -mr-2 p-2" aria-label={`Carrito, ${count} productos`}>
             <IconBag />
             {ready && count > 0 && (
-              <span className="absolute right-0 top-0 flex h-5 min-w-5 items-center justify-center rounded-full bg-gold px-1 text-[11px] font-bold text-ink">
+              <span className="absolute right-0 top-0 flex h-5 min-w-5 items-center justify-center rounded-full bg-ink px-1 text-[11px] font-bold text-white">
                 {count}
               </span>
             )}
@@ -65,7 +69,7 @@ export function Header() {
       {open && (
         <div className="fixed inset-0 z-50 md:hidden" role="dialog" aria-modal="true">
           <div className="absolute inset-0 bg-ink/50" onClick={() => setOpen(false)} />
-          <div className="absolute inset-y-0 left-0 flex w-[82%] max-w-xs flex-col bg-cream p-6 shadow-xl">
+          <div className="absolute inset-y-0 left-0 flex w-[82%] max-w-xs flex-col bg-white p-6">
             <div className="mb-8 flex items-center justify-between">
               <Logo />
               <button onClick={() => setOpen(false)} aria-label="Cerrar menú" className="p-2">
@@ -73,9 +77,9 @@ export function Header() {
               </button>
             </div>
             <nav className="flex flex-col">
-              <Link href="/" className="border-b border-ink/5 py-4 text-lg font-medium">Inicio</Link>
+              <Link href="/" className="border-b border-line py-4 font-display text-2xl">Inicio</Link>
               {nav.map((n) => (
-                <Link key={n.href} href={n.href} className="border-b border-ink/5 py-4 text-lg font-medium">
+                <Link key={n.href} href={n.href} className="border-b border-line py-4 font-display text-2xl">
                   {n.label}
                 </Link>
               ))}

@@ -18,7 +18,7 @@ export default function CartPage() {
     return (
       <div className="container-x py-16 text-center">
         <IconBag width={48} height={48} className="mx-auto text-gold" />
-        <h1 className="mt-4 text-3xl font-semibold">Tu carrito está vacío</h1>
+        <h1 className="mt-4 text-4xl">Tu carrito está vacío</h1>
         <p className="mt-2 text-muted">Dale una mirada a lo que tenemos para ti.</p>
         <Link href="/catalogo" className="btn-primary mt-6">Ver catálogo</Link>
       </div>
@@ -27,14 +27,14 @@ export default function CartPage() {
 
   return (
     <div className="container-x py-8">
-      <h1 className="text-3xl font-semibold">Tu carrito</h1>
+      <h1 className="text-4xl sm:text-5xl">Tu carrito</h1>
       <div className="mt-6 grid gap-6 lg:grid-cols-[1fr_380px]">
         <ul className="space-y-3">
           {items.map((i) => {
             const key = cartKey(i);
             return (
               <li key={key} className="card flex gap-3 p-3 sm:gap-4 sm:p-4">
-                <Link href={`/producto/${i.slug}`} className="relative h-24 w-24 shrink-0 overflow-hidden rounded-xl bg-sand sm:h-28 sm:w-28">
+                <Link href={`/producto/${i.slug}`} className="relative h-24 w-24 shrink-0 overflow-hidden rounded-[3px] bg-sand sm:h-28 sm:w-28">
                   {i.image && <ProductImage src={i.image} alt={i.name} fill sizes="112px" className="object-cover" />}
                 </Link>
                 <div className="flex min-w-0 flex-1 flex-col">
@@ -64,7 +64,7 @@ export default function CartPage() {
           <div className="flex justify-between text-sm"><span>Subtotal</span><span>{formatCOP(subtotal)}</span></div>
           <div className="flex justify-between text-sm"><span>Envío</span><span>{ship ? formatCOP(ship) : "¡Gratis!"}</span></div>
           {missingForFree > 0 && (
-            <p className="rounded-lg bg-sand/70 p-3 text-xs">Te faltan <b>{formatCOP(missingForFree)}</b> para tener envío gratis 🚚</p>
+            <p className="rounded-lg bg-sand p-3 text-xs">Te faltan <b>{formatCOP(missingForFree)}</b> para tener envío gratis 🚚</p>
           )}
           <div className="flex justify-between border-t border-ink/10 pt-3 text-lg font-bold"><span>Total</span><span>{formatCOP(subtotal + ship)}</span></div>
           <Link href="/checkout" className="btn-primary w-full py-4 text-base">Continuar con la compra</Link>

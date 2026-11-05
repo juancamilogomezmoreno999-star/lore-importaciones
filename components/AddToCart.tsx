@@ -48,7 +48,7 @@ export function AddToCart({ product }: { product: Product }) {
                 key={o}
                 type="button"
                 onClick={() => { setSelected((s) => ({ ...s, [v.name]: o })); setAdded(false); setError(""); }}
-                className={`min-w-12 rounded-xl border px-4 py-2.5 text-sm font-medium transition ${selected[v.name] === o ? "border-ink bg-ink text-gold-light" : "border-ink/15 bg-white hover:border-ink/50"}`}
+                className={`min-w-12 rounded-[3px] border px-4 py-2.5 text-sm font-medium transition ${selected[v.name] === o ? "border-ink bg-ink text-gold-light" : "border-ink/15 bg-white hover:border-ink/50"}`}
               >
                 {o}
               </button>

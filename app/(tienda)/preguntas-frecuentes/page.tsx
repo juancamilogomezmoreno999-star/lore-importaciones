@@ -55,27 +55,27 @@ export default function FaqPage() {
     <div className="container-x max-w-3xl py-10">
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd).replace(/</g, "\\u003c") }} />
       <p className="eyebrow">Resolvemos tus dudas</p>
-      <h1 className="mt-2 text-4xl font-semibold">Preguntas frecuentes</h1>
+      <h1 className="mt-5 text-[2.6rem] sm:text-6xl">Preguntas frecuentes</h1>
       <p className="mt-3 text-lg leading-relaxed text-ink/75">Queremos que compres con tranquilidad. Aquí encontrarás las respuestas a las dudas más comunes sobre nuestros productos, pedidos, pagos y envíos.</p>
       {faqs.map((g) => (
         <section key={g.group} className="mt-10">
-          <h2 className="mb-3 text-xl font-semibold">{g.group}</h2>
-          <div className="space-y-2">
+          <h2 className="mb-2 text-2xl sm:text-3xl">{g.group}</h2>
+          <div className="border-t border-ink">
             {g.items.map((f) => (
-              <details key={f.q} className="card group p-0 [&_summary::-webkit-details-marker]:hidden">
-                <summary className="flex cursor-pointer items-center justify-between gap-4 p-5 font-medium">
+              <details key={f.q} className="group border-b border-line [&_summary::-webkit-details-marker]:hidden">
+                <summary className="flex cursor-pointer items-center justify-between gap-4 py-5 text-[17px] font-medium">
                   {f.q}
-                  <span className="text-xl text-gold-dark transition group-open:rotate-45">+</span>
+                  <span aria-hidden className="text-2xl leading-none text-gold-dark transition-transform group-open:rotate-45">+</span>
                 </summary>
-                <p className="whitespace-pre-line px-5 pb-5 text-[15px] leading-relaxed text-ink/75">{f.a}</p>
+                <p className="max-w-prose whitespace-pre-line pb-6 text-[15px] leading-relaxed text-ink/75">{f.a}</p>
               </details>
             ))}
           </div>
         </section>
       ))}
-      <div className="card mt-12 p-6 text-center">
-        <p className="font-medium">¿No encontraste tu respuesta?</p>
-        <div className="mt-4 flex flex-col justify-center gap-3 sm:flex-row">
+      <div className="mt-14 rounded-md bg-sand p-6 sm:p-8">
+        <p className="font-display text-2xl">¿No encontraste tu respuesta?</p>
+        <div className="mt-4 flex flex-col gap-3 sm:flex-row">
           <a href={whatsappLink()} target="_blank" rel="noopener" className="btn-whatsapp">WhatsApp {store.whatsappDisplay}</a>
           <Link href="/contacto" className="btn-outline">Escríbenos</Link>
         </div>

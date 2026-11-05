@@ -14,7 +14,7 @@ export default function ContactPage() {
     <div className="container-x py-10">
       <div className="max-w-2xl">
         <p className="eyebrow">Hablemos</p>
-        <h1 className="mt-2 text-4xl font-semibold">Contáctanos</h1>
+        <h1 className="mt-5 text-[2.6rem] sm:text-6xl">Contáctanos</h1>
         <p className="mt-3 text-muted">¿Tienes dudas sobre un producto, quieres cotizar algo de USA o saber cómo va tu pedido? Estamos para ayudarte.</p>
       </div>
       <div className="mt-8 grid gap-6 md:grid-cols-[1fr_1.3fr]">
@@ -24,7 +24,7 @@ export default function ContactPage() {
             <span><b className="block">WhatsApp</b><span className="text-sm text-muted">{store.whatsappDisplay} · respuesta más rápida</span></span>
           </a>
           <a href={instagramLink} target="_blank" rel="noopener" className="card flex items-center gap-4 p-5 hover:ring-1 hover:ring-gold">
-            <span className="rounded-full bg-ink p-3 text-gold-light"><IconInstagram /></span>
+            <span className="rounded-[3px] bg-ink p-3 text-gold-light"><IconInstagram /></span>
             <span><b className="block">Instagram</b><span className="text-sm text-muted">@{store.instagram}</span></span>
           </a>
           <div className="card p-5 text-sm text-muted">

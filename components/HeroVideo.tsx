@@ -20,7 +20,7 @@ export function HeroVideo({ src, poster }: { src: string; poster: string }) {
   };
 
   return (
-    <div className="relative mx-auto aspect-[9/16] w-full max-w-[300px] overflow-hidden rounded-3xl bg-ink ring-1 ring-gold/30 md:max-w-[330px]">
+    <div className="relative mx-auto aspect-[9/16] w-full max-w-[300px] overflow-hidden rounded-md bg-ink outline outline-1 outline-offset-8 outline-line md:max-w-[340px]">
       <video
         ref={ref}
         className="h-full w-full object-cover"
@@ -36,7 +36,8 @@ export function HeroVideo({ src, poster }: { src: string; poster: string }) {
       <button
         type="button"
         onClick={toggle}
-        className="absolute bottom-3 left-1/2 flex -translate-x-1/2 items-center gap-2 whitespace-nowrap rounded-full bg-ink/80 px-4 py-2 text-sm font-semibold text-gold-light backdrop-blur transition hover:bg-ink"
+        aria-pressed={!muted}
+        className="absolute bottom-3 left-3 flex items-center gap-2 whitespace-nowrap rounded-[3px] bg-white px-3.5 py-2 text-sm font-semibold text-ink transition-colors [font-stretch:108%] hover:bg-gold-light"
       >
         {muted ? "🔊 Activar sonido" : "🔇 Silenciar"}
       </button>

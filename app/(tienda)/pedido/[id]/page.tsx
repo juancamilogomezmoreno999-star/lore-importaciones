@@ -66,7 +66,7 @@ export default async function OrderPage({ params, searchParams }: Props) {
       <div className="text-center">
         {nequiPending ? (
           <>
-            <h1 className="text-3xl font-semibold">¡Pedido recibido! Falta tu pago por Nequi</h1>
+            <h1 className="text-4xl sm:text-5xl">¡Pedido recibido! Falta tu pago por Nequi</h1>
             <div className="card mx-auto mt-5 max-w-sm p-5 text-left">
               <p className="text-sm text-muted">Envía exactamente</p>
               <p className="text-3xl font-bold">{formatCOP(order.total)}</p>
@@ -87,7 +87,7 @@ export default async function OrderPage({ params, searchParams }: Props) {
           </>
         ) : rejected ? (
           <>
-            <h1 className="text-3xl font-semibold">El pago no se pudo completar</h1>
+            <h1 className="text-4xl sm:text-5xl">El pago no se pudo completar</h1>
             <p className="mt-3 text-muted">Tu pedido {code} sigue guardado. Escríbenos por WhatsApp y te ayudamos a completar el pago con otro medio.</p>
           </>
         ) : approved ? (
@@ -98,7 +98,7 @@ export default async function OrderPage({ params, searchParams }: Props) {
           </>
         ) : (
           <>
-            <h1 className="text-3xl font-semibold">Estamos confirmando tu pago</h1>
+            <h1 className="text-4xl sm:text-5xl">Estamos confirmando tu pago</h1>
             <p className="mt-3 text-muted">Esto puede tardar unos minutos (con PSE a veces un poco más). Te avisamos por correo apenas se confirme.</p>
             <p className="mt-2 text-sm text-muted">¿No alcanzaste a pagar? <Link href={`/pagar/${order.id}`} className="font-semibold text-ink underline">Ir a pagar</Link></p>
           </>

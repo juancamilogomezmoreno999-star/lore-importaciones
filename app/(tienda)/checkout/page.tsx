@@ -61,7 +61,7 @@ export default function CheckoutPage() {
   if (items.length === 0) {
     return (
       <div className="container-x py-16 text-center">
-        <h1 className="text-3xl font-semibold">No hay productos para pagar</h1>
+        <h1 className="text-4xl sm:text-5xl">No hay productos para pagar</h1>
         <Link href="/catalogo" className="btn-primary mt-6">Ir al catálogo</Link>
       </div>
     );
@@ -133,7 +133,7 @@ export default function CheckoutPage() {
 
   return (
     <div className="container-x py-8">
-      <h1 className="text-3xl font-semibold">Finalizar compra</h1>
+      <h1 className="text-4xl sm:text-5xl">Finalizar compra</h1>
       <form
         key={saved ? "con-datos" : "sin-datos"}
         noValidate
@@ -146,7 +146,7 @@ export default function CheckoutPage() {
           <section className="card space-y-4 p-5">
             <h2 className="font-sans text-lg font-semibold">1. Tus datos</h2>
             {!user && (
-              <p className="rounded-xl bg-sand/70 p-3 text-sm">
+              <p className="rounded-[3px] bg-sand p-3 text-sm">
                 ¿Tienes cuenta? <Link href="/cuenta/ingresar?next=/checkout" className="font-semibold underline">Ingresa</Link> y llenamos estos datos por ti. También puedes comprar sin cuenta.
               </p>
             )}
@@ -212,7 +212,7 @@ export default function CheckoutPage() {
           <section className="card space-y-3 p-5">
             <h2 className="font-sans text-lg font-semibold">3. ¿Cómo quieres pagar?</h2>
             {payments.nequi.enabled && (
-              <label className={`relative flex cursor-pointer gap-3 rounded-xl border p-4 transition ${method === "nequi" ? "border-ink ring-1 ring-ink" : "border-ink/15"}`}>
+              <label className={`relative flex cursor-pointer gap-3 rounded-[3px] border p-4 transition ${method === "nequi" ? "border-ink ring-1 ring-ink" : "border-ink/15"}`}>
                 <span className="absolute -top-2.5 right-3 rounded-full bg-gold px-2.5 py-0.5 text-[11px] font-bold text-ink">⭐ Recomendado</span>
                 <input type="radio" name="pm" className="mt-1 accent-ink" checked={method === "nequi"} onChange={() => setMethod("nequi")} />
                 <span>
@@ -222,7 +222,7 @@ export default function CheckoutPage() {
               </label>
             )}
             {payments.online && (
-              <label className={`flex cursor-pointer gap-3 rounded-xl border p-4 transition ${method === "en_linea" ? "border-ink ring-1 ring-ink" : "border-ink/15"}`}>
+              <label className={`flex cursor-pointer gap-3 rounded-[3px] border p-4 transition ${method === "en_linea" ? "border-ink ring-1 ring-ink" : "border-ink/15"}`}>
                 <input type="radio" name="pm" className="mt-1 accent-ink" checked={method === "en_linea"} onChange={() => setMethod("en_linea")} />
                 <span>
                   <span className="block font-semibold">Pago en línea con Bold</span>
@@ -231,7 +231,7 @@ export default function CheckoutPage() {
               </label>
             )}
             {payments.cashOnDelivery.enabled && (
-              <label className={`flex gap-3 rounded-xl border p-4 transition ${codAvailable ? "cursor-pointer" : "opacity-50"} ${method === "contra_entrega" ? "border-ink ring-1 ring-ink" : "border-ink/15"}`}>
+              <label className={`flex gap-3 rounded-[3px] border p-4 transition ${codAvailable ? "cursor-pointer" : "opacity-50"} ${method === "contra_entrega" ? "border-ink ring-1 ring-ink" : "border-ink/15"}`}>
                 <input type="radio" name="pm" className="mt-1 accent-ink" disabled={!codAvailable} checked={method === "contra_entrega"} onChange={() => setMethod("contra_entrega")} />
                 <span>
                   <span className="block font-semibold">Pago contra entrega</span>

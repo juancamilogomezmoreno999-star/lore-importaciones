@@ -20,7 +20,7 @@ export function CookieNotice() {
     setShow(false);
   };
   return (
-    <div role="region" aria-label="Aviso de cookies" className="fixed inset-x-3 bottom-24 z-40 mx-auto max-w-lg rounded-2xl bg-ink p-4 text-sm text-white/85 shadow-xl md:bottom-6">
+    <div role="region" aria-label="Aviso de cookies" className="fixed inset-x-3 bottom-24 z-40 mx-auto max-w-lg rounded-md bg-ink p-4 text-sm text-white/85 shadow-xl md:bottom-6">
       <p>
         🍪 Solo usamos el almacenamiento necesario para que la tienda funcione (por ejemplo, recordar tu carrito). No usamos cookies de publicidad ni de seguimiento.{" "}
         <Link href="/cookies" className="font-semibold text-gold-light underline">Más información</Link>

@@ -67,18 +67,18 @@ export default async function ProductPage({ params }: Props) {
         <ProductGallery images={product.images} name={product.name} />
         <div>
           <p className="eyebrow">{product.category}</p>
-          <h1 className="mt-2 text-3xl font-semibold leading-tight sm:text-4xl">{product.name}</h1>
+          <h1 className="mt-3 text-4xl sm:text-5xl">{product.name}</h1>
           <div className="mt-4 flex flex-wrap items-baseline gap-3">
-            <span className="text-3xl font-bold">{formatCOP(product.price)}</span>
+            <span className="text-3xl font-semibold tabular-nums">{formatCOP(product.price)}</span>
             {off > 0 && (
               <>
                 <span className="text-lg text-muted line-through">{formatCOP(product.compare_at_price!)}</span>
-                <span className="rounded-full bg-ink px-2.5 py-1 text-xs font-bold text-gold-light">Ahorras {off}%</span>
+                <span className="tag bg-ink text-white">Ahorras {off}%</span>
               </>
             )}
           </div>
           {product.immediate_delivery && (
-            <p className="mt-3 inline-block rounded-full bg-gold px-3 py-1 text-xs font-bold text-ink">⚡ Entrega inmediata · se puede pagar contra entrega</p>
+            <p className="mt-4"><span className="tag bg-gold text-ink">⚡ Entrega inmediata · se puede pagar contra entrega</span></p>
           )}
           <p className={`mt-2 text-sm font-medium ${product.stock > 0 ? "text-success" : "text-danger"}`}>
             {product.stock > 5 ? "✓ Disponible" : product.stock > 0 ? `¡Solo quedan ${product.stock} unidades!` : "Agotado por ahora"}
@@ -86,23 +86,23 @@ export default async function ProductPage({ params }: Props) {
 
           <div className="mt-6"><AddToCart product={product} /></div>
 
-          <ul className="mt-6 space-y-3 rounded-2xl bg-white p-5 text-sm">
-            <li className="flex gap-3"><IconClock width={20} className="shrink-0 text-gold-dark" /><span><b>Tiempo de entrega:</b> {product.delivery_time}</span></li>
-            <li className="flex gap-3"><IconTruck width={20} className="shrink-0 text-gold-dark" /><span><b>Envío a toda Colombia</b>{shipping.freeFrom > 0 ? ` · gratis en compras desde ${formatCOP(shipping.freeFrom)}` : ""}</span></li>
-            <li className="flex gap-3"><IconShield width={20} className="shrink-0 text-gold-dark" /><span><b>Producto original.</b> Garantía según la marca. Paga con Nequi o Llave, PSE o tarjeta.</span></li>
+          <ul className="mt-8 divide-y divide-line border-y border-line text-sm">
+            <li className="flex gap-3 py-3.5"><IconClock width={20} className="shrink-0 text-gold-dark" /><span><b>Tiempo de entrega:</b> {product.delivery_time}</span></li>
+            <li className="flex gap-3 py-3.5"><IconTruck width={20} className="shrink-0 text-gold-dark" /><span><b>Envío a toda Colombia</b>{shipping.freeFrom > 0 ? ` · gratis en compras desde ${formatCOP(shipping.freeFrom)}` : ""}</span></li>
+            <li className="flex gap-3 py-3.5"><IconShield width={20} className="shrink-0 text-gold-dark" /><span><b>Producto original.</b> Garantía según la marca. Paga con Nequi o Llave, PSE o tarjeta.</span></li>
           </ul>
 
           <div className="mt-8">
-            <h2 className="font-sans text-lg font-semibold">Descripción</h2>
-            <div className="mt-3 whitespace-pre-line text-[15px] leading-relaxed text-ink/80">{product.description}</div>
+            <h2 className="text-2xl">Descripción</h2>
+            <div className="mt-3 max-w-prose whitespace-pre-line text-[15px] leading-relaxed text-ink/80">{product.description}</div>
           </div>
         </div>
       </div>
 
       {related.length > 0 && (
         <section className="mt-16">
-          <h2 className="mb-6 text-2xl font-semibold">También te puede gustar</h2>
-          <div className="grid grid-cols-2 gap-3 sm:gap-5 md:grid-cols-4">
+          <h2 className="mb-6 border-b border-line pb-4 text-3xl">También te puede gustar</h2>
+          <div className="grid grid-cols-2 gap-x-3 gap-y-8 sm:gap-x-5 md:grid-cols-4">
             {related.map((p) => <ProductCard key={p.id} product={p} />)}
           </div>
         </section>

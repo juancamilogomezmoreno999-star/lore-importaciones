@@ -43,7 +43,7 @@ export function CatalogFilters({ categories }: { categories: string[] }) {
           value={q}
           onChange={(e) => setQ(e.target.value)}
           placeholder="Buscar productos…"
-          className="input !rounded-full pl-11"
+          className="input pl-11"
         />
       </label>
       <div className="-mx-4 flex gap-2 overflow-x-auto px-4 pb-1 [scrollbar-width:none]">
@@ -51,7 +51,8 @@ export function CatalogFilters({ categories }: { categories: string[] }) {
           <button
             key={c || "todas"}
             onClick={() => set({ categoria: c })}
-            className={`shrink-0 rounded-full border px-4 py-2 text-sm font-medium transition ${category === c ? "border-ink bg-ink text-gold-light" : "border-ink/10 bg-white hover:border-gold"}`}
+            aria-pressed={category === c}
+            className={`shrink-0 rounded-[3px] border px-4 py-2 text-sm font-medium transition-colors ${category === c ? "border-ink bg-ink text-white" : "border-line bg-white hover:border-ink"}`}
           >
             {c || "Todas"}
           </button>

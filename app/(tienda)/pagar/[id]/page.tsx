@@ -22,8 +22,8 @@ export default async function PayPage({ params }: { params: Promise<{ id: string
   const code = orderCode(order.order_number);
   return (
     <div className="container-x max-w-lg py-10">
-      <p className="eyebrow text-center">Último paso</p>
-      <h1 className="mt-2 text-center text-3xl font-semibold">Paga tu pedido {code}</h1>
+      <p className="text-center"><span className="eyebrow">Último paso</span></p>
+      <h1 className="mt-4 text-center text-4xl">Paga tu pedido {code}</h1>
       <p className="mt-2 text-center text-muted">Toca el botón y elige cómo pagar: tarjeta, PSE, Nequi o Bancolombia.</p>
 
       <div className="card mt-6 p-5">

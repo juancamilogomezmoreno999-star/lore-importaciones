@@ -90,13 +90,13 @@ export function AuthForm() {
 
   return (
     <div className="card mx-auto w-full max-w-md p-6">
-      <div className="mb-6 grid grid-cols-2 rounded-full bg-sand/70 p-1 text-sm font-semibold">
+      <div className="mb-6 grid grid-cols-2 rounded-[3px] bg-sand p-1 text-sm font-semibold">
         {(["ingresar", "registro"] as const).map((m) => (
           <button
             key={m}
             type="button"
             onClick={() => { setMode(m); setError(""); setInfo(""); setErrors({}); }}
-            className={`rounded-full py-2.5 transition ${mode === m ? "bg-ink text-gold-light" : "text-ink/70"}`}
+            className={`rounded-[3px] py-2.5 transition-colors [font-stretch:108%] ${mode === m ? "bg-ink text-white" : "text-ink/70"}`}
           >
             {m === "ingresar" ? "Ingresar" : "Crear cuenta"}
           </button>

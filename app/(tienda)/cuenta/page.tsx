@@ -35,7 +35,7 @@ export default async function AccountPage() {
     <div className="container-x max-w-3xl space-y-6 py-10">
       <div className="flex flex-wrap items-center justify-between gap-3">
         <div>
-          <h1 className="text-3xl font-semibold">¡Hola{name ? `, ${name}` : ""}! 👋</h1>
+          <h1 className="text-4xl sm:text-5xl">¡Hola{name ? `, ${name}` : ""}! 👋</h1>
           <p className="text-sm text-muted">{user.email}</p>
         </div>
         <LogoutButton />

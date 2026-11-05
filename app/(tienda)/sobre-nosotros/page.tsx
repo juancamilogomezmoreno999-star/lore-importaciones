@@ -18,30 +18,30 @@ const values = [
 
 export default function AboutPage() {
   return (
-    <div className="container-x py-10">
-      <div className="mx-auto max-w-3xl text-center">
+    <div className="container-x py-12">
+      <div className="max-w-3xl">
         <p className="eyebrow">{store.name}</p>
-        <h1 className="mt-2 text-4xl font-semibold leading-tight sm:text-5xl">
-          Tus marcas favoritas de USA, <span className="italic text-gold-dark">más cerca de ti.</span>
-        </h1>
-        <p className="mt-5 text-lg leading-relaxed text-ink/75">
+        <h1 className="mt-5 text-[2.6rem] sm:text-6xl">Tus marcas favoritas de USA, más cerca de ti.</h1>
+        <p className="mt-6 text-lg leading-relaxed text-ink/75">
           Descubre una selección de productos de moda, belleza, accesorios y mucho más. En {store.name} acercamos a Colombia los productos que te encantan de Estados Unidos,
           con una experiencia de compra cómoda, atención personalizada y la confianza de saber quién te acompaña en cada paso.
         </p>
-        <p className="mx-auto mt-6 inline-block rounded-full bg-gold/15 px-5 py-2.5 text-sm font-semibold text-gold-dark ring-1 ring-gold/40">
+        <p className="route-dots mt-8 border-l-2 pl-5 font-display text-2xl leading-snug">
           Encuentra tus productos favoritos disponibles para entrega inmediata o solicítalos por encargo.
         </p>
       </div>
-      <div className="mt-12 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
+      <ul className="mt-14 grid border-t border-line sm:grid-cols-2">
         {values.map(({ icon: Icon, title, text }) => (
-          <div key={title} className="card p-6">
-            <Icon width={28} height={28} className="text-gold-dark" />
-            <h2 className="mt-3 font-sans text-lg font-semibold">{title}</h2>
-            <p className="mt-2 text-sm leading-relaxed text-muted">{text}</p>
-          </div>
+          <li key={title} className="flex gap-4 border-b border-line py-7 sm:pr-8 sm:odd:border-r sm:even:pl-8">
+            <Icon width={24} height={24} className="mt-1 shrink-0 text-gold-dark" />
+            <div>
+              <h2 className="font-sans text-lg font-semibold">{title}</h2>
+              <p className="mt-1.5 text-[15px] leading-relaxed text-ink/70">{text}</p>
+            </div>
+          </li>
         ))}
-      </div>
-      <div className="mt-12 flex flex-col justify-center gap-3 sm:flex-row">
+      </ul>
+      <div className="mt-12 flex flex-col gap-3 sm:flex-row">
         <Link href="/catalogo" className="btn-primary">Ver productos</Link>
         <a href={whatsappLink()} target="_blank" rel="noopener" className="btn-whatsapp"><IconWhatsApp width={20} /> Escríbenos</a>
       </div>
