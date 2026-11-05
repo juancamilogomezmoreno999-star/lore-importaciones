@@ -20,7 +20,7 @@ export function HeroVideo({ src, poster }: { src: string; poster: string }) {
   };
 
   return (
-    <div className="relative mx-auto aspect-[9/16] w-full max-w-[300px] overflow-hidden rounded-md bg-ink outline outline-1 outline-offset-8 outline-line md:max-w-[340px]">
+    <div className="relative mx-auto aspect-[9/16] w-full max-w-[300px] overflow-hidden rounded-md bg-ink md:max-w-[320px]">
       <video
         ref={ref}
         className="h-full w-full object-cover"

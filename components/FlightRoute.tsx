@@ -2,7 +2,7 @@
  * La ruta punteada del avión del logo. En el banner se dibuja y el avión vuela una sola vez;
  * con "reducir movimiento" activado aparece ya dibujada.
  */
-const D = "M 4 58 C 150 70, 330 64, 452 38 S 566 10, 592 6";
+const D = "M 4 58 C 150 70, 330 64, 452 38 C 500 27, 540 18, 592 10";
 const PLANE =
   "M11 0 L-5 -2.1 L-8.5 -9 L-11 -9 L-8 -1.7 L-11 -1.5 L-13 -4.5 L-14.6 -4.5 L-13.2 0 L-14.6 4.5 L-13 4.5 L-11 1.5 L-8 1.7 L-11 9 L-8.5 9 L-5 2.1 Z";
 
@@ -17,9 +17,9 @@ export function FlightRoute({ id, className = "" }: { id: string; className?: st
       <path d={D} fill="none" stroke="var(--color-gold)" strokeWidth="2.6" strokeLinecap="round" strokeDasharray="0.01 8.5" mask={`url(#${id}-mask)`} />
       <g className="avion-vuela" fill="var(--color-ink)">
         <path d={PLANE} />
-        <animateMotion dur="1.9s" begin="0.35s" fill="freeze" rotate="auto" path={D} calcMode="spline" keyTimes="0;1" keySplines=".45 .05 .25 1" />
+        <animateMotion dur="1.9s" begin="0.35s" fill="freeze" rotate="auto" path={D} calcMode="linear" />
       </g>
-      <g className="avion-quieto" fill="var(--color-ink)" transform="translate(592 6) rotate(-8.7)">
+      <g className="avion-quieto" fill="var(--color-ink)" transform="translate(592 10) rotate(-9.8)">
         <path d={PLANE} />
       </g>
     </svg>

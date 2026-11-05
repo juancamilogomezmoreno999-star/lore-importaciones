@@ -53,7 +53,6 @@
 /* Rótulo pequeño, precedido por un tramo de la ruta punteada */
 @utility eyebrow {
   @apply inline-flex items-center gap-2.5 text-[13px] font-medium text-gold-dark;
-  &::before { content: ""; width: 1.75rem; border-top: 2px dotted var(--color-gold); }
 }
 
 /* Etiqueta de equipaje: punta a la izquierda y el hueco del cordón */
@@ -76,7 +75,7 @@
 
 /* Animación única: la ruta del banner se dibuja y el avión vuela una vez */
 @keyframes trazar { from { stroke-dashoffset: 1; } to { stroke-dashoffset: 0; } }
-.ruta-trazo { stroke-dasharray: 1; stroke-dashoffset: 1; animation: trazar 1.9s cubic-bezier(.45,.05,.25,1) .35s forwards; }
+.ruta-trazo { stroke-dasharray: 1; stroke-dashoffset: 1; animation: trazar 1.9s linear .35s forwards; }
 .avion-quieto { display: none; }
 @media (prefers-reduced-motion: reduce) {
   .ruta-trazo { animation: none; stroke-dashoffset: 0; }

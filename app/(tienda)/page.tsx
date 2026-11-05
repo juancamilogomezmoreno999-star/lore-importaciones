@@ -21,11 +21,11 @@ export default async function HomePage() {
   return (
     <>
       {/* Banner principal */}
-      <section className="border-b border-line">
+      <section className="overflow-hidden border-b border-line">
         <div className="container-x grid gap-10 py-10 md:grid-cols-[1.2fr_.8fr] md:items-center md:gap-12 md:py-16">
           <div className="min-w-0">
             <p className="eyebrow">Importamos de Estados Unidos 🇺🇸</p>
-            <h1 className="mt-5 text-[2.5rem] sm:text-6xl lg:text-[4.5rem]">
+            <h1 className="mt-4 text-[2.7rem] sm:text-6xl lg:text-[4.8rem]">
               Te traemos lo mejor de USA, directo a la puerta de tu casa
             </h1>
             <FlightRoute id="ruta-banner" className="mt-2 max-w-xl sm:mt-4" />
@@ -53,14 +53,24 @@ export default async function HomePage() {
               </div>
             )}
           </div>
-          <HeroVideo src="/videos/presentacion.mp4" poster="/videos/presentacion.jpg" />
+          <div className="relative mx-auto w-full max-w-[380px] py-6">
+            <div aria-hidden className="absolute inset-y-0 left-6 right-0 rounded-md bg-sand" />
+            <div className="relative"><HeroVideo src="/videos/presentacion.mp4" poster="/videos/presentacion.jpg" /></div>
+            <svg aria-hidden viewBox="0 0 120 120" className="absolute right-0 top-0 h-24 w-24 rotate-[-12deg] sm:h-28 sm:w-28">
+              <circle cx="60" cy="60" r="56" fill="var(--color-ink)" />
+              <circle cx="60" cy="60" r="49" fill="none" stroke="var(--color-gold)" strokeWidth="1" strokeDasharray="0.01 4" strokeLinecap="round" />
+              <path id="sello" d="M60 60 m-38 0 a38 38 0 1 1 76 0 a38 38 0 1 1 -76 0" fill="none" />
+              <text fill="var(--color-gold-light)" fontSize="11" fontWeight="600" letterSpacing="2.2"><textPath href="#sello">ORIGINALES · DESDE USA · LORE ·</textPath></text>
+              <text x="60" y="68" textAnchor="middle" fill="var(--color-gold)" fontSize="24">✈</text>
+            </svg>
+          </div>
         </div>
       </section>
 
       {/* Destacados */}
       <section className="container-x mt-16">
         <div className="flex items-end justify-between gap-4 border-b border-line pb-4">
-          <h2 className="text-3xl sm:text-4xl">Productos destacados</h2>
+          <h2 className="text-4xl sm:text-5xl">Productos destacados</h2>
           <Link href="/catalogo" className="shrink-0 text-sm font-semibold underline underline-offset-4 hover:text-gold-dark">Ver todo</Link>
         </div>
         <div className="mt-6 grid grid-cols-2 gap-x-3 gap-y-8 sm:gap-x-5 md:grid-cols-3 lg:grid-cols-4">

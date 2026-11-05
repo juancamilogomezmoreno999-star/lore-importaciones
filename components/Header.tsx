@@ -24,9 +24,9 @@ export function Header() {
   return (
     <>
     <header className="sticky top-0 z-40 border-b border-line bg-white/95 backdrop-blur-md">
-      <div className="flex items-center justify-center gap-2 whitespace-nowrap bg-ink px-3 py-2 text-center text-[11px] font-medium text-gold-light [font-stretch:88%] sm:gap-3 sm:text-[12px] sm:[font-stretch:100%]">
+      <div className="flex items-center justify-center gap-2 whitespace-nowrap bg-gold px-3 py-2 text-center text-[11px] font-semibold text-ink [font-stretch:88%] sm:gap-3 sm:text-[12px] sm:[font-stretch:100%]">
         <span>Productos 100% originales de USA</span>
-        <RouteSeparator className="w-8 shrink-0 text-gold sm:w-12" />
+        <RouteSeparator className="w-8 shrink-0 text-ink sm:w-12" />
         <span>Envíos a toda Colombia</span>
       </div>
       <div className="container-x flex h-16 items-center justify-between gap-3">
