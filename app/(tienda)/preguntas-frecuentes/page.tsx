@@ -5,7 +5,7 @@ import { formatCOP } from "@/lib/format";
 
 export const metadata: Metadata = {
   title: "Preguntas frecuentes",
-  description: "Tiempos de entrega, aduana, garantías, devoluciones y formas de pago al comprar productos importados de USA con Lore Importaciones.",
+  description: "Tiempos de entrega, envíos, pedidos y formas de pago al comprar productos importados de USA con Lore Importaciones.",
   alternates: { canonical: "/preguntas-frecuentes" },
 };
 
@@ -20,27 +20,11 @@ const faqs: { group: string; items: { q: string; a: string }[] }[] = [
     ],
   },
   {
-    group: "Aduana e impuestos",
-    items: [
-      { q: "¿Tengo que pagar algo adicional en la aduana?", a: "No. El precio que ves en la página ya incluye el envío internacional, los impuestos y los trámites de importación. Lo que ves es lo que pagas (más el envío nacional, si aplica)." },
-      { q: "¿Quién hace los trámites de importación?", a: "Nosotros. Nos encargamos de toda la logística y de cumplir con la normativa de la DIAN. Tú no tienes que hacer ningún trámite." },
-    ],
-  },
-  {
     group: "Pagos",
     items: [
       { q: "¿Cómo es la forma de pago?", a: `Aceptamos todas las tarjetas débito y crédito, PSE, Nequi, Llave o transferencia bancaria.${payments.onlineFeePercent > 0 ? `\n\nAl pagar con tarjeta o PSE (a través de Bold) se suma el costo de la pasarela (comisión del ${payments.onlineFeePercent}%), que verás por separado antes de pagar. Nequi, Llave y transferencia no tienen costo adicional; para transferencia bancaria escríbenos por WhatsApp.` : ""}` },
       { q: "¿Puedo cancelar o cambiar mi pedido?", a: "Las condiciones de cancelación o cambio de pedido dependen de la modalidad de la compra y del estado en que se encuentre el pedido.\n\nTambién puedes revisar nuestra política de cambios y devoluciones." },
       { q: "¿Es seguro pagar en la página?", a: "Sí. El pago se hace en la ventana segura de Bold. Nosotros nunca vemos ni guardamos los datos de tu tarjeta." },
-    ],
-  },
-  {
-    group: "Garantías y devoluciones",
-    items: [
-      { q: "¿Los productos son originales?", a: "Sí. Trabajamos con productos originales de marcas reconocidas, comprados a través de canales de venta confiables de Estados Unidos. Si quieres, te compartimos el soporte de compra." },
-      { q: "¿Tienen garantía?", a: "Sí. La garantía es la que establece cada marca o fabricante para su producto. Si tu producto llega con un defecto de fábrica, escríbenos con fotos o video y tu número de pedido, y te ayudamos a gestionarla. No cubre daños por mal uso, golpes o humedad." },
-      { q: "¿Puedo devolver un producto?", a: "Sí. Por ser una compra a distancia tienes derecho de retracto: puedes devolver el producto dentro de los 5 días hábiles siguientes a la entrega, sin usar, con sus etiquetas y empaque original. Te devolvemos el dinero en máximo 30 días calendario. Los costos de transporte de la devolución corren por tu cuenta. Todos los detalles están en la página Cambios y devoluciones." },
-      { q: "¿Y si me equivoqué de talla?", a: "Escríbenos dentro de los 5 días hábiles siguientes a la entrega. Si el producto está sin usar y con etiquetas, te ayudamos con el cambio según disponibilidad. Los envíos del cambio (ida y vuelta) los paga el cliente." },
     ],
   },
 ];
