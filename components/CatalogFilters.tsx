@@ -1,6 +1,6 @@
 "use client";
-import { useRouter, useSearchParams } from "next/navigation";
-import { useEffect, useState, useTransition } from "react";
+import { useSearchParams } from "next/navigation";
+import { useEffect, useState } from "react";
 import { IconSearch } from "./icons";
 
 const priceRanges = [
@@ -11,21 +11,20 @@ const priceRanges = [
 ];
 
 export function CatalogFilters({ categories }: { categories: string[] }) {
-  const router = useRouter();
   const params = useSearchParams();
-  const [pending, start] = useTransition();
   const [q, setQ] = useState(params.get("q") ?? "");
 
   const set = (changes: Record<string, string>) => {
     const next = new URLSearchParams(params.toString());
     Object.entries(changes).forEach(([k, v]) => (v ? next.set(k, v) : next.delete(k)));
-    start(() => router.replace(`/catalogo${next.size ? `?${next}` : ""}`, { scroll: false }));
+    // Cambia la dirección sin recargar: el filtrado ocurre al instante en el navegador
+    window.history.replaceState(null, "", `/catalogo${next.size ? `?${next}` : ""}`);
   };
 
   useEffect(() => {
     const t = setTimeout(() => {
       if ((params.get("q") ?? "") !== q) set({ q });
-    }, 350);
+    }, 200);
     return () => clearTimeout(t);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [q]);
@@ -34,7 +33,7 @@ export function CatalogFilters({ categories }: { categories: string[] }) {
   const rangeIndex = Math.max(0, priceRanges.findIndex((r) => r.min === (params.get("min") ?? "") && r.max === (params.get("max") ?? "")));
 
   return (
-    <div className={`space-y-3 transition ${pending ? "opacity-70" : ""}`}>
+    <div className="space-y-3">
       <label className="relative block">
         <span className="sr-only">Buscar por nombre</span>
         <IconSearch className="pointer-events-none absolute left-4 top-1/2 -translate-y-1/2 text-ink/40" width={20} />
