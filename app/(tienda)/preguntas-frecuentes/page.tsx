@@ -41,10 +41,9 @@ export default function FaqPage() {
       <p className="eyebrow">Resolvemos tus dudas</p>
       <h1 className="mt-5 text-[2.6rem] sm:text-6xl">Preguntas frecuentes</h1>
       <p className="mt-3 text-lg leading-relaxed text-ink/75">Queremos que compres con tranquilidad. Aquí encontrarás las respuestas a las dudas más comunes sobre nuestros productos, pedidos, pagos y envíos.</p>
-      {faqs.map((g) => (
-        <section key={g.group} className="mt-10">
-          <h2 className="mb-2 text-2xl sm:text-3xl">{g.group}</h2>
-          <div className="border-t border-ink">
+      {faqs.map((g, gi) => (
+        <section key={g.group} className={gi === 0 ? "mt-10" : ""}>
+          <div className={gi === 0 ? "border-t border-ink" : ""}>
             {g.items.map((f) => (
               <details key={f.q} className="group border-b border-line [&_summary::-webkit-details-marker]:hidden">
                 <summary className="flex cursor-pointer items-center justify-between gap-4 py-5 text-[17px] font-medium">
