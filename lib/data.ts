@@ -1,4 +1,5 @@
 import "server-only";
+import { cache } from "react";
 import type { Product } from "./types";
 import { sampleProducts } from "./sample-products";
 import { isSupabaseConfigured } from "./supabase/env";
@@ -85,7 +86,7 @@ export async function getRelatedProducts(product: Product, limit = 4): Promise<P
   return [...others, ...more].slice(0, limit);
 }
 
-export async function getCategories(): Promise<string[]> {
+export const getCategories = cache(async function getCategories(): Promise<string[]> {
   const list = isSupabaseConfigured
     ? (((await createPublicClient().from("products").select("category").eq("visible", true)).data ??
         []) as { category: string }[])
@@ -93,4 +94,4 @@ export async function getCategories(): Promise<string[]> {
   return Array.from(new Set(list.map((p) => p.category).filter(Boolean))).sort((a, b) =>
     a.localeCompare(b, "es"),
   );
-}
+});
