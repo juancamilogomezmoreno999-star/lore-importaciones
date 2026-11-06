@@ -14,10 +14,18 @@ export const sampleProducts: Product[] = [
     compare_at_price: 459900,
     images: ["/demo/tenis-1.svg", "/demo/tenis-2.svg"],
     variants: [
-      { name: "Talla", options: ["36", "37", "38", "39", "40", "41", "42", "43"], unavailableBy: { Blanco: ["38", "42"], Negro: ["36", "43"] } },
+      { name: "Talla", options: ["36", "37", "38", "39", "40", "41", "42", "43"] },
       { name: "Color", options: ["Blanco", "Negro"], images: { Blanco: "/demo/tenis-1.svg", Negro: "/demo/tenis-2.svg" } },
     ],
     stock: 12,
+    variant_stock: Object.fromEntries(
+      ["Blanco", "Negro"].flatMap((c) =>
+        ["36", "37", "38", "39", "40", "41", "42", "43"].map((t) => [
+          `Color=${c}&Talla=${t}`,
+          c === "Blanco" ? (t === "38" || t === "42" ? 0 : t === "40" ? 1 : 2) : t === "36" || t === "43" ? 0 : 1,
+        ]),
+      ),
+    ),
     delivery_time: "8 a 12 días hábiles",
     featured: true,
     visible: true,

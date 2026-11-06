@@ -1,6 +1,6 @@
 "use server";
 import { z } from "zod";
-import { imageFor, unavailableFor, type Order, type OrderItem, type Product } from "@/lib/types";
+import { imageFor, stockFor, unavailableFor, variantKey, type Order, type OrderItem, type Product } from "@/lib/types";
 import { isSupabaseConfigured } from "@/lib/supabase/env";
 import { createServiceClient } from "@/lib/supabase/admin";
 import { createSessionClient } from "@/lib/supabase/server";
@@ -84,13 +84,25 @@ export async function createOrder(input: CheckoutInput): Promise<CheckoutResult>
     const variant: Record<string, string> = {};
     for (const v of p.variants) {
       const chosen = line.variant[v.name];
-      if (chosen && unavailableFor(v, line.variant, p.variants).includes(chosen)) {
+      if (chosen && unavailableFor(v, line.variant, p.variants, p.variant_stock).includes(chosen)) {
         return { ok: false, error: `La ${v.name.toLowerCase()} ${chosen} de "${p.name}" ya no está disponible. Quítala del carrito y elige otra.` };
       }
       if (v.options.length && (!chosen || !v.options.includes(chosen))) {
         return { ok: false, error: `Elige ${v.name.toLowerCase()} para "${p.name}".` };
       }
       if (chosen) variant[v.name] = chosen;
+    }
+    // Con stock por color y talla: no más unidades de las que hay en esa combinación
+    if (p.variant_stock && Object.keys(p.variant_stock).length) {
+      const k = variantKey(variant);
+      const sameCombo = data.items
+        .filter((i) => i.productId === p.id && variantKey(Object.fromEntries(Object.entries(i.variant).filter(([n]) => p.variants.some((v) => v.name === n)))) === k)
+        .reduce((s, i) => s + i.quantity, 0);
+      const available = stockFor(p, variant);
+      if (sameCombo > available) {
+        const desc = Object.values(variant).join(" / ");
+        return { ok: false, error: available > 0 ? `Solo tenemos ${available} unidad(es) de "${p.name}" (${desc}). Ajusta la cantidad en tu carrito.` : `"${p.name}" (${desc}) se agotó. Quítalo del carrito y elige otra opción.` };
+      }
     }
     items.push({ product_id: p.id, name: p.name, slug: p.slug, image: imageFor(p.variants, variant, p.images[0] ?? null), price: p.price, quantity: line.quantity, variant });
   }

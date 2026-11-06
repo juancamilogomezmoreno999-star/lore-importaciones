@@ -1,7 +1,7 @@
 "use client";
 import Link from "next/link";
 import { useState } from "react";
-import { imageFor, unavailableFor, type Product } from "@/lib/types";
+import { imageFor, stockFor, unavailableFor, type Product } from "@/lib/types";
 import { useCart } from "./CartProvider";
 import { IconBag, IconCheck, IconMinus, IconPlus, IconWhatsApp } from "./icons";
 import { whatsappLink } from "@/lib/config";
@@ -13,6 +13,8 @@ export function AddToCart({ product }: { product: Product }) {
   const [added, setAdded] = useState(false);
   const [error, setError] = useState("");
   const soldOut = product.stock <= 0;
+  // Unidades de la combinación elegida (color + talla); mientras no elija, el total
+  const comboStock = product.variants.every((v) => !v.options.length || selected[v.name]) ? stockFor(product, selected) : product.stock;
 
   const handleAdd = () => {
     const missing = product.variants.find((v) => v.options.length > 0 && !selected[v.name]);
@@ -28,7 +30,7 @@ export function AddToCart({ product }: { product: Product }) {
       image: imageFor(product.variants, selected, product.images[0] ?? null),
       price: product.price,
       quantity: qty,
-      stock: product.stock,
+      stock: comboStock,
       variant: selected,
       immediate: Boolean(product.immediate_delivery),
     });
@@ -44,7 +46,7 @@ export function AddToCart({ product }: { product: Product }) {
           </legend>
           <div className="flex flex-wrap gap-2">
             {v.options.map((o) => {
-              const agotada = unavailableFor(v, selected, product.variants).includes(o);
+              const agotada = unavailableFor(v, selected, product.variants, product.variant_stock).includes(o);
               return (
                 <button
                   key={o}
@@ -56,7 +58,7 @@ export function AddToCart({ product }: { product: Product }) {
                       const next = { ...s, [v.name]: o };
                       // Si al cambiar de color la talla elegida no existe en ese color, se borra
                       for (const other of product.variants) {
-                        if (next[other.name] && unavailableFor(other, next, product.variants).includes(next[other.name])) delete next[other.name];
+                        if (next[other.name] && unavailableFor(other, next, product.variants, product.variant_stock).includes(next[other.name])) delete next[other.name];
                       }
                       const foto = v.images?.[o];
                       if (foto) window.dispatchEvent(new CustomEvent("lore:foto-color", { detail: foto }));
@@ -64,6 +66,7 @@ export function AddToCart({ product }: { product: Product }) {
                     });
                     setAdded(false);
                     setError("");
+                    setQty(1);
                   }}
                   className={`relative min-w-12 overflow-hidden rounded-[3px] border px-4 py-2.5 text-sm font-medium transition ${
                     agotada ? "cursor-not-allowed border-line bg-sand text-ink/35 line-through" : selected[v.name] === o ? "border-ink bg-ink text-white" : "border-ink/15 bg-white hover:border-ink/50"
@@ -84,7 +87,7 @@ export function AddToCart({ product }: { product: Product }) {
           <div className="flex items-center rounded-full border border-ink/15 bg-white">
             <button type="button" className="p-3" onClick={() => setQty((q) => Math.max(1, q - 1))} aria-label="Menos"><IconMinus width={16} /></button>
             <span className="w-8 text-center font-semibold">{qty}</span>
-            <button type="button" className="p-3" onClick={() => setQty((q) => Math.min(product.stock, q + 1))} aria-label="Más"><IconPlus width={16} /></button>
+            <button type="button" className="p-3" onClick={() => setQty((q) => Math.min(comboStock, q + 1))} aria-label="Más"><IconPlus width={16} /></button>
           </div>
         </div>
       )}

@@ -1,7 +1,7 @@
 "use client";
 import Link from "next/link";
 import { useActionState, useState } from "react";
-import type { Product, Variant } from "@/lib/types";
+import { variantKey, type Product, type Variant } from "@/lib/types";
 import { saveProduct } from "@/app/admin/(panel)/productos/actions";
 import { ImageUploader } from "./ImageUploader";
 import { ProductImage } from "@/components/ProductImage";
@@ -16,26 +16,18 @@ export function ProductForm({ product, categories }: { product?: Product; catego
   const other = product?.variants.find((v) => !["talla", "color"].includes(v.name.toLowerCase()));
   const [sizes, setSizes] = useState(find("talla"));
   const [colors, setColors] = useState(find("color"));
-  const tallaVariant = product?.variants.find((v) => v.name.toLowerCase() === "talla");
-  const [soldOutSizes, setSoldOutSizes] = useState<string[]>(tallaVariant?.unavailable ?? []);
-  // Tallas agotadas por color: { "Negro": ["M"], ... }
   const [colorImages, setColorImages] = useState<Record<string, string>>(
     product?.variants.find((v) => v.name.toLowerCase() === "color")?.images ?? {},
   );
-  const [soldOutBy, setSoldOutBy] = useState<Record<string, string[]>>(tallaVariant?.unavailableBy ?? {});
+  // Unidades por combinación de color y talla, ej. { "Color=Negro&Talla=M": 2 }
+  const [variantStock, setVariantStock] = useState<Record<string, number>>(product?.variant_stock ?? {});
   const [otherName, setOtherName] = useState(other?.name ?? "");
   const [otherValues, setOtherValues] = useState(other?.options.join(", ") ?? "");
   const [price, setPrice] = useState(product?.price?.toString() ?? "");
   const [compare, setCompare] = useState(product?.compare_at_price?.toString() ?? "");
 
   const variants: Variant[] = [
-    split(colors).length > 0
-      ? {
-          name: "Talla",
-          options: split(sizes),
-          unavailableBy: Object.fromEntries(split(colors).map((c) => [c, (soldOutBy[c] ?? []).filter((t) => split(sizes).includes(t))])),
-        }
-      : { name: "Talla", options: split(sizes), unavailable: soldOutSizes.filter((t) => split(sizes).includes(t)) },
+    { name: "Talla", options: split(sizes) },
     {
       name: "Color",
       options: split(colors),
@@ -44,6 +36,16 @@ export function ProductForm({ product, categories }: { product?: Product; catego
     { name: otherName.trim(), options: split(otherValues) },
   ].filter((v) => v.name && v.options.length);
 
+  // Tabla de stock: se usa cuando hay tallas o colores (y no hay "otra opción")
+  const stockRows = split(colors).length ? split(colors) : [""];
+  const stockCols = split(sizes).length ? split(sizes) : [""];
+  const useTable = (split(colors).length > 0 || split(sizes).length > 0) && !(otherName.trim() && split(otherValues).length);
+  const comboKey = (c: string, t: string) => variantKey({ ...(c ? { Color: c } : {}), ...(t ? { Talla: t } : {}) });
+  const tableStock: Record<string, number> = useTable
+    ? Object.fromEntries(stockRows.flatMap((c) => stockCols.map((t) => [comboKey(c, t), variantStock[comboKey(c, t)] ?? 0])))
+    : {};
+  const tableTotal = Object.values(tableStock).reduce((a, b) => a + b, 0);
+
   const off = discountPercent(Number(price) || 0, Number(compare) || null);
 
   return (
@@ -51,6 +53,7 @@ export function ProductForm({ product, categories }: { product?: Product; catego
       <input type="hidden" name="id" value={product?.id ?? ""} />
       <input type="hidden" name="images" value={JSON.stringify(images)} />
       <input type="hidden" name="variants" value={JSON.stringify(variants)} />
+      <input type="hidden" name="variant_stock" value={useTable ? JSON.stringify(tableStock) : ""} />
 
       <section className="card space-y-4 p-4 sm:p-5">
         <h2 className="font-sans font-semibold">Fotos</h2>
@@ -91,7 +94,14 @@ export function ProductForm({ product, categories }: { product?: Product; catego
         <div className="grid grid-cols-2 gap-3">
           <div>
             <label className="label" htmlFor="stock">Unidades disponibles</label>
-            <input id="stock" name="stock" type="number" min={0} required defaultValue={product?.stock ?? 1} className="input" />
+            {useTable ? (
+              <>
+                <input type="hidden" name="stock" value={tableTotal} />
+                <p className="input bg-sand">{tableTotal} <span className="text-xs text-muted">(suma de la tabla)</span></p>
+              </>
+            ) : (
+              <input id="stock" name="stock" type="number" min={0} required defaultValue={product?.stock ?? 1} className="input" />
+            )}
           </div>
           <div>
             <label className="label" htmlFor="delivery_time">Tiempo de entrega</label>
@@ -112,26 +122,51 @@ export function ProductForm({ product, categories }: { product?: Product; catego
         <div>
           <label className="label" htmlFor="sizes">Tallas</label>
           <input id="sizes" value={sizes} onChange={(e) => setSizes(e.target.value)} className="input" placeholder="Ej: S, M, L, XL  ó  36, 37, 38" />
-          {split(sizes).length > 0 && split(colors).length === 0 && (
-            <div className="mt-3">
-              <p className="mb-2 text-xs text-muted">Toca las tallas que <b>no hay</b> para tacharlas. Los clientes las verán tachadas y no podrán elegirlas.</p>
-              <div className="flex flex-wrap gap-2">
-                {split(sizes).map((t) => {
-                  const off = soldOutSizes.includes(t);
-                  return (
-                    <button key={t} type="button" aria-pressed={off} onClick={() => setSoldOutSizes((s) => (off ? s.filter((x) => x !== t) : [...s, t]))} className={`relative min-w-11 rounded-[3px] border px-3 py-2 text-sm font-medium ${off ? "border-line bg-sand text-ink/40 line-through" : "border-ink bg-white"}`}>
-                      {t}
-                      {off && <span aria-hidden className="pointer-events-none absolute inset-0 bg-[linear-gradient(to_top_right,transparent_calc(50%-1px),var(--color-danger)_50%,transparent_calc(50%+1px))]" />}
-                    </button>
-                  );
-                })}
-              </div>
-            </div>
-          )}
         </div>
         <div>
           <label className="label" htmlFor="colors">Colores</label>
           <input id="colors" value={colors} onChange={(e) => setColors(e.target.value)} className="input" placeholder="Ej: Negro, Blanco, Rosa" />
+          {useTable && (
+            <div className="mt-4 rounded-md bg-sand p-3">
+              <p className="mb-3 text-xs text-muted">Unidades de cada {split(colors).length && split(sizes).length ? "color y talla" : split(colors).length ? "color" : "talla"}. Lo que esté en <b>0</b> sale tachado en la tienda, y cada venta lo descuenta sola.</p>
+              <div className="overflow-x-auto">
+                <table className="text-sm">
+                  {split(sizes).length > 0 && (
+                    <thead>
+                      <tr>
+                        {split(colors).length > 0 && <th />}
+                        {stockCols.map((t) => <th key={t} className="px-1 pb-1 text-center font-semibold">{t}</th>)}
+                      </tr>
+                    </thead>
+                  )}
+                  <tbody>
+                    {stockRows.map((c) => (
+                      <tr key={c}>
+                        {split(colors).length > 0 && <th className="whitespace-nowrap pr-2 text-left font-semibold">{c}</th>}
+                        {stockCols.map((t) => {
+                          const k = comboKey(c, t);
+                          const n = tableStock[k] ?? 0;
+                          return (
+                            <td key={k} className="p-1">
+                              <input
+                                type="number"
+                                min={0}
+                                inputMode="numeric"
+                                aria-label={`Unidades ${[c, t && `talla ${t}`].filter(Boolean).join(" ")}`}
+                                value={n}
+                                onChange={(e) => setVariantStock((m) => ({ ...m, [k]: Math.max(0, Math.floor(Number(e.target.value) || 0)) }))}
+                                className={`w-14 rounded-[3px] border px-2 py-1.5 text-center ${n === 0 ? "border-danger/40 bg-white text-danger line-through" : "border-line bg-white"}`}
+                              />
+                            </td>
+                          );
+                        })}
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          )}
           {split(colors).length > 0 && images.length > 0 && (
             <div className="mt-4 rounded-md bg-sand p-3">
               <p className="mb-3 text-xs text-muted">Foto de cada color: toca la foto que corresponde a cada color. Al elegir el color, el cliente verá esa foto.</p>
@@ -153,36 +188,6 @@ export function ProductForm({ product, categories }: { product?: Product; catego
                           >
                             <ProductImage src={src} alt="" fill sizes="56px" className="object-cover" />
                             {on && <span className="absolute bottom-0 right-0 bg-ink px-1 text-[10px] text-white">✓</span>}
-                          </button>
-                        );
-                      })}
-                    </div>
-                  </div>
-                ))}
-              </div>
-            </div>
-          )}
-          {split(sizes).length > 0 && split(colors).length > 0 && (
-            <div className="mt-4 rounded-md bg-sand p-3">
-              <p className="mb-3 text-xs text-muted">Tallas por color: toca las tallas que <b>no hay</b> en cada color para tacharlas.</p>
-              <div className="space-y-3">
-                {split(colors).map((c) => (
-                  <div key={c}>
-                    <p className="mb-1.5 text-sm font-semibold">{c}</p>
-                    <div className="flex flex-wrap gap-2">
-                      {split(sizes).map((t) => {
-                        const off = (soldOutBy[c] ?? []).includes(t);
-                        return (
-                          <button
-                            key={t}
-                            type="button"
-                            aria-pressed={off}
-                            aria-label={`${c} talla ${t}${off ? " agotada" : ""}`}
-                            onClick={() => setSoldOutBy((m) => ({ ...m, [c]: off ? (m[c] ?? []).filter((x) => x !== t) : [...(m[c] ?? []), t] }))}
-                            className={`relative min-w-11 rounded-[3px] border px-3 py-2 text-sm font-medium ${off ? "border-line bg-sand text-ink/40 line-through" : "border-ink bg-white"}`}
-                          >
-                            {t}
-                            {off && <span aria-hidden className="pointer-events-none absolute inset-0 bg-[linear-gradient(to_top_right,transparent_calc(50%-1px),var(--color-danger)_50%,transparent_calc(50%+1px))]" />}
                           </button>
                         );
                       })}

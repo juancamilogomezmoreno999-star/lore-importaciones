@@ -27,6 +27,8 @@ Panel: https://importaciones-lore-opzt.vercel.app/admin
 - Consentimiento: casillas separadas (términos / datos) y registro de cada aceptación con fecha, IP y versión (activo y probado)
 - Revisión legal: políticas de privacidad, cookies, devoluciones y términos; datos del negocio (NIT 31.573.414-7, Cali); sin testimonios de ejemplo
 
+- Stock por color y talla (tabla en el panel), foto por color (requiere correr `supabase/stock-por-variante.sql`)
+
 ## Por hacer (en este orden)
 1. **Vercel Pro** con límite de gasto (Spend Management) de US$20–25, y reclamar el dominio gratis.
 2. **Correos automáticos** con Resend (necesitan el dominio) y volver a encender "Confirm email" en Supabase.

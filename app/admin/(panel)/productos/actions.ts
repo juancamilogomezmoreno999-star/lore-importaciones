@@ -19,6 +19,10 @@ const schema = z.object({
   featured: z.string().optional().transform((v) => v === "on"),
   immediate_delivery: z.string().optional().transform((v) => v === "on"),
   visible: z.string().optional().transform((v) => v === "on"),
+  variant_stock: z
+    .string()
+    .optional()
+    .transform((s) => (s ? z.record(z.string().max(200), z.number().int().min(0).max(100000)).parse(JSON.parse(s)) : null)),
   images: z.string().transform((s) => z.array(z.string().max(500).regex(/^(https:\/\/|\/)/)).max(12).parse(JSON.parse(s || "[]"))),
   variants: z.string().transform((s) =>
     z.array(z.object({ name: z.string().trim().min(1).max(40), options: z.array(z.string().trim().min(1).max(60)).min(1).max(40), unavailable: z.array(z.string().trim().max(60)).max(40).optional(), unavailableBy: z.record(z.string().max(60), z.array(z.string().max(60)).max(40)).optional(), images: z.record(z.string().max(60), z.string().max(500).regex(/^(https:\/\/|\/)/)).optional() })).max(5).parse(JSON.parse(s || "[]")),
