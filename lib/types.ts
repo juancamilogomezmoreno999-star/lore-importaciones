@@ -1,5 +1,26 @@
 /** `unavailable`: opciones que se muestran tachadas (por ejemplo tallas agotadas). */
-export type Variant = { name: string; options: string[]; unavailable?: string[] };
+export type Variant = {
+  name: string;
+  options: string[];
+  unavailable?: string[];
+  /** Solo en Talla: tallas agotadas por cada color, ej. { Negro: ["M"], Blanco: ["S", "XL"] } */
+  unavailableBy?: Record<string, string[]>;
+};
+
+/** Opciones agotadas de una variante según lo elegido en las demás (tallas por color). */
+export function unavailableFor(v: Variant, selected: Record<string, string>, all: Variant[]): string[] {
+  if (v.unavailableBy) {
+    const colorName = all.find((x) => x.name.toLowerCase() === "color")?.name;
+    const color = colorName ? selected[colorName] : undefined;
+    if (color) return v.unavailableBy[color] ?? [];
+    // Sin color elegido: solo se tachan las tallas que no hay en ningún color
+    const lists = Object.values(v.unavailableBy);
+    const colors = all.find((x) => x.name.toLowerCase() === "color")?.options ?? [];
+    if (lists.length < colors.length) return [];
+    return v.options.filter((o) => colors.every((c) => (v.unavailableBy![c] ?? []).includes(o)));
+  }
+  return v.unavailable ?? [];
+}
 
 export type Product = {
   id: string;

@@ -1,6 +1,6 @@
 "use server";
 import { z } from "zod";
-import type { Order, OrderItem, Product } from "@/lib/types";
+import { unavailableFor, type Order, type OrderItem, type Product } from "@/lib/types";
 import { isSupabaseConfigured } from "@/lib/supabase/env";
 import { createServiceClient } from "@/lib/supabase/admin";
 import { createSessionClient } from "@/lib/supabase/server";
@@ -84,7 +84,7 @@ export async function createOrder(input: CheckoutInput): Promise<CheckoutResult>
     const variant: Record<string, string> = {};
     for (const v of p.variants) {
       const chosen = line.variant[v.name];
-      if (chosen && v.unavailable?.includes(chosen)) {
+      if (chosen && unavailableFor(v, line.variant, p.variants).includes(chosen)) {
         return { ok: false, error: `La ${v.name.toLowerCase()} ${chosen} de "${p.name}" ya no está disponible. Quítala del carrito y elige otra.` };
       }
       if (v.options.length && (!chosen || !v.options.includes(chosen))) {

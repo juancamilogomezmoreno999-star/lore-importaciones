@@ -15,16 +15,23 @@ export function ProductForm({ product, categories }: { product?: Product; catego
   const other = product?.variants.find((v) => !["talla", "color"].includes(v.name.toLowerCase()));
   const [sizes, setSizes] = useState(find("talla"));
   const [colors, setColors] = useState(find("color"));
-  const [soldOutSizes, setSoldOutSizes] = useState<string[]>(
-    product?.variants.find((v) => v.name.toLowerCase() === "talla")?.unavailable ?? [],
-  );
+  const tallaVariant = product?.variants.find((v) => v.name.toLowerCase() === "talla");
+  const [soldOutSizes, setSoldOutSizes] = useState<string[]>(tallaVariant?.unavailable ?? []);
+  // Tallas agotadas por color: { "Negro": ["M"], ... }
+  const [soldOutBy, setSoldOutBy] = useState<Record<string, string[]>>(tallaVariant?.unavailableBy ?? {});
   const [otherName, setOtherName] = useState(other?.name ?? "");
   const [otherValues, setOtherValues] = useState(other?.options.join(", ") ?? "");
   const [price, setPrice] = useState(product?.price?.toString() ?? "");
   const [compare, setCompare] = useState(product?.compare_at_price?.toString() ?? "");
 
   const variants: Variant[] = [
-    { name: "Talla", options: split(sizes), unavailable: soldOutSizes.filter((t) => split(sizes).includes(t)) },
+    split(colors).length > 0
+      ? {
+          name: "Talla",
+          options: split(sizes),
+          unavailableBy: Object.fromEntries(split(colors).map((c) => [c, (soldOutBy[c] ?? []).filter((t) => split(sizes).includes(t))])),
+        }
+      : { name: "Talla", options: split(sizes), unavailable: soldOutSizes.filter((t) => split(sizes).includes(t)) },
     { name: "Color", options: split(colors) },
     { name: otherName.trim(), options: split(otherValues) },
   ].filter((v) => v.name && v.options.length);
@@ -97,20 +104,14 @@ export function ProductForm({ product, categories }: { product?: Product; catego
         <div>
           <label className="label" htmlFor="sizes">Tallas</label>
           <input id="sizes" value={sizes} onChange={(e) => setSizes(e.target.value)} className="input" placeholder="Ej: S, M, L, XL  ó  36, 37, 38" />
-          {split(sizes).length > 0 && (
+          {split(sizes).length > 0 && split(colors).length === 0 && (
             <div className="mt-3">
               <p className="mb-2 text-xs text-muted">Toca las tallas que <b>no hay</b> para tacharlas. Los clientes las verán tachadas y no podrán elegirlas.</p>
               <div className="flex flex-wrap gap-2">
                 {split(sizes).map((t) => {
                   const off = soldOutSizes.includes(t);
                   return (
-                    <button
-                      key={t}
-                      type="button"
-                      aria-pressed={off}
-                      onClick={() => setSoldOutSizes((s) => (off ? s.filter((x) => x !== t) : [...s, t]))}
-                      className={`relative min-w-12 rounded-[3px] border px-3 py-2 text-sm font-medium ${off ? "border-line bg-sand text-ink/40 line-through" : "border-ink bg-white"}`}
-                    >
+                    <button key={t} type="button" aria-pressed={off} onClick={() => setSoldOutSizes((s) => (off ? s.filter((x) => x !== t) : [...s, t]))} className={`relative min-w-11 rounded-[3px] border px-3 py-2 text-sm font-medium ${off ? "border-line bg-sand text-ink/40 line-through" : "border-ink bg-white"}`}>
                       {t}
                       {off && <span aria-hidden className="pointer-events-none absolute inset-0 bg-[linear-gradient(to_top_right,transparent_calc(50%-1px),var(--color-danger)_50%,transparent_calc(50%+1px))]" />}
                     </button>
@@ -123,6 +124,36 @@ export function ProductForm({ product, categories }: { product?: Product; catego
         <div>
           <label className="label" htmlFor="colors">Colores</label>
           <input id="colors" value={colors} onChange={(e) => setColors(e.target.value)} className="input" placeholder="Ej: Negro, Blanco, Rosa" />
+          {split(sizes).length > 0 && split(colors).length > 0 && (
+            <div className="mt-4 rounded-md bg-sand p-3">
+              <p className="mb-3 text-xs text-muted">Tallas por color: toca las tallas que <b>no hay</b> en cada color para tacharlas.</p>
+              <div className="space-y-3">
+                {split(colors).map((c) => (
+                  <div key={c}>
+                    <p className="mb-1.5 text-sm font-semibold">{c}</p>
+                    <div className="flex flex-wrap gap-2">
+                      {split(sizes).map((t) => {
+                        const off = (soldOutBy[c] ?? []).includes(t);
+                        return (
+                          <button
+                            key={t}
+                            type="button"
+                            aria-pressed={off}
+                            aria-label={`${c} talla ${t}${off ? " agotada" : ""}`}
+                            onClick={() => setSoldOutBy((m) => ({ ...m, [c]: off ? (m[c] ?? []).filter((x) => x !== t) : [...(m[c] ?? []), t] }))}
+                            className={`relative min-w-11 rounded-[3px] border px-3 py-2 text-sm font-medium ${off ? "border-line bg-sand text-ink/40 line-through" : "border-ink bg-white"}`}
+                          >
+                            {t}
+                            {off && <span aria-hidden className="pointer-events-none absolute inset-0 bg-[linear-gradient(to_top_right,transparent_calc(50%-1px),var(--color-danger)_50%,transparent_calc(50%+1px))]" />}
+                          </button>
+                        );
+                      })}
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </div>
+          )}
         </div>
         <div className="grid grid-cols-[1fr_2fr] gap-3">
           <div>

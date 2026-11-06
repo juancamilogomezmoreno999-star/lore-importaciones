@@ -1,7 +1,7 @@
 "use client";
 import Link from "next/link";
 import { useState } from "react";
-import type { Product } from "@/lib/types";
+import { unavailableFor, type Product } from "@/lib/types";
 import { useCart } from "./CartProvider";
 import { IconBag, IconCheck, IconMinus, IconPlus, IconWhatsApp } from "./icons";
 import { whatsappLink } from "@/lib/config";
@@ -37,21 +37,32 @@ export function AddToCart({ product }: { product: Product }) {
 
   return (
     <div className="space-y-5">
-      {product.variants.filter((v) => v.options.length > 0).map((v) => (
+      {[...product.variants].filter((v) => v.options.length > 0).sort((a, b) => Number(b.name.toLowerCase() === "color") - Number(a.name.toLowerCase() === "color")).map((v) => (
         <fieldset key={v.name}>
           <legend className="mb-2 text-sm font-semibold">
             {v.name}: <span className="font-normal text-muted">{selected[v.name] ?? "elige una opción"}</span>
           </legend>
           <div className="flex flex-wrap gap-2">
             {v.options.map((o) => {
-              const agotada = v.unavailable?.includes(o);
+              const agotada = unavailableFor(v, selected, product.variants).includes(o);
               return (
                 <button
                   key={o}
                   type="button"
                   disabled={agotada}
                   aria-label={agotada ? `${o}, agotada` : o}
-                  onClick={() => { setSelected((s) => ({ ...s, [v.name]: o })); setAdded(false); setError(""); }}
+                  onClick={() => {
+                    setSelected((s) => {
+                      const next = { ...s, [v.name]: o };
+                      // Si al cambiar de color la talla elegida no existe en ese color, se borra
+                      for (const other of product.variants) {
+                        if (next[other.name] && unavailableFor(other, next, product.variants).includes(next[other.name])) delete next[other.name];
+                      }
+                      return next;
+                    });
+                    setAdded(false);
+                    setError("");
+                  }}
                   className={`relative min-w-12 overflow-hidden rounded-[3px] border px-4 py-2.5 text-sm font-medium transition ${
                     agotada ? "cursor-not-allowed border-line bg-sand text-ink/35 line-through" : selected[v.name] === o ? "border-ink bg-ink text-white" : "border-ink/15 bg-white hover:border-ink/50"
                   }`}
