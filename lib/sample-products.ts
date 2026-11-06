@@ -14,7 +14,7 @@ export const sampleProducts: Product[] = [
     compare_at_price: 459900,
     images: ["/demo/tenis-1.svg", "/demo/tenis-2.svg"],
     variants: [
-      { name: "Talla", options: ["36", "37", "38", "39", "40", "41", "42", "43"] },
+      { name: "Talla", options: ["36", "37", "38", "39", "40", "41", "42", "43"], unavailable: ["38", "42"] },
       { name: "Color", options: ["Blanco", "Negro"] },
     ],
     stock: 12,

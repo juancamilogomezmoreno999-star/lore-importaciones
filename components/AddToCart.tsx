@@ -43,16 +43,24 @@ export function AddToCart({ product }: { product: Product }) {
             {v.name}: <span className="font-normal text-muted">{selected[v.name] ?? "elige una opción"}</span>
           </legend>
           <div className="flex flex-wrap gap-2">
-            {v.options.map((o) => (
-              <button
-                key={o}
-                type="button"
-                onClick={() => { setSelected((s) => ({ ...s, [v.name]: o })); setAdded(false); setError(""); }}
-                className={`min-w-12 rounded-[3px] border px-4 py-2.5 text-sm font-medium transition ${selected[v.name] === o ? "border-ink bg-ink text-gold-light" : "border-ink/15 bg-white hover:border-ink/50"}`}
-              >
-                {o}
-              </button>
-            ))}
+            {v.options.map((o) => {
+              const agotada = v.unavailable?.includes(o);
+              return (
+                <button
+                  key={o}
+                  type="button"
+                  disabled={agotada}
+                  aria-label={agotada ? `${o}, agotada` : o}
+                  onClick={() => { setSelected((s) => ({ ...s, [v.name]: o })); setAdded(false); setError(""); }}
+                  className={`relative min-w-12 overflow-hidden rounded-[3px] border px-4 py-2.5 text-sm font-medium transition ${
+                    agotada ? "cursor-not-allowed border-line bg-sand text-ink/35 line-through" : selected[v.name] === o ? "border-ink bg-ink text-white" : "border-ink/15 bg-white hover:border-ink/50"
+                  }`}
+                >
+                  {o}
+                  {agotada && <span aria-hidden className="pointer-events-none absolute inset-0 bg-[linear-gradient(to_top_right,transparent_calc(50%-0.75px),var(--color-ink)_50%,transparent_calc(50%+0.75px))] opacity-40" />}
+                </button>
+              );
+            })}
           </div>
         </fieldset>
       ))}

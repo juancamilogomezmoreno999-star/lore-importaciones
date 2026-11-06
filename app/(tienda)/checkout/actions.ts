@@ -84,6 +84,9 @@ export async function createOrder(input: CheckoutInput): Promise<CheckoutResult>
     const variant: Record<string, string> = {};
     for (const v of p.variants) {
       const chosen = line.variant[v.name];
+      if (chosen && v.unavailable?.includes(chosen)) {
+        return { ok: false, error: `La ${v.name.toLowerCase()} ${chosen} de "${p.name}" ya no está disponible. Quítala del carrito y elige otra.` };
+      }
       if (v.options.length && (!chosen || !v.options.includes(chosen))) {
         return { ok: false, error: `Elige ${v.name.toLowerCase()} para "${p.name}".` };
       }

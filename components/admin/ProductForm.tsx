@@ -15,13 +15,16 @@ export function ProductForm({ product, categories }: { product?: Product; catego
   const other = product?.variants.find((v) => !["talla", "color"].includes(v.name.toLowerCase()));
   const [sizes, setSizes] = useState(find("talla"));
   const [colors, setColors] = useState(find("color"));
+  const [soldOutSizes, setSoldOutSizes] = useState<string[]>(
+    product?.variants.find((v) => v.name.toLowerCase() === "talla")?.unavailable ?? [],
+  );
   const [otherName, setOtherName] = useState(other?.name ?? "");
   const [otherValues, setOtherValues] = useState(other?.options.join(", ") ?? "");
   const [price, setPrice] = useState(product?.price?.toString() ?? "");
   const [compare, setCompare] = useState(product?.compare_at_price?.toString() ?? "");
 
   const variants: Variant[] = [
-    { name: "Talla", options: split(sizes) },
+    { name: "Talla", options: split(sizes), unavailable: soldOutSizes.filter((t) => split(sizes).includes(t)) },
     { name: "Color", options: split(colors) },
     { name: otherName.trim(), options: split(otherValues) },
   ].filter((v) => v.name && v.options.length);
@@ -94,6 +97,28 @@ export function ProductForm({ product, categories }: { product?: Product; catego
         <div>
           <label className="label" htmlFor="sizes">Tallas</label>
           <input id="sizes" value={sizes} onChange={(e) => setSizes(e.target.value)} className="input" placeholder="Ej: S, M, L, XL  ó  36, 37, 38" />
+          {split(sizes).length > 0 && (
+            <div className="mt-3">
+              <p className="mb-2 text-xs text-muted">Toca las tallas que <b>no hay</b> para tacharlas. Los clientes las verán tachadas y no podrán elegirlas.</p>
+              <div className="flex flex-wrap gap-2">
+                {split(sizes).map((t) => {
+                  const off = soldOutSizes.includes(t);
+                  return (
+                    <button
+                      key={t}
+                      type="button"
+                      aria-pressed={off}
+                      onClick={() => setSoldOutSizes((s) => (off ? s.filter((x) => x !== t) : [...s, t]))}
+                      className={`relative min-w-12 rounded-[3px] border px-3 py-2 text-sm font-medium ${off ? "border-line bg-sand text-ink/40 line-through" : "border-ink bg-white"}`}
+                    >
+                      {t}
+                      {off && <span aria-hidden className="pointer-events-none absolute inset-0 bg-[linear-gradient(to_top_right,transparent_calc(50%-1px),var(--color-danger)_50%,transparent_calc(50%+1px))]" />}
+                    </button>
+                  );
+                })}
+              </div>
+            </div>
+          )}
         </div>
         <div>
           <label className="label" htmlFor="colors">Colores</label>

@@ -1,4 +1,5 @@
-export type Variant = { name: string; options: string[] };
+/** `unavailable`: opciones que se muestran tachadas (por ejemplo tallas agotadas). */
+export type Variant = { name: string; options: string[]; unavailable?: string[] };
 
 export type Product = {
   id: string;

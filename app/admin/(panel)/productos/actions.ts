@@ -21,7 +21,7 @@ const schema = z.object({
   visible: z.string().optional().transform((v) => v === "on"),
   images: z.string().transform((s) => z.array(z.string().max(500).regex(/^(https:\/\/|\/)/)).max(12).parse(JSON.parse(s || "[]"))),
   variants: z.string().transform((s) =>
-    z.array(z.object({ name: z.string().trim().min(1).max(40), options: z.array(z.string().trim().min(1).max(60)).min(1).max(40) })).max(5).parse(JSON.parse(s || "[]")),
+    z.array(z.object({ name: z.string().trim().min(1).max(40), options: z.array(z.string().trim().min(1).max(60)).min(1).max(40), unavailable: z.array(z.string().trim().max(60)).max(40).optional() })).max(5).parse(JSON.parse(s || "[]")),
   ),
 });
 
