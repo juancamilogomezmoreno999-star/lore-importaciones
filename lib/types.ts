@@ -5,7 +5,16 @@ export type Variant = {
   unavailable?: string[];
   /** Solo en Talla: tallas agotadas por cada color, ej. { Negro: ["M"], Blanco: ["S", "XL"] } */
   unavailableBy?: Record<string, string[]>;
+  /** Solo en Color: la foto de cada color, ej. { Negro: "https://…/negra.webp" } */
+  images?: Record<string, string>;
 };
+
+/** Foto que corresponde a lo elegido (la del color, si tiene); si no, la principal. */
+export function imageFor(variants: Variant[], selected: Record<string, string>, fallback: string | null) {
+  const color = variants.find((v) => v.name.toLowerCase() === "color");
+  const chosen = color ? selected[color.name] : undefined;
+  return (chosen && color?.images?.[chosen]) || fallback;
+}
 
 /** Opciones agotadas de una variante según lo elegido en las demás (tallas por color). */
 export function unavailableFor(v: Variant, selected: Record<string, string>, all: Variant[]): string[] {

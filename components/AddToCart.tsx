@@ -1,7 +1,7 @@
 "use client";
 import Link from "next/link";
 import { useState } from "react";
-import { unavailableFor, type Product } from "@/lib/types";
+import { imageFor, unavailableFor, type Product } from "@/lib/types";
 import { useCart } from "./CartProvider";
 import { IconBag, IconCheck, IconMinus, IconPlus, IconWhatsApp } from "./icons";
 import { whatsappLink } from "@/lib/config";
@@ -25,7 +25,7 @@ export function AddToCart({ product }: { product: Product }) {
       productId: product.id,
       slug: product.slug,
       name: product.name,
-      image: product.images[0] ?? null,
+      image: imageFor(product.variants, selected, product.images[0] ?? null),
       price: product.price,
       quantity: qty,
       stock: product.stock,
@@ -58,6 +58,8 @@ export function AddToCart({ product }: { product: Product }) {
                       for (const other of product.variants) {
                         if (next[other.name] && unavailableFor(other, next, product.variants).includes(next[other.name])) delete next[other.name];
                       }
+                      const foto = v.images?.[o];
+                      if (foto) window.dispatchEvent(new CustomEvent("lore:foto-color", { detail: foto }));
                       return next;
                     });
                     setAdded(false);

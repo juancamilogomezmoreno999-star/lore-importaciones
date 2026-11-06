@@ -15,7 +15,7 @@ export const sampleProducts: Product[] = [
     images: ["/demo/tenis-1.svg", "/demo/tenis-2.svg"],
     variants: [
       { name: "Talla", options: ["36", "37", "38", "39", "40", "41", "42", "43"], unavailableBy: { Blanco: ["38", "42"], Negro: ["36", "43"] } },
-      { name: "Color", options: ["Blanco", "Negro"] },
+      { name: "Color", options: ["Blanco", "Negro"], images: { Blanco: "/demo/tenis-1.svg", Negro: "/demo/tenis-2.svg" } },
     ],
     stock: 12,
     delivery_time: "8 a 12 días hábiles",

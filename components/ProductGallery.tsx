@@ -1,17 +1,27 @@
 "use client";
-import { useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { ProductImage } from "./ProductImage";
 
 export function ProductGallery({ images, name }: { images: string[]; name: string }) {
   const [active, setActive] = useState(0);
   const scroller = useRef<HTMLDivElement>(null);
-  if (images.length === 0) return <div className="aspect-square rounded-md bg-sand" />;
-
   const go = (i: number) => {
     setActive(i);
     const el = scroller.current;
     if (el) el.scrollTo({ left: el.clientWidth * i, behavior: "smooth" });
   };
+
+  // Al elegir un color, la galería pasa a la foto de ese color
+  useEffect(() => {
+    const onColor = (e: Event) => {
+      const i = images.indexOf((e as CustomEvent<string>).detail);
+      if (i >= 0) go(i);
+    };
+    window.addEventListener("lore:foto-color", onColor);
+    return () => window.removeEventListener("lore:foto-color", onColor);
+  }, [images]);
+
+  if (images.length === 0) return <div className="aspect-square rounded-md bg-sand" />;
 
   return (
     <div>

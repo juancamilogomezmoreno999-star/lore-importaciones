@@ -4,6 +4,7 @@ import { useActionState, useState } from "react";
 import type { Product, Variant } from "@/lib/types";
 import { saveProduct } from "@/app/admin/(panel)/productos/actions";
 import { ImageUploader } from "./ImageUploader";
+import { ProductImage } from "@/components/ProductImage";
 import { discountPercent } from "@/lib/format";
 
 const split = (s: string) => s.split(",").map((x) => x.trim()).filter(Boolean);
@@ -18,6 +19,9 @@ export function ProductForm({ product, categories }: { product?: Product; catego
   const tallaVariant = product?.variants.find((v) => v.name.toLowerCase() === "talla");
   const [soldOutSizes, setSoldOutSizes] = useState<string[]>(tallaVariant?.unavailable ?? []);
   // Tallas agotadas por color: { "Negro": ["M"], ... }
+  const [colorImages, setColorImages] = useState<Record<string, string>>(
+    product?.variants.find((v) => v.name.toLowerCase() === "color")?.images ?? {},
+  );
   const [soldOutBy, setSoldOutBy] = useState<Record<string, string[]>>(tallaVariant?.unavailableBy ?? {});
   const [otherName, setOtherName] = useState(other?.name ?? "");
   const [otherValues, setOtherValues] = useState(other?.options.join(", ") ?? "");
@@ -32,7 +36,11 @@ export function ProductForm({ product, categories }: { product?: Product; catego
           unavailableBy: Object.fromEntries(split(colors).map((c) => [c, (soldOutBy[c] ?? []).filter((t) => split(sizes).includes(t))])),
         }
       : { name: "Talla", options: split(sizes), unavailable: soldOutSizes.filter((t) => split(sizes).includes(t)) },
-    { name: "Color", options: split(colors) },
+    {
+      name: "Color",
+      options: split(colors),
+      images: Object.fromEntries(split(colors).filter((c) => colorImages[c] && images.includes(colorImages[c])).map((c) => [c, colorImages[c]])),
+    },
     { name: otherName.trim(), options: split(otherValues) },
   ].filter((v) => v.name && v.options.length);
 
@@ -124,6 +132,36 @@ export function ProductForm({ product, categories }: { product?: Product; catego
         <div>
           <label className="label" htmlFor="colors">Colores</label>
           <input id="colors" value={colors} onChange={(e) => setColors(e.target.value)} className="input" placeholder="Ej: Negro, Blanco, Rosa" />
+          {split(colors).length > 0 && images.length > 0 && (
+            <div className="mt-4 rounded-md bg-sand p-3">
+              <p className="mb-3 text-xs text-muted">Foto de cada color: toca la foto que corresponde a cada color. Al elegir el color, el cliente verá esa foto.</p>
+              <div className="space-y-3">
+                {split(colors).map((c) => (
+                  <div key={c}>
+                    <p className="mb-1.5 text-sm font-semibold">{c}</p>
+                    <div className="flex flex-wrap gap-2">
+                      {images.map((src, i) => {
+                        const on = colorImages[c] === src;
+                        return (
+                          <button
+                            key={src}
+                            type="button"
+                            aria-pressed={on}
+                            aria-label={`Foto ${i + 1} para ${c}`}
+                            onClick={() => setColorImages((m) => ({ ...m, [c]: on ? "" : src }))}
+                            className={`relative h-14 w-14 overflow-hidden rounded-[3px] ring-2 ${on ? "ring-ink" : "ring-transparent opacity-60"}`}
+                          >
+                            <ProductImage src={src} alt="" fill sizes="56px" className="object-cover" />
+                            {on && <span className="absolute bottom-0 right-0 bg-ink px-1 text-[10px] text-white">✓</span>}
+                          </button>
+                        );
+                      })}
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </div>
+          )}
           {split(sizes).length > 0 && split(colors).length > 0 && (
             <div className="mt-4 rounded-md bg-sand p-3">
               <p className="mb-3 text-xs text-muted">Tallas por color: toca las tallas que <b>no hay</b> en cada color para tacharlas.</p>

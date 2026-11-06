@@ -1,6 +1,6 @@
 "use server";
 import { z } from "zod";
-import { unavailableFor, type Order, type OrderItem, type Product } from "@/lib/types";
+import { imageFor, unavailableFor, type Order, type OrderItem, type Product } from "@/lib/types";
 import { isSupabaseConfigured } from "@/lib/supabase/env";
 import { createServiceClient } from "@/lib/supabase/admin";
 import { createSessionClient } from "@/lib/supabase/server";
@@ -92,7 +92,7 @@ export async function createOrder(input: CheckoutInput): Promise<CheckoutResult>
       }
       if (chosen) variant[v.name] = chosen;
     }
-    items.push({ product_id: p.id, name: p.name, slug: p.slug, image: p.images[0] ?? null, price: p.price, quantity: line.quantity, variant });
+    items.push({ product_id: p.id, name: p.name, slug: p.slug, image: imageFor(p.variants, variant, p.images[0] ?? null), price: p.price, quantity: line.quantity, variant });
   }
 
   if (data.payment_method === "contra_entrega" && !products.every((p) => p.immediate_delivery)) {
